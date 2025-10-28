@@ -1,1 +1,716 @@
-halo
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toko Online Wiguna</title>
+  <style>
+:root {
+  --orange: #111111;        /* 🔹 warna dasar hitam gelap (navbar, tombol) */
+  --orange-dark: #000000;   /* 🔹 warna hover tombol */
+  --bg: #f0f0f0;            /* 🔹 latar belakang halaman abu terang */
+  --text: #222;             /* 🔹 warna teks utama tetap gelap agar kontras */
+  --shadow: rgba(0, 0, 0, 0.1);
+  --white: #ffffff;         /* 🔹 cardview tetap putih terang */
+}
+    body {
+      font-family: "Poppins", sans-serif;
+      background: var(--bg);
+      margin: 0;
+      color: var(--text);
+    }
+
+
+
+    /* 🔶 Navbar */
+    .navbar {
+      background: var(--orange);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 5px var(--shadow);
+      gap: 10px;
+      flex-wrap: nowrap;
+
+
+
+
+    }
+
+
+    .header-name {
+      font-size: 20px;
+      font-weight: 600;
+      margin-right: 20px;
+      color: white;
+      /*text-align: left; */
+    }
+
+    /* 🔍 Pencarian */
+    .search-wrapper {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      gap: 8px;
+      max-width: 600px;
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border-radius: 25px;
+      padding: 5px 12px;
+      flex: 1;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: relative;
+      min-width: 160px;
+    }
+
+    .search-bar img {
+      width: 18px;
+      height: 18px;
+      position: absolute;
+      left: 12px;
+      opacity: 0.6;
+    }
+
+    .search-bar input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 6px 10px 6px 36px;
+      border-radius: 25px;
+      font-size: 14px;
+      background: transparent;
+    }
+
+    .icon-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 22px;
+      color: #fff;
+      /*padding: 50px  50px 10px 10px ;*/
+    }
+
+    .icon-group span {
+      cursor: pointer;
+    }
+
+    /* 🔸 Filter kategori */
+    .filter-container {
+      padding: 10px;
+      text-align: center;
+      background: #fff;
+      border-bottom: 1px solid #eee;
+    }
+    .filter-container select {
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    /* 🔸 Produk Grid */
+    .produk-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      padding: 16px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    /* 🔸 Card Produk */
+    .card {
+      background: var(--white);
+      border-radius: 8px;
+      box-shadow: 0 2px 5px var(--shadow);
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+    .img-box {
+      width: 100%;
+      aspect-ratio: 1/1;
+      overflow: hidden;
+    }
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    .card:hover img {
+      transform: scale(1.05);
+    }
+    .card .info {
+      padding: 8px 10px;
+    }
+    .card h3 {
+      font-size: 14px;
+      margin: 5px 0;
+      color: #333;
+    }
+
+    /* 🔸 Popup Detail */
+    .popup {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 200;
+    }
+
+    .popup-content {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      position: relative;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from {transform: scale(0.9); opacity: 0;}
+      to {transform: scale(1); opacity: 1;}
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .popup img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .popup h3 {
+      font-size: 18px;
+      margin: 6px 0;
+    }
+
+    .popup p {
+      font-size: 14px;
+      margin: 4px 0;
+      color: #555;
+    }
+
+    .popup button {
+      background: var(--orange);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      width: 100%;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    .popup button:hover {
+      background: var(--orange-dark);
+    }
+
+    /* 🔸 Loading shimmer */
+    .loading-shimmer {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 20px;
+    }
+
+    .shimmer {
+      width: 150px;
+      height: 180px;
+      border-radius: 8px;
+      background: linear-gradient(90deg, #eee 25%, #f5f5f5 50%, #eee 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer {
+      0% {background-position: 200% 0;}
+      100% {background-position: -200% 0;}
+    }
+
+    /* 🔸 Responsif */
+    @media (max-width: 600px) {
+      .navbar {
+        flex-wrap: nowrap;
+      }
+      .search-wrapper {
+        flex: 1;
+        gap: 6px;
+      }
+      .search-bar {
+        flex: 1;
+        width: 100%;
+      }
+      .icon-group {
+        gap: 8px;
+        font-size: 20px;
+       /*padding: 10px  50px 10px 20px ;*/
+      }
+
+      .header-name {
+        display: none;
+      }
+    }
+
+
+    /* 🔹 Atur posisi icon di tampilan besar (desktop/laptop) */
+/* Desktop / laptop */
+@media (min-width: 768px) {
+  .navbar {
+
+      display: flex;
+  justify-content: space-between; /* header kiri, search+icon kanan */
+  align-items: center;
+  }
+
+  .search-wrapper {
+    flex: none;       /* biar ukurannya pas isinya saja */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .search-bar {
+    width: 250px;     /* atur lebar input sesuai kebutuhan */
+    flex: none;
+  }
+
+  .icon-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+  }
+}
+
+
+.tombol-wrapper {
+  display: flex;           /* 🔹 aktifkan flexbox */
+  gap: 10px;               /* 🔹 jarak antar tombol */
+  flex-wrap: nowrap;       /* 🔹 cegah turun ke bawah */
+  justify-content: center; /* 🔹 sejajarkan di tengah (opsional) */
+}
+
+.btn {
+  flex: 1;                 /* 🔹 tombol punya lebar sama (opsional) */
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  background: #111;
+  color: white;
+  cursor: pointer;
+}
+
+.bottom-navbar {
+  display: none;              /* default hidden */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #111;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 0;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
+  z-index: 150;
+}
+
+.bottom-navbar .nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+.bottom-navbar .nav-icon {
+  font-size: 20px;
+  margin-bottom: 2px;
+}
+
+/* Tampilkan bottom navbar di HP saja */
+@media (max-width: 600px) {
+  .bottom-navbar {
+    display: flex;
+  }
+}
+
+/* Slideshow */
+.slideshow-container {
+  position: relative;
+  max-width: 1200px;
+  margin: 16px auto;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.slide {
+  display: none;
+}
+
+.slide img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* efek fade */
+.fade {
+  animation-name: fade;
+  animation-duration: 1s;
+}
+
+@keyframes fade {
+  from {opacity: 0.4;}
+  to {opacity: 1;}
+}
+/*akhir slideshow*/
+
+/*css untuk slideshow terlaris*/
+.terlaris-section {
+  max-width: 1200px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+.terlaris-section h2 {
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+
+.terlaris-slider {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 10px;
+}
+
+.terlaris-slider::-webkit-scrollbar {
+  height: 6px;
+}
+
+.terlaris-slider::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
+  border-radius: 3px;
+}
+
+.terlaris-card {
+  min-width: 150px;
+  flex: 0 0 auto;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  text-align: center;
+  padding: 10px;
+}
+
+.terlaris-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 6px;
+}
+
+.terlaris-card h3 {
+  font-size: 14px;
+  margin: 0;
+  color: #333;
+}
+
+.terlaris-btn-wrapper {
+  text-align: center;
+  margin-top: 12px;
+}
+
+.btn-terlaris {
+  display: inline-block;
+  padding: 10px 20px;
+  background: var(--orange);
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.btn-terlaris:hover {
+  background: var(--orange-dark);
+}
+/*akhir terlaris*/
+
+
+
+
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+  <span class="header-name">Wiguna Teknik</span>
+  <div class="search-wrapper">
+    <div class="search-bar">
+      <img src="https://cdn-icons-png.flaticon.com/512/622/622669.png" alt="Cari">
+      <input type="text" id="search" placeholder="Cari produk...">
+    </div>
+    <div class="icon-group">
+      <span title="Favorit" style="font-size: 30px;">🩷</span>
+      <span title="WhatsApp" style="font-size: 30px;" onclick="window.open('https://wa.me/6281936619374','_blank')">💬</span>
+    </div>
+  </div>
+</header>
+
+
+
+
+  <div class="slideshow-container">
+  <div class="slide fade">
+    <img src="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/banner/1.png" alt="Banner 1">
+  </div>
+  <div class="slide fade">
+    <img src="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/banner/2.png" alt="Banner 2">
+  </div>
+  <div class="slide fade">
+    <img src="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/banner/3.png" alt="Banner 3">
+  </div>
+</div>
+
+<!-- 🔸 Barang Terlaris -->
+<section class="terlaris-section">
+  <h2>Barang Terlaris</h2>
+  <div class="terlaris-slider">
+    <div class="terlaris-card">
+      <img src="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/522c.jpeg" alt="Produk 1">
+      <h3>Produk 1</h3>
+    </div>
+    <div class="terlaris-card">
+      <img src="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/522c.jpeg" alt="Produk 2">
+      <h3>Produk 2</h3>
+    </div>
+    <div class="terlaris-card">
+      <img src="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/522c.jpeg" alt="Produk 3">
+      <h3>Produk 3</h3>
+    </div>
+    <div class="terlaris-card">
+      <img src="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/522c.jpeg" alt="Produk 4">
+      <h3>Produk 4</h3>
+    </div>
+    <div class="terlaris-card">
+      <img src="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/522c.jpeg" alt="Produk 5">
+      <h3>Produk 5</h3>
+    </div>
+  </div>
+  <div class="terlaris-btn-wrapper">
+    <a href="halaman-lain.html" class="btn-terlaris">Cek Semua Produk</a>
+  </div>
+</section>
+
+
+
+
+  <!-- 🔸 Filter kategori -->
+  <section class="filter-container">
+    <select id="kategori">
+      <option value="">Semua Kategori</option>
+    </select>
+  </section>
+
+
+
+  <!-- 🔸 Daftar produk -->
+  <section id="produk-container" class="produk-container"></section>
+
+  <!-- 🔸 Loading shimmer -->
+  <div id="loading" class="loading-shimmer">
+    <div class="shimmer"></div>
+    <div class="shimmer"></div>
+    <div class="shimmer"></div>
+  </div>
+  <nav class="bottom-navbar">
+  <a href="#" class="nav-btn">
+    <span class="nav-icon">🏠</span>
+    <span class="nav-text">Home</span>
+  </a>
+  <a href="#" class="nav-btn">
+    <span class="nav-icon">📂</span>
+    <span class="nav-text">Kategori</span>
+  </a>
+  <a href="#" class="nav-btn">
+    <span class="nav-icon">ℹ️</span>
+    <span class="nav-text">Info Toko</span>
+  </a>
+</nav>
+
+  <!-- 🔸 Popup detail produk -->
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <span class="close-btn" onclick="tutupPopup()">×</span>
+      <img id="popup-img" src="">
+      <h3 id="popup-nama"></h3>
+      <p id="popup-kategori"></p>
+      <p id="popup-keterangan"></p>
+      <div class="tombol-wrapper">
+ 
+        <a id="popup-gambar" target="_blank">
+          <button class="btn" style="background: red;">Lihat Gambar</button>
+        </a>
+        <a id="popup-wa" target="_blank">
+          <button class="btn" style="background: green;">Tanyakan Harga</button>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTgErorbgaQ6H6x1tAhvgSlV6c0gtOp2ggT6DrALyqKpGe55lv1E2OB3luuyU51bx-zpJ8tFd2TNcnl/pub?output=csv";
+
+    const container = document.getElementById('produk-container');
+    const searchInput = document.getElementById('search');
+    const kategoriSelect = document.getElementById('kategori');
+    const loading = document.getElementById('loading');
+
+    let semuaData = [];
+    let indeksAwal = 0;
+    const batch = 10; // jumlah produk per scroll
+
+    async function ambilData() {
+      const res = await fetch(SHEET_URL);
+      const text = await res.text();
+      const rows = text.split("\n").slice(1);
+      semuaData = rows.map(row => {
+        const [nama, kategori, keterangan, gambar] = row.split(",");
+        return { nama, kategori, keterangan, gambar };
+      }).filter(item => item.nama && item.gambar);
+      tampilkanKategori();
+      muatLagi();
+    }
+
+    function tampilkanKategori() {
+      const kategoriUnik = [...new Set(semuaData.map(i => i.kategori.trim()))];
+      kategoriUnik.forEach(k => {
+        const opt = document.createElement("option");
+        opt.value = k;
+        opt.textContent = k;
+        kategoriSelect.appendChild(opt);
+      });
+    }
+
+    function tampilkanProduk(data) {
+      data.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <div class="img-box">
+            <img src="${item.gambar}" alt="${item.nama}">
+          </div>
+          <div class="info">
+            <h3>${item.nama}</h3>
+          </div>
+        `;
+        card.onclick = () => bukaPopup(item);
+        container.appendChild(card);
+      });
+    }
+
+    function muatLagi() {
+      const hasil = filterData();
+      const batchData = hasil.slice(indeksAwal, indeksAwal + batch);
+      tampilkanProduk(batchData);
+      indeksAwal += batch;
+      if (indeksAwal >= hasil.length) {
+        loading.style.display = "none";
+      } else {
+        loading.style.display = "flex";
+      }
+    }
+
+    function filterData() {
+      const keyword = searchInput.value.toLowerCase();
+      const kategori = kategoriSelect.value;
+      return semuaData.filter(item =>
+        item.nama.toLowerCase().includes(keyword) &&
+        (kategori === "" || item.kategori === kategori)
+      );
+    }
+
+    function bukaPopup(item) {
+      document.getElementById("popup").style.display = "flex";
+      document.getElementById("popup-img").src = item.gambar;
+      document.getElementById("popup-nama").textContent = item.nama;
+      document.getElementById("popup-kategori").textContent = `Kategori: ${item.kategori}`;
+      document.getElementById("popup-keterangan").textContent = item.keterangan;
+      const pesan = encodeURIComponent(`Halo, berapa harga ${item.nama}?`);
+      document.getElementById("popup-wa").href = `https://wa.me/6281936619374?text=${pesan}`;
+
+    }
+
+    function tutupPopup() {
+      document.getElementById("popup").style.display = "none";
+    }
+
+    window.addEventListener("scroll", () => {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
+        muatLagi();
+      }
+    });
+
+    searchInput.addEventListener("input", () => {
+      container.innerHTML = "";
+      indeksAwal = 0;
+      muatLagi();
+    });
+
+    kategoriSelect.addEventListener("change", () => {
+      container.innerHTML = "";
+      indeksAwal = 0;
+      muatLagi();
+    });
+
+    ambilData();
+
+    // Script otomatis slideshow
+let slideIndex = 0;
+showSlides();
+
+function showSlides() {
+  let slides = document.getElementsByClassName("slide");
+  for (let i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
+  slideIndex++;
+  if (slideIndex > slides.length) {slideIndex = 1;}
+  slides[slideIndex-1].style.display = "block";
+  setTimeout(showSlides, 4000); // ganti banner tiap 4 detik
+}
+  </script>
+</body>
+</html>
