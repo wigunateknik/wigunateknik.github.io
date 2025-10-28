@@ -3,7 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Toko Online Wiguna</title>
+  <meta name="description" content="Toko Online Wiguna Teknik - Menyediakan berbagai alat teknik dan kebutuhan industri.">
+  <title>Wiguna Teknik</title>
+
+  <!-- 🔹 Tambahkan Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
+
+  <!-- 🔹 Favicon -->
+  <link rel="icon" href="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/logo/logo_toko_wiguna.png">
+  
+  <style>
+  /* CSS kamu di sini */
+  </style>
+</head>
   <style>
 :root {
   --orange: #111111;        /* 🔹 warna dasar hitam gelap (navbar, tombol) */
@@ -394,43 +407,58 @@
 }
 /*akhir slideshow*/
 
-/*css untuk slideshow terlaris*/
 .terlaris-section {
   max-width: 1200px;
   margin: 24px auto;
   padding: 0 16px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  overflow: hidden;
 }
 
+/* Judul section */
 .terlaris-section h2 {
-  font-size: 20px;
-  margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+  background: #000000;
+  text-align: center;
+  padding: 10px 0;
+  margin: 0;
 }
 
+/* Slider produk */
 .terlaris-slider {
   display: flex;
   gap: 12px;
   overflow-x: auto;
   scroll-behavior: smooth;
-  padding-bottom: 10px;
+  padding: 14px;
 }
 
 .terlaris-slider::-webkit-scrollbar {
   height: 6px;
 }
-
 .terlaris-slider::-webkit-scrollbar-thumb {
   background: rgba(0,0,0,0.2);
   border-radius: 3px;
 }
 
+/* Card produk */
 .terlaris-card {
-  min-width: 150px;
+  min-width: 160px;
   flex: 0 0 auto;
   background: #fff;
+  border: 1px solid #eee;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   text-align: center;
   padding: 10px;
+  transition: transform 0.2s ease;
+}
+.terlaris-card:hover {
+  transform: translateY(-4px);
 }
 
 .terlaris-card img {
@@ -443,36 +471,145 @@
 
 .terlaris-card h3 {
   font-size: 14px;
-  margin: 0;
   color: #333;
+  margin: 4px 0;
 }
 
+/* Tombol bawah */
 .terlaris-btn-wrapper {
   text-align: center;
-  margin-top: 12px;
+  padding: 12px;
+  border-top: 1px solid #eee;
+  background: #fff;
 }
 
 .btn-terlaris {
   display: inline-block;
-  padding: 10px 20px;
-  background: var(--orange);
-  color: #fff;
+  padding: 8px 16px;
+  background: white;
+  color: var(--orange);
+  border: 2px solid var(--orange);
   border-radius: 6px;
   text-decoration: none;
   font-weight: 600;
-  transition: background 0.2s;
+  transition: 0.2s;
 }
 
 .btn-terlaris:hover {
-  background: var(--orange-dark);
+  background: var(--orange);
+  color: white;
 }
 /*akhir terlaris*/
+
+/*Bagian Promo*/
+/* 🔸 Bagian Promo */
+.promo-section {
+  max-width: 1200px;
+  margin: 16px auto;
+  padding: 0 16px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.promo-section h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  background: #e74b2c;;
+  text-align: center;
+  padding: 10px 0;
+  margin: 0;
+  border-radius: 8px 8px 0 0;
+}
+
+.promo-slider {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 14px;
+}
+
+.promo-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  min-width: 160px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.promo-card:hover {
+  transform: translateY(-4px);
+}
+
+/*.promo-card img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  display: block;
+}*/
+
+.promo-card img {
+  width: 100%;
+  height: 130px;       /* kamu bisa sesuaikan */
+  object-fit: contain; /* 🔹 ubah dari cover → contain */
+  background: #fff;    /* biar ada latar putih */
+  border-bottom: 1px solid #eee;
+}
+
+.promo-info {
+  padding: 8px;
+  text-align: center;
+  line-height: 1.2; /* 🔹 lebih rapat antar baris */
+}
+
+.promo-name {
+  font-size: 15px;  /* 🔹 lebih besar dari 13px */
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 2px; /* 🔹 jarak bawah kecil */
+}
+
+.promo-price .new {
+  font-size: 20px;   /* 🔹 sedikit diperbesar */
+  font-weight: 700;
+  color: #e53935;
+}
+/*akhir promo*/
+
+
+/* 🔸 Popup untuk promo */
+#popup-promo .popup-content {
+  max-width: 400px;
+  text-align: center;
+}
+
+#popup-promo img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+#popup-promo h3 {
+  font-size: 18px;
+  margin: 6px 0;
+}
+
+#popup-promo p {
+  font-size: 14px;
+  color: #555;
+}
+/*akhir untuk popup modal promo*/
+
 
 
 
 
   </style>
-</head>
+
 <body>
 
   <header class="navbar">
@@ -483,7 +620,7 @@
       <input type="text" id="search" placeholder="Cari produk...">
     </div>
     <div class="icon-group">
-      <span title="Favorit" style="font-size: 30px;">🩷</span>
+      <!-- <span title="Favorit" style="font-size: 30px;">🩷</span> -->
       <span title="WhatsApp" style="font-size: 30px;" onclick="window.open('https://wa.me/6281936619374','_blank')">💬</span>
     </div>
   </div>
@@ -503,6 +640,13 @@
     <img src="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/banner/3.png" alt="Banner 3">
   </div>
 </div>
+
+<!-- barang Promo -->
+<section class="promo-section">
+  <h2>🔥Promo Spesial🔥</h2>
+  <div id="promo-container" class="promo-slider"></div>
+</section>
+
 
 <!-- 🔸 Barang Terlaris -->
 <section class="terlaris-section">
@@ -528,12 +672,15 @@
       <img src="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/522c.jpeg" alt="Produk 5">
       <h3>Produk 5</h3>
     </div>
+        <div class="terlaris-card">
+      <img src="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/522c.jpeg" alt="Produk 6">
+      <h3>Produk 6</h3>
+    </div>
   </div>
   <div class="terlaris-btn-wrapper">
-    <a href="halaman-lain.html" class="btn-terlaris">Cek Semua Produk</a>
+    <a href="halaman-lain.html" class="btn-terlaris">Cek Semua Produk >></a>
   </div>
 </section>
-
 
 
 
@@ -556,7 +703,7 @@
     <div class="shimmer"></div>
   </div>
   <nav class="bottom-navbar">
-  <a href="#" class="nav-btn">
+  <a href="#" class="nav-btn" id="nav-home">
     <span class="nav-icon">🏠</span>
     <span class="nav-text">Home</span>
   </a>
@@ -564,11 +711,39 @@
     <span class="nav-icon">📂</span>
     <span class="nav-text">Kategori</span>
   </a>
-  <a href="#" class="nav-btn">
+  <a href="#" class="nav-btn" id="nav-favorite">
+    <span class="nav-icon">❤️</span>
+    <span class="nav-text">Favorite</span>
+  </a>
+  <a href="#" class="nav-btn" id="nav-profile">
     <span class="nav-icon">ℹ️</span>
     <span class="nav-text">Info Toko</span>
   </a>
 </nav>
+
+<!-- 🔸 Popup Promo -->
+<!-- <div class="popup" id="popup-promo">
+  <div class="popup-content">
+    <span class="close-btn" onclick="tutupPopupPromo()">×</span>
+    <img id="promo-popup-img" src="">
+    <h3 id="promo-popup-nama"></h3>
+    <p id="promo-popup-harga"></p>
+    <p id="promo-popup-detail"></p>
+
+    <div style="display: flex; justify-content: center; gap: 30px; margin-top: 10px;">
+      <span title="Favorit" style="font-size: 28px; cursor: pointer;">❤️</span>
+      <span title="Lokasi Toko" style="font-size: 28px; cursor: pointer;" onclick="window.open('https://maps.app.goo.gl/pWfJ4A3Vqk8sXToC7','_blank')">📍</span>
+    </div>
+  </div>
+</div> -->
+
+
+
+
+
+
+
+
 
   <!-- 🔸 Popup detail produk -->
   <div class="popup" id="popup">
@@ -590,6 +765,22 @@
     </div>
   </div>
 
+  <!-- 🔸 Popup Promo -->
+<div class="popup" id="popup-promo">
+  <div class="popup-content">
+    <span class="close-btn" onclick="tutupPopupPromo()">×</span>
+    <img id="promo-popup-img" src="">
+    <h3 id="promo-popup-nama"></h3>
+    <p id="promo-popup-harga"></p>
+    <p id="promo-popup-detail"></p>
+
+    <div style="display: flex; justify-content: center; gap: 30px; margin-top: 10px;">
+      <span id="fav-icon" title="Favorit" style="font-size: 28px; cursor: pointer;">🤍</span>
+      <span title="Lokasi Toko" style="font-size: 28px; cursor: pointer;" onclick="window.open('https://maps.app.goo.gl/Vp6agqdo1Ab8pakw7','_blank')">📍</span>
+    </div>
+  </div>
+</div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
   <script>
     const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTgErorbgaQ6H6x1tAhvgSlV6c0gtOp2ggT6DrALyqKpGe55lv1E2OB3luuyU51bx-zpJ8tFd2TNcnl/pub?output=csv";
 
@@ -597,6 +788,45 @@
     const searchInput = document.getElementById('search');
     const kategoriSelect = document.getElementById('kategori');
     const loading = document.getElementById('loading');
+
+// script promo 
+Papa.parse(SHEET_URL, {
+  download: true,
+  header: true,
+  complete: function(results) {
+    const data = results.data;
+
+    const promoItems = data.filter(item =>
+      item.nama_promo && item.harga_promo && item.gambar_promo
+    );
+
+    const promoContainer = document.getElementById("promo-container");
+    window.promoData = promoItems; // letakkan sebelum map()
+    promoContainer.innerHTML = promoItems.map((item, i) => `
+      <div class="promo-card" data-index="${i}">
+        <img src="${item.gambar_promo}" alt="${item.nama_promo}">
+        <div class="promo-info">
+          <p class="promo-name">${item.nama_promo}</p>
+          <p class="promo-price">
+            <span class="new">Rp${Number(item.harga_promo).toLocaleString('id-ID')}</span>
+          </p>
+        </div>
+      </div>
+    `).join('');
+    // tambahkan event listener klik supaya benar-benar aktif
+    document.querySelectorAll('.promo-card').forEach((card, i) => {
+      card.addEventListener('click', () => bukaPopupPromo(promoData[i]));
+    });
+  }
+
+});
+
+
+
+
+
+
+
 
     let semuaData = [];
     let indeksAwal = 0;
@@ -607,8 +837,8 @@
       const text = await res.text();
       const rows = text.split("\n").slice(1);
       semuaData = rows.map(row => {
-        const [nama, kategori, keterangan, gambar] = row.split(",");
-        return { nama, kategori, keterangan, gambar };
+        const [nama, kategori, keterangan, gambar, , nama_promo, harga_promo, gambar_promo, detail] = row.split(",");
+        return { nama, kategori, keterangan, gambar, nama_promo, harga_promo, gambar_promo, detail };
       }).filter(item => item.nama && item.gambar);
       tampilkanKategori();
       muatLagi();
@@ -677,6 +907,38 @@
       document.getElementById("popup").style.display = "none";
     }
 
+
+
+
+    // popup promo
+      // function bukaPopupPromo(item) {
+      //   document.getElementById("popup-promo").style.display = "flex";
+      //   document.getElementById("promo-popup-img").src = item.gambar_promo;
+      //   document.getElementById("promo-popup-nama").textContent = item.nama_promo;
+      //   document.getElementById("promo-popup-harga").textContent = "Rp" + Number(item.harga_promo).toLocaleString("id-ID");
+      //   document.getElementById("promo-popup-detail").textContent = item.detail || "Tidak ada detail promo.";
+
+      //   const fav = document.getElementById("fav-icon");
+      //   fav.textContent = "🤍";
+      //   fav.style.color = "black";
+      //   fav.onclick = function() {
+      //     if (fav.textContent === "🤍") {
+      //       fav.textContent = "❤️";
+      //       fav.style.color = "red";
+      //     } else {
+      //       fav.textContent = "🤍";
+      //       fav.style.color = "black";
+      //     }
+      //   };
+      // }
+
+
+    function tutupPopupPromo() {
+      document.getElementById("popup-promo").style.display = "none";
+    }
+    // popup promo akhir
+
+
     window.addEventListener("scroll", () => {
       if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
         muatLagi();
@@ -711,6 +973,100 @@ function showSlides() {
   slides[slideIndex-1].style.display = "block";
   setTimeout(showSlides, 4000); // ganti banner tiap 4 detik
 }
+
+// ====================== FAVORITE SYSTEM (NAVBAR VERSION) =======================
+
+// Ambil data favorite dari localStorage
+let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+// Buat popup untuk daftar favorite
+const favPopup = document.createElement("div");
+favPopup.className = "popup";
+favPopup.id = "popup-favorite";
+favPopup.innerHTML = `
+  <div class="popup-content">
+    <span class="close-btn" onclick="tutupPopupFavorite()">×</span>
+    <h3>❤️ Barang Favorit</h3>
+    <div id="favorite-list" style="max-height:400px; overflow-y:auto; margin-top:10px;"></div>
+  </div>
+`;
+document.body.appendChild(favPopup);
+
+// Tampilkan daftar favorite
+function bukaPopupFavorite() {
+  const listContainer = document.getElementById("favorite-list");
+  if (favorites.length === 0) {
+    listContainer.innerHTML = "<p style='color:#555; text-align:center;'>Belum ada barang favorit.</p>";
+  } else {
+    listContainer.innerHTML = favorites.map((item, i) => `
+      <div style="display:flex; align-items:center; gap:10px; border-bottom:1px solid #eee; padding:6px 0;">
+        <img src="${item.gambar_promo}" alt="${item.nama_promo}" style="width:60px; height:60px; object-fit:cover; border-radius:6px;">
+        <div style="flex:1; text-align:left;">
+          <strong>${item.nama_promo}</strong><br>
+          <span style="color:#e53935;">Rp${Number(item.harga_promo).toLocaleString('id-ID')}</span>
+        </div>
+        <span onclick="hapusFavorite(${i})" style="cursor:pointer; font-size:20px;">❌</span>
+      </div>
+    `).join('');
+  }
+  favPopup.style.display = "flex";
+}
+
+function tutupPopupFavorite() {
+  favPopup.style.display = "none";
+}
+
+// Simpan perubahan ke localStorage
+function simpanFavorite() {
+  localStorage.setItem("favorites", JSON.stringify(favorites));
+}
+
+// Hapus item dari daftar favorite
+function hapusFavorite(index) {
+  favorites.splice(index, 1);
+  simpanFavorite();
+  bukaPopupFavorite();
+}
+
+// Event klik tombol navbar ❤️ Favorite
+document.getElementById("nav-favorite").addEventListener("click", bukaPopupFavorite);
+
+// =================== POPUP PROMO FAVORIT ===================
+function bukaPopupPromo(item) {
+  document.getElementById("popup-promo").style.display = "flex";
+  document.getElementById("promo-popup-img").src = item.gambar_promo;
+  document.getElementById("promo-popup-nama").textContent = item.nama_promo;
+  document.getElementById("promo-popup-harga").textContent = "Rp" + Number(item.harga_promo).toLocaleString("id-ID");
+  document.getElementById("promo-popup-detail").textContent = item.detail || "Tidak ada detail promo.";
+
+  const fav = document.getElementById("fav-icon");
+  const sudahFavorit = favorites.some(f => f.nama_promo === item.nama_promo);
+
+  fav.textContent = sudahFavorit ? "❤️" : "🤍";
+  fav.style.color = sudahFavorit ? "red" : "black";
+
+  fav.onclick = function() {
+    const index = favorites.findIndex(f => f.nama_promo === item.nama_promo);
+    if (index >= 0) {
+      // hapus dari favorite
+      favorites.splice(index, 1);
+      fav.textContent = "🤍";
+      fav.style.color = "black";
+    } else {
+      // tambahkan ke favorite
+      favorites.push(item);
+      fav.textContent = "❤️";
+      fav.style.color = "red";
+    }
+    simpanFavorite();
+  };
+}
+
+
+
+
+
+
   </script>
 </body>
 </html>
