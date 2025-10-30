@@ -8,7 +8,7 @@
   <title>Wiguna Teknik</title>
   <meta name="keywords" content="alat teknik, toko teknik, Wiguna Teknik, alat industri, perlengkapan bengkel, jual alat teknik online">
   <meta name="author" content="Wiguna Teknik">
-  <meta property="og:title" content="Wiguna Teknik - Alat Teknik & Industri">
+  <meta property="og:title" content="Wiguna Teknik - Alat Teknik & Service">
   <meta property="og:description" content="Menyediakan berbagai alat teknik dan kebutuhan industri dengan harga terjangkau.">
   <meta property="og:image" content="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/logo/logo_toko_wiguna.png">
   <meta property="og:type" content="website">
@@ -18,13 +18,16 @@
 </head>
 <style>
   :root {
-    --orange: #111111;        /* 🔹 warna dasar hitam gelap (navbar, tombol) */
-    --orange-dark: #000000;   /* 🔹 warna hover tombol */
+    --primary: #111;        /* 🔹 warna dasar hitam gelap (navbar, tombol) */
+    --primary-dark: #000;   /* 🔹 warna hover tombol */
     --bg: #f0f0f0;            /* 🔹 latar belakang halaman abu terang */
     --text: #222;             /* 🔹 warna teks utama tetap gelap agar kontras */
     --shadow: rgba(0, 0, 0, 0.1);
     --white: #ffffff;         /* 🔹 cardview tetap putih terang */
      --bottom-navbar-height: 60px;
+  }
+  html {
+    scroll-behavior: smooth;
   }
   body {
     font-family: "Poppins", sans-serif;
@@ -33,7 +36,7 @@
     color: var(--text);
   }
   .navbar {
-    background: var(--orange);
+    background: var(--primary);
     color: #fff;
     display: flex;
     align-items: center;
@@ -113,14 +116,51 @@
     font-size: 14px;
   }
   /* 🔸 Produk Grid */
-  .produk-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 12px;
-    padding: 16px;
-    max-width: 1200px;
-    margin: auto;
-  }
+ .produk-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px;
+  max-width: 1200px;
+  margin: auto;
+}
+.produk-card {
+  width: 160px;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.produk-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+.produk-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+}
+
+.produk-info {
+  padding: 8px;
+  text-align: center;
+}
+
+.produk-info h3 {
+  font-size: 14px;
+  color: #333;
+  margin: 4px 0;
+}
+
+.produk-info p {
+  font-size: 12px;
+  color: #777;
+  margin: 0;
+}
+
   /* 🔸 Card Produk */
   .card {
     background: var(--white);
@@ -187,7 +227,7 @@
   margin-top: 14px;
 }
 
-.popup-btn {
+/*.popup-btn {
   background: linear-gradient(135deg, #ff8a3d, #ff512f); /* gradasi oranye-merah */
   color: #fff;
   border: none;
@@ -200,7 +240,7 @@
   align-items: center;
   gap: 6px;
   box-shadow: 0 3px 6px rgba(255, 81, 47, 0.3);
-}
+}*/
 
 .popup-btn:hover {
   transform: translateY(-2px);
@@ -208,7 +248,7 @@
 }
 
 
-.popup-close-btn {
+/*.popup-close-btn {
   background: linear-gradient(135deg, #ff512f, #e74b2c);
   color: #fff;
   border: none;
@@ -218,7 +258,7 @@
   font-weight: 600;
   transition: all 0.3s ease;
   box-shadow: 0 3px 6px rgba(231, 75, 44, 0.3);
-}
+}*/
 .popup-close-btn:hover {
   background: linear-gradient(135deg, #e74b2c, #d84315);
   transform: translateY(-2px);
@@ -269,7 +309,7 @@
   box-shadow: 0 5px 10px rgba(255,81,47,0.4);
 }
   .popup button {
-    background: var(--orange);
+    background: var(--primary);
     color: white;
     border: none;
     border-radius: 6px;
@@ -368,8 +408,7 @@
   color: white;
   cursor: pointer;
 }
-.bottom-navbar {
-  display: none;              /* default hidden */
+.bottom-navbar {             /* default hidden */
   position: fixed;
   bottom: 0;
   left: 0;
@@ -410,9 +449,8 @@
 .slideshow-container {
   position: relative;
   max-width: 1200px;
-  margin: 16px auto;
+  margin: 0px auto;
   overflow: hidden;
-  border-radius: 8px;
 }
 .slide {
   display: none;
@@ -464,6 +502,8 @@
   flex: 0 0 auto;
   overflow: hidden;
   transition: transform 0.2s ease;
+  cursor: pointer;
+  /*transition: box-shadow;*/
 }
 .terlaris-card:hover {
   transform: translateY(-4px);
@@ -658,38 +698,47 @@
         <input type="text" id="search" placeholder="Cari produk...">
       </div>
       <div class="icon-group">
-        <!-- <span title="Favorit" style="font-size: 30px;">🩷</span> -->
-        <span title="WhatsApp" style="font-size: 30px;" onclick="window.open('https://wa.me/6281936619374','_blank')">💬</span>
+        <span title="WhatsApp" style="font-size: 30px;">💬</span>
       </div>
     </div>
   </header>
-  <div class="slideshow-container">
-    <div class="slide fade">
-      <img src="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/banner/1.png" alt="Banner 1">
+  <main>
+  <section id="home">
+    <div class="slideshow-container">
+      <div class="slide fade">
+        <img src="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/banner/1.png" alt="Banner 1">
+      </div>
+      <div class="slide fade">
+        <img src="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/banner/2.png" alt="Banner 2">
+      </div>
+      <div class="slide fade">
+        <img src="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/banner/3.png" alt="Banner 3">
+      </div>
     </div>
-    <div class="slide fade">
-      <img src="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/banner/2.png" alt="Banner 2">
-    </div>
-    <div class="slide fade">
-      <img src="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/banner/3.png" alt="Banner 3">
-    </div>
-  </div>
 
-<!-- Barang Terlaris -->
-<section class="terlaris-section">
-  <div class="terlaris-wrapper">
-    <div class="terlaris-header">
-      <h2>Barang Terlaris</h2>
+  <!-- Barang Terlaris -->
+  <section class="terlaris-section">
+    <div class="terlaris-wrapper">
+      <div class="terlaris-header">
+        <h2>Barang Terlaris</h2>
+      </div>
+      <div id="terlaris-container" class="terlaris-slider"></div>
     </div>
-    <div id="terlaris-container" class="terlaris-slider"></div>
-  </div>
+  </section>
+  <!-- DATA BARANG -->
+
 </section>
+<section id="produk" style="display:none;">
+  <h2 class="section-title" style="text-align:center;margin-top:10px;">Daftar Produk</h2>
+  <div class="produk-container" id="produkContainer"></div>
+</section>
+</main>
 <nav class="bottom-navbar">
-  <a href="#" class="nav-btn" id="nav-home">
+  <a href="#home" class="nav-btn" id="nav-home">
     <span class="nav-icon">🏠</span>
     <span class="nav-text">Home</span>
   </a>
-  <a href="#" class="nav-btn">
+  <a href="#" class="nav-btn" id="btnProduk">
     <span class="nav-icon">🔍</span>
     <span class="nav-text">Produk</span>
   </a>
@@ -714,10 +763,23 @@
     </div>
   </div>
 </div>
-
+<!-- Popup Produk -->
+<div class="popup" id="popupProduk" onclick="keluarPopupProduk(event)">
+  <div class="popup-content">
+    <img id="popupGambarProduk" src="" alt="">
+    <h3 id="popupNamaProduk"></h3>
+    <p id="popupKategoriProduk"></p>
+    <p id="popupDeskripsiProduk"></p>
+  </div>
+</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 <script>
-  const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTgErorbgaQ6H6x1tAhvgSlV6c0gtOp2ggT6DrALyqKpGe55lv1E2OB3luuyU51bx-zpJ8tFd2TNcnl/pub?output=csv";
+  // klik pesan di whatsapp
+  document.querySelector('[title="WhatsApp"]').addEventListener('click', () => {
+    window.open('https://wa.me/6281936619374', '_blank');
+  });
+
+  
     let slideIndex = 0;
     showSlides();
 
@@ -764,7 +826,7 @@ const terlarisContainer = document.getElementById("terlaris-container");
 
 terlarisContainer.innerHTML = terlarisData.map((item, i) => `
   <div class="terlaris-card" data-index="${i}">
-    <img src="${item.gambar}" alt="${item.nama}">
+    <img src="${item.gambar}" alt="${item.nama}" loading="lazy">
     <div class="terlaris-info">
       <p class="promo-name">${item.nama}</p>
     </div>
@@ -782,10 +844,11 @@ function bukaPopupTerlaris(item) {
   document.getElementById("terlaris-popup-nama").textContent = item.nama;
   document.getElementById("terlaris-popup-kategori").textContent = item.kategori || "";
   document.getElementById("terlaris-popup-detail").textContent = item.keterangan || "Tidak ada detail.";
+  document.body.style.overflow = "hidden";
 }
 const terlarisSlider = document.getElementById('terlaris-container');
 let scrollAmountTerlaris = 0;
-const slideWidthTerlaris = 180;
+// const slideWidthTerlaris = 180;
 let autoScrollTerlaris;
 
 function startAutoScrollTerlaris() {
@@ -796,7 +859,7 @@ function startAutoScrollTerlaris() {
     const cardWidth = card.offsetWidth + 12;
     const maxScroll = terlarisSlider.scrollWidth - terlarisSlider.clientWidth;
     scrollAmountTerlaris += cardWidth;
-    if (scrollAmountTerlaris >= maxScroll) scrollAmountTerlaris = 0;
+    if (scrollAmountTerlaris >= maxScroll + 50) scrollAmountTerlaris = 0;
     terlarisSlider.scrollTo({ left: scrollAmountTerlaris, behavior: 'smooth' });
   }, 4000);
 }
@@ -816,8 +879,130 @@ if(terlarisSlider){
 function keluarPopupTerlaris(event) {
   if (event.target.id === "popupTerlaris") {
     document.getElementById("popupTerlaris").style.display = "none";
+    document.body.style.overflow = "";
   }
 }
+
+document.querySelectorAll('.bottom-navbar .nav-btn').forEach(btn => {
+  btn.addEventListener('click', e => {
+    document.querySelectorAll('.bottom-navbar .nav-btn').forEach(b => b.classList.remove('active'));
+    e.currentTarget.classList.add('active');
+  });
+});
+
+  // SCRIPT MENEKAN BUTTON NAVBAR MENAMPILKAN PRODUK
+  // Tombol Produk di navbar
+
+const SHEET_URL_PRODUK = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTgErorbgaQ6H6x1tAhvgSlV6c0gtOp2ggT6DrALyqKpGe55lv1E2OB3luuyU51bx-zpJ8tFd2TNcnl/pub?output=csv";
+
+const homeSection = document.getElementById("home") || document.querySelector(".slideshow-container")?.parentElement;
+const produkSection = document.getElementById("produk");
+const produkContainer = document.getElementById("produkContainer");
+const btnProduk = document.getElementById("btnProduk");
+const navHome = document.getElementById("nav-home");
+
+let produkData = [];
+let currentIndex = 0;
+const BATCH_SIZE = 8;
+
+// Tombol Produk → tampilkan daftar produk
+btnProduk.addEventListener("click", async (e) => {
+  e.preventDefault();
+  homeSection.style.display = "none";
+  produkSection.style.display = "block";
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  produkContainer.innerHTML = "";
+  currentIndex = 0;
+  await loadProduk();
+  // handleScroll();
+});
+
+// Tombol Home → tampilkan kembali banner & terlaris
+navHome.addEventListener("click", (e) => {
+  e.preventDefault();
+  produkSection.style.display = "none";
+  homeSection.style.display = "block";
+});
+
+// Ambil data produk dari Google Sheet
+async function loadProduk() {
+  try {
+    const res = await fetch(SHEET_URL_PRODUK);
+    const csvText = await res.text();
+    const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
+
+    produkData = parsed.data.map(row => [
+      row.nama_produk,
+      row.kategori_produk,
+      row.keterangan_produk,
+      row.gambar_produk
+    ]);
+
+    if (produkData.length === 0) {
+      produkContainer.innerHTML = "<p>❌ Tidak ada produk di spreadsheet.</p>";
+      return;
+    }
+
+    tampilkanProduk(BATCH_SIZE);
+  } catch (err) {
+    console.error("Gagal memuat data produk:", err);
+    produkContainer.innerHTML = "<p>❌ Gagal memuat produk.</p>";
+  }
+}
+
+
+// Tampilkan produk ke layar
+function tampilkanProduk(jumlah) {
+  const slice = produkData.slice(currentIndex, currentIndex + jumlah);
+  slice.forEach(([nama, kategori, keterangan, gambar]) => {
+    if (!nama) return;
+    const card = document.createElement("div");
+    card.className = "produk-card";
+    card.innerHTML = `
+      <img src="${gambar}" alt="${nama}" loading="lazy">
+      <div class="produk-info">
+        <h3>${nama}</h3>
+        <p>${kategori}</p>
+      </div>
+    `;
+    card.addEventListener("click", () =>
+      bukaPopupProduk({ nama, kategori, keterangan, gambar })
+    );
+    produkContainer.appendChild(card);
+  });
+  currentIndex += jumlah;
+}
+// 🟢 Di sini kamu taruh fungsi handleScroll
+function handleScroll() {
+  if (produkSection.style.display === "none") return;
+
+  const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 150;
+  if (nearBottom && currentIndex < produkData.length) {
+    tampilkanProduk(BATCH_SIZE);
+  }
+}
+
+// 🟢 Dan event listener-nya taruh SETELAH fungsi ini
+window.addEventListener("scroll", handleScroll);
+
+
+
+
+// Popup Produk
+function bukaPopupProduk(data) {
+  document.getElementById("popupGambarProduk").src = data.gambar;
+  document.getElementById("popupNamaProduk").textContent = data.nama;
+  document.getElementById("popupKategoriProduk").textContent = "Kategori: " + data.kategori;
+  document.getElementById("popupDeskripsiProduk").textContent = data.keterangan;
+  document.getElementById("popupProduk").style.display = "flex";
+}
+
+function keluarPopupProduk(event) {
+  if (event.target.id === "popupProduk") {
+    document.getElementById("popupProduk").style.display = "none";
+  }
+}
+
 
 </script>
 </body>
