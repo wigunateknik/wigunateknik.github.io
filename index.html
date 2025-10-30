@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -5,17 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Toko Online Wiguna Teknik - Menyediakan berbagai alat teknik dan kebutuhan industri.">
   <title>Wiguna Teknik</title>
-
-  <!-- 🔹 Tambahkan Google Font -->
+  <meta name="keywords" content="alat teknik, toko teknik, Wiguna Teknik, alat industri, perlengkapan bengkel, jual alat teknik online">
+  <meta name="author" content="Wiguna Teknik">
+  <meta property="og:title" content="Wiguna Teknik - Alat Teknik & Industri">
+  <meta property="og:description" content="Menyediakan berbagai alat teknik dan kebutuhan industri dengan harga terjangkau.">
+  <meta property="og:image" content="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/logo/logo_toko_wiguna.png">
+  <meta property="og:type" content="website">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-  <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
-
-  <!-- 🔹 Favicon -->
   <link rel="icon" href="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/logo/logo_toko_wiguna.png">
   
-  <style>
-    /* CSS kamu di sini */
-  </style>
 </head>
 <style>
   :root {
@@ -33,11 +32,6 @@
     margin: 0;
     color: var(--text);
   }
-
-
-
-
-  /* 🔶 Navbar */
   .navbar {
     background: var(--orange);
     color: #fff;
@@ -51,13 +45,7 @@
     box-shadow: 0 2px 5px var(--shadow);
     gap: 10px;
     flex-wrap: nowrap;
-
-
-
-
   }
-
-
   .header-name {
     font-size: 20px;
     font-weight: 600;
@@ -65,7 +53,6 @@
     color: white;
     /*text-align: left; */
   }
-
   /* 🔍 Pencarian */
   .search-wrapper {
     display: flex;
@@ -74,7 +61,6 @@
     gap: 8px;
     max-width: 600px;
   }
-
   .search-bar {
     display: flex;
     align-items: center;
@@ -86,7 +72,6 @@
     position: relative;
     min-width: 160px;
   }
-
   .search-bar img {
     width: 18px;
     height: 18px;
@@ -94,7 +79,6 @@
     left: 12px;
     opacity: 0.6;
   }
-
   .search-bar input {
     flex: 1;
     border: none;
@@ -104,7 +88,6 @@
     font-size: 14px;
     background: transparent;
   }
-
   .icon-group {
     display: flex;
     align-items: center;
@@ -113,11 +96,9 @@
     color: #fff;
     /*padding: 50px  50px 10px 10px ;*/
   }
-
   .icon-group span {
     cursor: pointer;
   }
-
   /* 🔸 Filter kategori */
   .filter-container {
     padding: 10px;
@@ -131,7 +112,6 @@
     border: 1px solid #ccc;
     font-size: 14px;
   }
-
   /* 🔸 Produk Grid */
   .produk-container {
     display: grid;
@@ -141,7 +121,6 @@
     max-width: 1200px;
     margin: auto;
   }
-
   /* 🔸 Card Produk */
   .card {
     background: var(--white);
@@ -180,31 +159,76 @@
 
   /* 🔸 Popup Detail */
   .popup {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    justify-content: center;
-    align-items: center;
-    z-index: 200;
-  }
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+}
 
-  .popup-content {
-    background: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
-    position: relative;
-    animation: fadeIn 0.3s ease;
-  }
+.popup-content {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+  text-align: left;
+  animation: fadeIn 0.3s ease;
+}
+/* Tombol Suka & Lokasi */
+.popup-actions {
+  display: flex;
+  justify-content: center;  /* tombol di tengah */
+  gap: 12px;                /* jarak antar tombol */
+  margin-top: 14px;
+}
+
+.popup-btn {
+  background: linear-gradient(135deg, #ff8a3d, #ff512f); /* gradasi oranye-merah */
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 3px 6px rgba(255, 81, 47, 0.3);
+}
+
+.popup-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(255, 81, 47, 0.4);
+}
+
+
+.popup-close-btn {
+  background: linear-gradient(135deg, #ff512f, #e74b2c);
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(231, 75, 44, 0.3);
+}
+.popup-close-btn:hover {
+  background: linear-gradient(135deg, #e74b2c, #d84315);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(231, 75, 44, 0.5);
+}
 
   @keyframes fadeIn {
     from {transform: scale(0.9); opacity: 0;}
     to {transform: scale(1); opacity: 1;}
   }
-
   .close-btn {
     position: absolute;
     top: 10px;
@@ -212,24 +236,38 @@
     font-size: 22px;
     cursor: pointer;
   }
-
   .popup img {
     width: 100%;
     border-radius: 8px;
     margin-bottom: 10px;
   }
-
   .popup h3 {
     font-size: 18px;
     margin: 6px 0;
   }
-
   .popup p {
     font-size: 14px;
     margin: 4px 0;
     color: #555;
   }
-
+  /* Hanya tombol popup custom (Suka, Lokasi, Close) */
+.popup-actions .popup-btn,
+.popup-footer .popup-close-btn {
+  background: linear-gradient(135deg, #ff8a3d, #ff512f);
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(255,81,47,0.3);
+}
+.popup-actions .popup-btn:hover,
+.popup-footer .popup-close-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(255,81,47,0.4);
+}
   .popup button {
     background: var(--orange);
     color: white;
@@ -242,11 +280,9 @@
     margin-top: 10px;
     cursor: pointer;
   }
-
   .popup button:hover {
     background: var(--orange-dark);
   }
-
   /* 🔸 Loading shimmer */
   .loading-shimmer {
     display: flex;
@@ -254,7 +290,6 @@
     gap: 10px;
     padding: 20px;
   }
-
   .shimmer {
     width: 150px;
     height: 180px;
@@ -263,12 +298,10 @@
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
   }
-
   @keyframes shimmer {
     0% {background-position: 200% 0;}
     100% {background-position: -200% 0;}
   }
-
   /* 🔸 Responsif */
   @media (max-width: 600px) {
     .navbar {
@@ -292,9 +325,6 @@
       display: none;
     }
   }
-
-
-  /* 🔹 Atur posisi icon di tampilan besar (desktop/laptop) */
 /* Desktop / laptop */
 @media (min-width: 768px) {
   .navbar {
@@ -323,15 +353,12 @@
     font-size: 22px;
   }
 }
-
-
 .tombol-wrapper {
   display: flex;           /* 🔹 aktifkan flexbox */
   gap: 10px;               /* 🔹 jarak antar tombol */
   flex-wrap: nowrap;       /* 🔹 cegah turun ke bawah */
   justify-content: center; /* 🔹 sejajarkan di tengah (opsional) */
 }
-
 .btn {
   flex: 1;                 /* 🔹 tombol punya lebar sama (opsional) */
   padding: 8px 12px;
@@ -341,7 +368,6 @@
   color: white;
   cursor: pointer;
 }
-
 .bottom-navbar {
   display: none;              /* default hidden */
   position: fixed;
@@ -357,6 +383,11 @@
   z-index: 150;
 }
 
+.bottom-navbar .nav-btn.active {
+  color: #ff512f;
+  font-weight: 600;
+}
+
 .bottom-navbar .nav-btn {
   display: flex;
   flex-direction: column;
@@ -365,19 +396,16 @@
   text-decoration: none;
   font-size: 12px;
 }
-
 .bottom-navbar .nav-icon {
   font-size: 20px;
   margin-bottom: 2px;
 }
-
 /* Tampilkan bottom navbar di HP saja */
 @media (max-width: 600px) {
   .bottom-navbar {
     display: flex;
   }
 }
-
 /* Slideshow */
 .slideshow-container {
   position: relative;
@@ -386,50 +414,28 @@
   overflow: hidden;
   border-radius: 8px;
 }
-
 .slide {
   display: none;
 }
-
 .slide img {
   width: 100%;
   height: auto;
   display: block;
 }
-
 /* efek fade */
 .fade {
   animation-name: fade;
   animation-duration: 1s;
 }
-
 @keyframes fade {
   from {opacity: 0.4;}
   to {opacity: 1;}
 }
 /*akhir slideshow*/
 /* 🔸 Bagian Promo */
-.promo-section {
-  max-width: 1200px;
-  margin: 16px auto;
-  padding: 0 16px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
 
-.promo-section h2 {
-  font-size: 18px;
-  font-weight: 600;
-  color: #fff;
-  background: #e74b2c;;
-  text-align: center;
-  padding: 10px 0;
-  margin: 0;
-  border-radius: 8px 8px 0 0;
-}
 
-.promo-slider {
+.terlaris-slider {
   display: flex;
   overflow-x: auto;
   scroll-behavior: smooth;
@@ -438,8 +444,7 @@
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
 }
-
-.promo-slider .card {
+.terlaris-slider .card {
   flex: 0 0 auto;
   width: 160px;
   scroll-snap-align: start;
@@ -448,12 +453,10 @@
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   transition: transform 0.3s;
 }
-
-.promo-slider::-webkit-scrollbar {
+.terlaris-slider::-webkit-scrollbar {
   display: none;
 }
-
-.promo-card {
+.terlaris-card {
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
@@ -462,74 +465,61 @@
   overflow: hidden;
   transition: transform 0.2s ease;
 }
-
-.promo-card:hover {
+.terlaris-card:hover {
   transform: translateY(-4px);
 }
-
-.promo-slider .card:hover {
+.terlaris-slider .card:hover {
   transform: translateY(-3px);
 }
-
-/*.promo-card img {
+.terlaris-card img {
   width: 100%;
-  height: 100px;
-  object-fit: cover;
+  height: 130px;       /* tetap sesuai ukuran card */
+  object-fit: cover;   /* gambar isi penuh kotak */
+  object-position: center; /* gambar selalu di tengah */
+  background: #000;    /* bisa ubah ke #fff jika mau */
+  border-bottom: none; /* opsional: biar lebih bersih */
   display: block;
-}*/
-
-.promo-card img {
-  width: 100%;
-  height: 130px;       /* kamu bisa sesuaikan */
-  object-fit: contain; /* 🔹 ubah dari cover → contain */
-  background: #fff;    /* biar ada latar putih */
-  border-bottom: 1px solid #eee;
+  transition: transform 0.3s ease;
 }
-
-.promo-info {
+.terlaris-card:hover img {
+  transform: scale(1.05);
+}
+.terlaris-info {
   padding: 8px;
   text-align: center;
   line-height: 1.2; /* 🔹 lebih rapat antar baris */
 }
-
 .promo-name {
   font-size: 15px;  /* 🔹 lebih besar dari 13px */
   font-weight: 600;
   color: #222;
   margin-bottom: 2px; /* 🔹 jarak bawah kecil */
 }
-
 .promo-price .new {
   font-size: 20px;   /* 🔹 sedikit diperbesar */
   font-weight: 700;
   color: #e53935;
 }
 /*akhir promo*/
-
-
 /* 🔸 Popup untuk promo */
-#popup-promo .popup-content {
+#popupTerlaris .popup-content {
   max-width: 400px;
   text-align: center;
 }
-
-#popup-promo img {
+#popupTerlaris img {
   width: 100%;
   border-radius: 8px;
   margin-bottom: 10px;
 }
-
-#popup-promo h3 {
+#popupTerlaris h3 {
   font-size: 18px;
   margin: 6px 0;
 }
-
-#popup-promo p {
+#popupTerlaris p {
   font-size: 14px;
   color: #555;
 }
 /*akhir untuk popup modal promo*/
-
 /*produk list*/
 .produk-grid {
   display: grid;
@@ -541,9 +531,6 @@
 .produk-grid {
   padding-bottom: calc(var(--bottom-navbar-height) + 10px);
 }
-
-
-
 .produk-grid .card {
   background: #fff;
   border-radius: 10px;
@@ -555,14 +542,13 @@
 .produk-grid .card:hover {
   transform: translateY(-4px);
 }
-
 /*akhir produk list*/
-
 .terlaris-section {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 16px;
-  padding-bottom: calc(var(--bottom-navbar-height) + 16px); /* beri ruang ekstra di bawah */
+  margin-bottom: calc(var(--bottom-navbar-height) + 20px) !important;
+
 }
 /* Terlaris Section mirip Promo */
 .terlaris-section .terlaris-wrapper {
@@ -571,8 +557,7 @@
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  padding: 10px 16px 16px 16px; /* ruang dalam card */
-  padding-bottom: calc(var(--bottom-navbar-height) + 16px); /* supaya card terakhir tidak ketutupan navbar */
+  padding: 10px 16px 4px 16px; /* ruang dalam card */
 }
 
 .terlaris-header {
@@ -589,22 +574,80 @@
   background: #e74b2c;
   text-align: center;
   padding: 8px 12px;
-  border-radius: 6px;
+  border-bottom-right-radius: 20px;
+  border-top-right-radius: 20px;
   margin: 0;
 }
-/*
-.btn-small {
-  padding: 6px 10px;
-  font-size: 13px;
-}*/
 
 /* Tombol lihat semua produk */
 #lihat-semua-terlaris {
-  flex: none;           /* hilangkan flex-grow */
-  padding: 6px 12px;    /* sesuaikan tinggi dan lebar */
-  font-size: 13px;      /* lebih kecil */
-  min-width: auto;      /* hilangkan batas lebar default */
+  background: linear-gradient(135deg, #ffffff, #ffffff);;
+  color: #000;
+  border: none;
+  padding: 6px 14px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: none;
+  box-shadow: 0 2px 5px rgba(231, 75, 44, 0.3);
 }
+
+/* Efek saat hover */
+#lihat-semua-terlaris:hover {
+  background: linear-gradient(135deg, #e74b2c, #ff6a00);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(231, 75, 44, 0.4);
+}
+/* Untuk promo spesial */
+.promo-section,
+.terlaris-section {
+  max-width: 1200px;          /* lebar sama */
+  margin: 16px auto;          /* tengah di layar */
+  padding: 0 16px;            /* ruang kiri-kanan sama */
+}
+
+/* Bungkus dalam background putih */
+.promo-wrapper,
+.terlaris-wrapper {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  padding: 10px 16px 16px 16px;
+}
+
+/* 🔧 Perbaiki jarak teks dan gambar di Barang Terlaris */
+#terlaris-container .terlaris-info {
+  padding: 10px 10px 10px 10px; /* lebih tipis dari sebelumnya */
+  line-height: 1;           /* jarak antarbaris rapat */
+}
+
+#terlaris-container .promo-name {
+  margin-top: 4px;          /* hanya sedikit ruang di atas */
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #333;
+}
+.popup-btn,
+.popup-close-btn {
+  background: linear-gradient(135deg, #ff8a3d, #ff512f);
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(255,81,47,0.3);
+  flex: 1;                   /* tombol punya lebar sama */
+}
+.popup-btn:hover,
+.popup-close-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(255,81,47,0.4);
+}
+
+
 </style>
 <body>
   <header class="navbar">
@@ -631,22 +674,16 @@
       <img src="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/banner/3.png" alt="Banner 3">
     </div>
   </div>
-<!-- barang Promo -->
-<section class="promo-section">
-  <h2>🔥Promo Spesial🔥</h2>
-  <div id="promo-container" class="promo-slider"></div>
-</section>
+
 <!-- Barang Terlaris -->
 <section class="terlaris-section">
   <div class="terlaris-wrapper">
     <div class="terlaris-header">
-      <h2>🌟Barang Terlaris🌟</h2>
-      <button id="lihat-semua-terlaris" class="btn btn-small">Semua Produk >></button>
+      <h2>Barang Terlaris</h2>
     </div>
-    <div id="terlaris-container" class="promo-slider"></div>
+    <div id="terlaris-container" class="terlaris-slider"></div>
   </div>
 </section>
-
 <nav class="bottom-navbar">
   <a href="#" class="nav-btn" id="nav-home">
     <span class="nav-icon">🏠</span>
@@ -660,74 +697,27 @@
     <span class="nav-icon">📂</span>
     <span class="nav-text">Kategori</span>
   </a>
-  <a href="#" class="nav-btn" id="nav-favorite">
-    <span class="nav-icon">❤️</span>
-    <span class="nav-text">Favorite</span>
-  </a>
+
   <a href="#" class="nav-btn" id="nav-profile">
     <span class="nav-icon">ℹ️</span>
     <span class="nav-text">Info Toko</span>
   </a>
 </nav>
 
-<!-- 🔸 Popup Promo -->
-<div class="popup" id="popup-promo">
+<div class="popup" id="popupTerlaris" onclick="keluarPopupTerlaris(event)">
   <div class="popup-content">
-    <span class="close-btn" onclick="tutupPopupPromo()">×</span>
-    <img id="promo-popup-img" src="">
-    <h3 id="promo-popup-nama"></h3>
-    <p id="promo-popup-harga"></p>
-    <p id="promo-popup-detail"></p>
-
-    <div style="display: flex; justify-content: center; gap: 30px; margin-top: 10px;">
-      <span id="fav-icon" title="Favorit" style="font-size: 28px; cursor: pointer;">🤍</span>
-      <span title="Lokasi Toko" style="font-size: 28px; cursor: pointer;" onclick="window.open('https://maps.app.goo.gl/Vp6agqdo1Ab8pakw7','_blank')">📍</span>
+    <img id="terlaris-popup-img" src="">
+    <h3 id="terlaris-popup-nama"></h3>
+    <p id="terlaris-popup-kategori"></p>
+    <p id="terlaris-popup-detail"></p>
+    <div class="popup-actions">
     </div>
   </div>
 </div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 <script>
   const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTgErorbgaQ6H6x1tAhvgSlV6c0gtOp2ggT6DrALyqKpGe55lv1E2OB3luuyU51bx-zpJ8tFd2TNcnl/pub?output=csv";
-
-
-
-// script promo 
-  Papa.parse(SHEET_URL, {
-    download: true,
-    header: true,
-    complete: function(results) {
-      const data = results.data;
-
-      const promoItems = data.filter(item =>
-        item.nama_promo && item.harga_promo && item.gambar_promo
-        );
-
-      const promoContainer = document.getElementById("promo-container");
-        window.promoData = promoItems; // letakkan sebelum map()
-        promoContainer.innerHTML = promoItems.map((item, i) => `
-          <div class="promo-card" data-index="${i}">
-            <img src="${item.gambar_promo}" alt="${item.nama_promo}">
-            <div class="promo-info">
-              <p class="promo-name">${item.nama_promo}</p>
-              <p class="promo-price">
-                <span class="new">Rp${Number(item.harga_promo).toLocaleString('id-ID')}</span>
-              </p>
-            </div>
-          </div>
-        `).join('');
-        // tambahkan event listener klik supaya benar-benar aktif
-        document.querySelectorAll('.promo-card').forEach((card, i) => {
-          card.addEventListener('click', () => bukaPopupPromo(promoData[i]));
-        });
-      }
-
-    });
-    function tutupPopupPromo() {
-        document.getElementById("popup-promo").style.display = "none";
-      }
-
-
-    // Script otomatis slideshow
     let slideIndex = 0;
     showSlides();
 
@@ -742,144 +732,18 @@
   setTimeout(showSlides, 4000); // ganti banner tiap 4 detik
 }
 
-// ====================== FAVORITE SYSTEM (NAVBAR VERSION) =======================
-
-// Ambil data favorite dari localStorage
-let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-
-// Buat popup untuk daftar favorite
-const favPopup = document.createElement("div");
-favPopup.className = "popup";
-favPopup.id = "popup-favorite";
-favPopup.innerHTML = `
-  <div class="popup-content">
-    <span class="close-btn" onclick="tutupPopupFavorite()">×</span>
-    <h3>❤️ Barang Favorit</h3>
-    <div id="favorite-list" style="max-height:400px; overflow-y:auto; margin-top:10px;"></div>
-  </div>
-`;
-document.body.appendChild(favPopup);
-
-// Tampilkan daftar favorite
-function bukaPopupFavorite() {
-  const listContainer = document.getElementById("favorite-list");
-  if (favorites.length === 0) {
-    listContainer.innerHTML = "<p style='color:#555; text-align:center;'>Belum ada barang favorit.</p>";
-  } else {
-    listContainer.innerHTML = favorites.map((item, i) => `
-      <div style="display:flex; align-items:center; gap:10px; border-bottom:1px solid #eee; padding:6px 0;">
-        <img src="${item.gambar_promo}" alt="${item.nama_promo}" style="width:60px; height:60px; object-fit:cover; border-radius:6px;">
-        <div style="flex:1; text-align:left;">
-          <strong>${item.nama_promo}</strong><br>
-          <span style="color:#e53935;">Rp${Number(item.harga_promo).toLocaleString('id-ID')}</span>
-        </div>
-        <span onclick="hapusFavorite(${i})" style="cursor:pointer; font-size:20px;">❌</span>
-      </div>
-    `).join('');
-  }
-  favPopup.style.display = "flex";
-}
-
-function tutupPopupFavorite() {
-  favPopup.style.display = "none";
-}
-
-// Simpan perubahan ke localStorage
-function simpanFavorite() {
-  localStorage.setItem("favorites", JSON.stringify(favorites));
-}
-
-// Hapus item dari daftar favorite
-function hapusFavorite(index) {
-  favorites.splice(index, 1);
-  simpanFavorite();
-  bukaPopupFavorite();
-}
-
-// Event klik tombol navbar ❤️ Favorite
-document.getElementById("nav-favorite").addEventListener("click", bukaPopupFavorite);
-
-// =================== POPUP PROMO FAVORIT ===================
-function bukaPopupPromo(item) {
-  document.getElementById("popup-promo").style.display = "flex";
-  document.getElementById("promo-popup-img").src = item.gambar_promo;
-  document.getElementById("promo-popup-nama").textContent = item.nama_promo;
-  document.getElementById("promo-popup-harga").textContent = "Rp" + Number(item.harga_promo).toLocaleString("id-ID");
-  document.getElementById("promo-popup-detail").textContent = item.detail || "Tidak ada detail promo.";
-
-  const fav = document.getElementById("fav-icon");
-  const sudahFavorit = favorites.some(f => f.nama_promo === item.nama_promo);
-
-  fav.textContent = sudahFavorit ? "❤️" : "🤍";
-  fav.style.color = sudahFavorit ? "red" : "black";
-
-  fav.onclick = function() {
-    const index = favorites.findIndex(f => f.nama_promo === item.nama_promo);
-    if (index >= 0) {
-      // hapus dari favorite
-      favorites.splice(index, 1);
-      fav.textContent = "🤍";
-      fav.style.color = "black";
-    } else {
-      // tambahkan ke favorite
-      favorites.push(item);
-      fav.textContent = "❤️";
-      fav.style.color = "red";
-    }
-    simpanFavorite();
-  };
-}
-
-const promoSlider = document.querySelector('.promo-slider');
-let scrollAmount = 0;
-const slideWidth = 180; // lebar satu card
-const scrollSpeed = 4000; // waktu antar geser
-let autoScroll; // variabel interval
-
-function startAutoScroll() {
-  autoScroll = setInterval(() => {
-    const maxScroll = promoSlider.scrollWidth - promoSlider.clientWidth;
-    scrollAmount += slideWidth;
-
-    if (scrollAmount >= maxScroll) {
-      scrollAmount = 0;
-      promoSlider.scrollTo({ left: 0, behavior: 'smooth' });
-    } else {
-      promoSlider.scrollTo({ left: scrollAmount, behavior: 'smooth' });
-    }
-  }, scrollSpeed);
-}
-
-function stopAutoScroll() {
-  clearInterval(autoScroll);
-}
-
-// 🔹 Mulai otomatis
-if (promoSlider) {
-  startAutoScroll();
-
-  // 🔸 Berhenti saat disorot di desktop
-  promoSlider.addEventListener('mouseenter', stopAutoScroll);
-  promoSlider.addEventListener('mouseleave', startAutoScroll);
-
-  // 🔸 Berhenti saat disentuh di HP
-  promoSlider.addEventListener('touchstart', stopAutoScroll);
-  promoSlider.addEventListener('touchend', startAutoScroll);
-}
-
-
 // Data Barang Terlaris (manual)
 const terlarisData = [
   {
-    nama: "Obeng Set",
-    gambar: "https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/522c.jpeg?text=Obeng+Set",
+    nama: "Lem Dexton 15g",
+    gambar: "https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/barang_barang/dextone_15g.jpg",
     kategori: "Alat Tangan",
     keterangan: "Obeng set lengkap untuk kebutuhan rumah dan industri."
   },
   {
-    nama: "Tang Listrik",
-    gambar: "https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/522c.jpeg?text=Tang+Listrik",
-    kategori: "Alat Listrik",
+    nama: "DW Bosch",
+    gambar: "https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/barang_barang/600_75.jpg",
+    kategori: "Pisau Grinda",
     keterangan: "Tang listrik multifungsi dengan grip nyaman."
   },
   {
@@ -888,50 +752,36 @@ const terlarisData = [
     kategori: "Alat Mekanik",
     keterangan: "Kunci Inggris ukuran sedang, kuat dan tahan lama."
   },
+    {
+    nama: "Obeng Set",
+    gambar: "https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/522c.jpeg?text=Obeng+Set",
+    kategori: "Alat Tangan",
+    keterangan: "Obeng set lengkap untuk kebutuhan rumah dan industri."
+  },
   // Tambahkan barang lain sesuai kebutuhan
 ];
 const terlarisContainer = document.getElementById("terlaris-container");
 
 terlarisContainer.innerHTML = terlarisData.map((item, i) => `
-  <div class="promo-card" data-index="${i}">
+  <div class="terlaris-card" data-index="${i}">
     <img src="${item.gambar}" alt="${item.nama}">
-    <div class="promo-info">
+    <div class="terlaris-info">
       <p class="promo-name">${item.nama}</p>
     </div>
   </div>
 `).join('');
 
 // Event klik untuk popup, reuse fungsi bukaPopupPromo
-document.querySelectorAll('#terlaris-container .promo-card').forEach((card, i) => {
+document.querySelectorAll('#terlaris-container .terlaris-card').forEach((card, i) => {
   card.addEventListener('click', () => bukaPopupTerlaris(terlarisData[i]));
 });
 
 function bukaPopupTerlaris(item) {
-  document.getElementById("popup-promo").style.display = "flex";
-  document.getElementById("promo-popup-img").src = item.gambar;
-  document.getElementById("promo-popup-nama").textContent = item.nama;
-  document.getElementById("promo-popup-harga").textContent = item.kategori || "";
-  document.getElementById("promo-popup-detail").textContent = item.keterangan || "Tidak ada detail.";
-
-  const fav = document.getElementById("fav-icon");
-  const sudahFavorit = favorites.some(f => f.nama === item.nama);
-
-  fav.textContent = sudahFavorit ? "❤️" : "🤍";
-  fav.style.color = sudahFavorit ? "red" : "black";
-
-  fav.onclick = function() {
-    const index = favorites.findIndex(f => f.nama === item.nama);
-    if (index >= 0) {
-      favorites.splice(index, 1);
-      fav.textContent = "🤍";
-      fav.style.color = "black";
-    } else {
-      favorites.push(item);
-      fav.textContent = "❤️";
-      fav.style.color = "red";
-    }
-    simpanFavorite();
-  };
+  document.getElementById("popupTerlaris").style.display = "flex";
+  document.getElementById("terlaris-popup-img").src = item.gambar;
+  document.getElementById("terlaris-popup-nama").textContent = item.nama;
+  document.getElementById("terlaris-popup-kategori").textContent = item.kategori || "";
+  document.getElementById("terlaris-popup-detail").textContent = item.keterangan || "Tidak ada detail.";
 }
 const terlarisSlider = document.getElementById('terlaris-container');
 let scrollAmountTerlaris = 0;
@@ -939,10 +789,14 @@ const slideWidthTerlaris = 180;
 let autoScrollTerlaris;
 
 function startAutoScrollTerlaris() {
+  if (!terlarisSlider || terlarisSlider.children.length === 0) return;
   autoScrollTerlaris = setInterval(() => {
+    const card = terlarisSlider.querySelector('.terlaris-card');
+    if (!card) return;
+    const cardWidth = card.offsetWidth + 12;
     const maxScroll = terlarisSlider.scrollWidth - terlarisSlider.clientWidth;
-    scrollAmountTerlaris += slideWidthTerlaris;
-    if(scrollAmountTerlaris >= maxScroll) scrollAmountTerlaris = 0;
+    scrollAmountTerlaris += cardWidth;
+    if (scrollAmountTerlaris >= maxScroll) scrollAmountTerlaris = 0;
     terlarisSlider.scrollTo({ left: scrollAmountTerlaris, behavior: 'smooth' });
   }, 4000);
 }
@@ -956,10 +810,14 @@ if(terlarisSlider){
   terlarisSlider.addEventListener('touchstart', stopAutoScrollTerlaris);
   terlarisSlider.addEventListener('touchend', startAutoScrollTerlaris);
 }
-document.getElementById("lihat-semua-terlaris").addEventListener("click", () => {
-  document.querySelectorAll(".bottom-navbar .nav-btn")[1].click(); // index 1 = Produk
-});
 
+
+// Tutup popup jika klik di luar area konten
+function keluarPopupTerlaris(event) {
+  if (event.target.id === "popupTerlaris") {
+    document.getElementById("popupTerlaris").style.display = "none";
+  }
+}
 
 </script>
 </body>
