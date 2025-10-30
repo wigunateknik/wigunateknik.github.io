@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Toko Online Wiguna Teknik - Menyediakan berbagai alat teknik dan kebutuhan industri.">
+  <title>Wiguna Teknik</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/logo/logo_toko_wiguna.png">
+  
+</head>
+<style>
+  :root {
+    --orange: #111111;        /* 🔹 warna dasar hitam gelap (navbar, tombol) */
+    --orange-dark: #000000;   /* 🔹 warna hover tombol */
+    --bg: #f0f0f0;            /* 🔹 latar belakang halaman abu terang */
+    --text: #222;             /* 🔹 warna teks utama tetap gelap agar kontras */
+    --shadow: rgba(0, 0, 0, 0.1);
+    --white: #ffffff;         /* 🔹 cardview tetap putih terang */
+     --bottom-navbar-height: 60px;
+  }
+  body {
+    font-family: "Poppins", sans-serif;
+    background: var(--bg);
+    margin: 0;
+    color: var(--text);
+  }
+  .navbar {
+    background: var(--orange);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 5px var(--shadow);
+    gap: 10px;
+    flex-wrap: nowrap;
+  }
+  .header-name {
+    font-size: 20px;
+    font-weight: 600;
+    margin-right: 20px;
+    color: white;
+    /*text-align: left; */
+  }
+  /* 🔍 Pencarian */
+  .search-wrapper {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    gap: 8px;
+    max-width: 600px;
+  }
+  .search-bar {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 25px;
+    padding: 5px 12px;
+    flex: 1;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: relative;
+    min-width: 160px;
+  }
+  .search-bar img {
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    left: 12px;
+    opacity: 0.6;
+  }
+  .search-bar input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 6px 10px 6px 36px;
+    border-radius: 25px;
+    font-size: 14px;
+    background: transparent;
+  }
+  .icon-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    color: #fff;
+    /*padding: 50px  50px 10px 10px ;*/
+  }
+  .icon-group span {
+    cursor: pointer;
+  }
+  /* 🔸 Filter kategori */
+  .filter-container {
+    padding: 10px;
+    text-align: center;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+  }
+  .filter-container select {
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+  }
+  /* 🔸 Produk Grid */
+  .produk-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    padding: 16px;
+    max-width: 1200px;
+    margin: auto;
+  }
+  /* 🔸 Card Produk */
+  .card {
+    background: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 2px 5px var(--shadow);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  }
+  .img-box {
+    width: 100%;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+  }
+  .card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  .card:hover img {
+    transform: scale(1.05);
+  }
+  .card .info {
+    padding: 8px 10px;
+  }
+  .card h3 {
+    font-size: 14px;
+    margin: 5px 0;
+    color: #333;
+  }
+
+  /* 🔸 Popup Detail */
+  .popup {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+  text-align: left;
+  animation: fadeIn 0.3s ease;
+}
+/* Tombol Suka & Lokasi */
+.popup-actions {
+  display: flex;
+  justify-content: center;  /* tombol di tengah */
+  gap: 12px;                /* jarak antar tombol */
+  margin-top: 14px;
+}
+
+.popup-btn {
+  background: linear-gradient(135deg, #ff8a3d, #ff512f); /* gradasi oranye-merah */
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 3px 6px rgba(255, 81, 47, 0.3);
+}
+
+.popup-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(255, 81, 47, 0.4);
+}
+
+
+.popup-close-btn {
+  background: linear-gradient(135deg, #ff512f, #e74b2c);
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(231, 75, 44, 0.3);
+}
+.popup-close-btn:hover {
+  background: linear-gradient(135deg, #e74b2c, #d84315);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(231, 75, 44, 0.5);
+}
+
+  @keyframes fadeIn {
+    from {transform: scale(0.9); opacity: 0;}
+    to {transform: scale(1); opacity: 1;}
+  }
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 22px;
+    cursor: pointer;
+  }
+  .popup img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  .popup h3 {
+    font-size: 18px;
+    margin: 6px 0;
+  }
+  .popup p {
+    font-size: 14px;
+    margin: 4px 0;
+    color: #555;
+  }
+  /* Hanya tombol popup custom (Suka, Lokasi, Close) */
+.popup-actions .popup-btn,
+.popup-footer .popup-close-btn {
+  background: linear-gradient(135deg, #ff8a3d, #ff512f);
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(255,81,47,0.3);
+}
+.popup-actions .popup-btn:hover,
+.popup-footer .popup-close-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(255,81,47,0.4);
+}
+  .popup button {
+    background: var(--orange);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    width: 100%;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+  .popup button:hover {
+    background: var(--orange-dark);
+  }
+  /* 🔸 Loading shimmer */
+  .loading-shimmer {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+  }
+  .shimmer {
+    width: 150px;
+    height: 180px;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #eee 25%, #f5f5f5 50%, #eee 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+  @keyframes shimmer {
+    0% {background-position: 200% 0;}
+    100% {background-position: -200% 0;}
+  }
+  /* 🔸 Responsif */
+  @media (max-width: 600px) {
+    .navbar {
+      flex-wrap: nowrap;
+    }
+    .search-wrapper {
+      flex: 1;
+      gap: 6px;
+    }
+    .search-bar {
+      flex: 1;
+      width: 100%;
+    }
+    .icon-group {
+      gap: 8px;
+      font-size: 20px;
+      /*padding: 10px  50px 10px 20px ;*/
+    }
+
+    .header-name {
+      display: none;
+    }
+  }
+/* Desktop / laptop */
+@media (min-width: 768px) {
+  .navbar {
+
+    display: flex;
+    justify-content: space-between; /* header kiri, search+icon kanan */
+    align-items: center;
+  }
+
+  .search-wrapper {
+    flex: none;       /* biar ukurannya pas isinya saja */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .search-bar {
+    width: 250px;     /* atur lebar input sesuai kebutuhan */
+    flex: none;
+  }
+
+  .icon-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+  }
+}
+.tombol-wrapper {
+  display: flex;           /* 🔹 aktifkan flexbox */
+  gap: 10px;               /* 🔹 jarak antar tombol */
+  flex-wrap: nowrap;       /* 🔹 cegah turun ke bawah */
+  justify-content: center; /* 🔹 sejajarkan di tengah (opsional) */
+}
+.btn {
+  flex: 1;                 /* 🔹 tombol punya lebar sama (opsional) */
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  background: #111;
+  color: white;
+  cursor: pointer;
+}
+.bottom-navbar {
+  display: none;              /* default hidden */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #111;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 0;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
+  z-index: 150;
+}
+.bottom-navbar .nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  font-size: 12px;
+}
+.bottom-navbar .nav-icon {
+  font-size: 20px;
+  margin-bottom: 2px;
+}
+/* Tampilkan bottom navbar di HP saja */
+@media (max-width: 600px) {
+  .bottom-navbar {
+    display: flex;
+  }
+}
+/* Slideshow */
+.slideshow-container {
+  position: relative;
+  max-width: 1200px;
+  margin: 16px auto;
+  overflow: hidden;
+  border-radius: 8px;
+}
+.slide {
+  display: none;
+}
+.slide img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+/* efek fade */
+.fade {
+  animation-name: fade;
+  animation-duration: 1s;
+}
+@keyframes fade {
+  from {opacity: 0.4;}
+  to {opacity: 1;}
+}
+/*akhir slideshow*/
+/* 🔸 Bagian Promo */
+
+
+.promo-slider {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 12px;
+  padding: 10px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.promo-slider .card {
+  flex: 0 0 auto;
+  width: 160px;
+  scroll-snap-align: start;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+.promo-slider::-webkit-scrollbar {
+  display: none;
+}
+.promo-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  min-width: 160px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+.promo-card:hover {
+  transform: translateY(-4px);
+}
+.promo-slider .card:hover {
+  transform: translateY(-3px);
+}
+.promo-card img {
+  width: 100%;
+  height: 130px;       /* kamu bisa sesuaikan */
+  object-fit: contain; /* 🔹 ubah dari cover → contain */
+  background: #fff;    /* biar ada latar putih */
+  border-bottom: 1px solid #eee;
+}
+.terlaris-info {
+  padding: 8px;
+  text-align: center;
+  line-height: 1.2; /* 🔹 lebih rapat antar baris */
+}
+.promo-name {
+  font-size: 15px;  /* 🔹 lebih besar dari 13px */
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 2px; /* 🔹 jarak bawah kecil */
+}
+.promo-price .new {
+  font-size: 20px;   /* 🔹 sedikit diperbesar */
+  font-weight: 700;
+  color: #e53935;
+}
+/*akhir promo*/
+/* 🔸 Popup untuk promo */
+#popupTerlaris .popup-content {
+  max-width: 400px;
+  text-align: center;
+}
+#popupTerlaris img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+#popupTerlaris h3 {
+  font-size: 18px;
+  margin: 6px 0;
+}
+#popupTerlaris p {
+  font-size: 14px;
+  color: #555;
+}
+/*akhir untuk popup modal promo*/
+/*produk list*/
+.produk-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+  padding: 10px;
+}
+.promo-section,
+.produk-grid {
+  padding-bottom: calc(var(--bottom-navbar-height) + 10px);
+}
+.produk-grid .card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  overflow: hidden;
+  text-align: center;
+  transition: transform 0.3s;
+}
+.produk-grid .card:hover {
+  transform: translateY(-4px);
+}
+/*akhir produk list*/
+.terlaris-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+  margin-bottom: calc(var(--bottom-navbar-height) + 20px) !important;
+
+}
+/* Terlaris Section mirip Promo */
+.terlaris-section .terlaris-wrapper {
+  max-width: 1200px;
+  margin: 16px auto;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  padding: 10px 16px 16px 16px; /* ruang dalam card */
+}
+
+.terlaris-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.terlaris-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  background: #e74b2c;
+  text-align: center;
+  padding: 8px 12px;
+  border-bottom-right-radius: 20px;
+  border-top-right-radius: 20px;
+  margin: 0;
+}
+
+/* Tombol lihat semua produk */
+#lihat-semua-terlaris {
+  background: linear-gradient(135deg, #ffffff, #ffffff);;
+  color: #000;
+  border: none;
+  padding: 6px 14px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: none;
+  box-shadow: 0 2px 5px rgba(231, 75, 44, 0.3);
+}
+
+/* Efek saat hover */
+#lihat-semua-terlaris:hover {
+  background: linear-gradient(135deg, #e74b2c, #ff6a00);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(231, 75, 44, 0.4);
+}
+/* Untuk promo spesial */
+.promo-section,
+.terlaris-section {
+  max-width: 1200px;          /* lebar sama */
+  margin: 16px auto;          /* tengah di layar */
+  padding: 0 16px;            /* ruang kiri-kanan sama */
+}
+
+/* Bungkus dalam background putih */
+.promo-wrapper,
+.terlaris-wrapper {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  padding: 10px 16px 16px 16px;
+}
+
+/* 🔧 Perbaiki jarak teks dan gambar di Barang Terlaris */
+#terlaris-container .terlaris-info {
+  padding: 0px 10px 10px 10px; /* lebih tipis dari sebelumnya */
+  line-height: 1;           /* jarak antarbaris rapat */
+}
+
+#terlaris-container .promo-name {
+  margin-top: 4px;          /* hanya sedikit ruang di atas */
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #333;
+}
+.popup-btn,
+.popup-close-btn {
+  background: linear-gradient(135deg, #ff8a3d, #ff512f);
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(255,81,47,0.3);
+  flex: 1;                   /* tombol punya lebar sama */
+}
+.popup-btn:hover,
+.popup-close-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(255,81,47,0.4);
+}
+
+
+</style>
+<body>
+  <header class="navbar">
+    <span class="header-name">Wiguna Teknik</span>
+    <div class="search-wrapper">
+      <div class="search-bar">
+        <img src="https://cdn-icons-png.flaticon.com/512/622/622669.png" alt="Cari">
+        <input type="text" id="search" placeholder="Cari produk...">
+      </div>
+      <div class="icon-group">
+        <!-- <span title="Favorit" style="font-size: 30px;">🩷</span> -->
+        <span title="WhatsApp" style="font-size: 30px;" onclick="window.open('https://wa.me/6281936619374','_blank')">💬</span>
+      </div>
+    </div>
+  </header>
+  <div class="slideshow-container">
+    <div class="slide fade">
+      <img src="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/banner/1.png" alt="Banner 1">
+    </div>
+    <div class="slide fade">
+      <img src="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/banner/2.png" alt="Banner 2">
+    </div>
+    <div class="slide fade">
+      <img src="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/banner/3.png" alt="Banner 3">
+    </div>
+  </div>
+
+<!-- Barang Terlaris -->
+<section class="terlaris-section">
+  <div class="terlaris-wrapper">
+    <div class="terlaris-header">
+      <h2>Barang Terlaris</h2>
+    </div>
+    <div id="terlaris-container" class="promo-slider"></div>
+  </div>
+</section>
+<nav class="bottom-navbar">
+  <a href="#" class="nav-btn" id="nav-home">
+    <span class="nav-icon">🏠</span>
+    <span class="nav-text">Home</span>
+  </a>
+  <a href="#" class="nav-btn">
+    <span class="nav-icon">🔍</span>
+    <span class="nav-text">Produk</span>
+  </a>
+  <a href="#" class="nav-btn">
+    <span class="nav-icon">📂</span>
+    <span class="nav-text">Kategori</span>
+  </a>
+
+  <a href="#" class="nav-btn" id="nav-profile">
+    <span class="nav-icon">ℹ️</span>
+    <span class="nav-text">Info Toko</span>
+  </a>
+</nav>
+
+<div class="popup" id="popupTerlaris" onclick="keluarPopupTerlaris(event)">
+  <div class="popup-content">
+    <img id="promo-popup-img" src="">
+    <h3 id="promo-popup-nama"></h3>
+    <p id="promo-popup-harga"></p>
+    <p id="promo-popup-detail"></p>
+    <div class="popup-actions">
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+<script>
+  const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTgErorbgaQ6H6x1tAhvgSlV6c0gtOp2ggT6DrALyqKpGe55lv1E2OB3luuyU51bx-zpJ8tFd2TNcnl/pub?output=csv";
+// script promo 
+ 
+
+    // Script otomatis slideshow
+    let slideIndex = 0;
+    showSlides();
+
+    function showSlides() {
+      let slides = document.getElementsByClassName("slide");
+      for (let i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+      }
+      slideIndex++;
+      if (slideIndex > slides.length) {slideIndex = 1;}
+      slides[slideIndex-1].style.display = "block";
+  setTimeout(showSlides, 4000); // ganti banner tiap 4 detik
+}
+
+
+
+
+
+// Data Barang Terlaris (manual)
+const terlarisData = [
+  {
+    nama: "Lem Dexton 15g",
+    gambar: "https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/barang_barang/dextone_15g.jpg",
+    kategori: "Alat Tangan",
+    keterangan: "Obeng set lengkap untuk kebutuhan rumah dan industri."
+  },
+  {
+    nama: "Tang Listrik",
+    gambar: "https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/522c.jpeg?text=Tang+Listrik",
+    kategori: "Alat Listrik",
+    keterangan: "Tang listrik multifungsi dengan grip nyaman."
+  },
+  {
+    nama: "Kunci Inggris",
+    gambar: "https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/522c.jpeg?text=Kunci+Inggris",
+    kategori: "Alat Mekanik",
+    keterangan: "Kunci Inggris ukuran sedang, kuat dan tahan lama."
+  },
+    {
+    nama: "Obeng Set",
+    gambar: "https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/522c.jpeg?text=Obeng+Set",
+    kategori: "Alat Tangan",
+    keterangan: "Obeng set lengkap untuk kebutuhan rumah dan industri."
+  },
+  // Tambahkan barang lain sesuai kebutuhan
+];
+const terlarisContainer = document.getElementById("terlaris-container");
+
+terlarisContainer.innerHTML = terlarisData.map((item, i) => `
+  <div class="promo-card" data-index="${i}">
+    <img src="${item.gambar}" alt="${item.nama}">
+    <div class="terlaris-info">
+      <p class="promo-name">${item.nama}</p>
+    </div>
+  </div>
+`).join('');
+
+// Event klik untuk popup, reuse fungsi bukaPopupPromo
+document.querySelectorAll('#terlaris-container .promo-card').forEach((card, i) => {
+  card.addEventListener('click', () => bukaPopupTerlaris(terlarisData[i]));
+});
+
+function bukaPopupTerlaris(item) {
+  document.getElementById("popupTerlaris").style.display = "flex";
+  document.getElementById("promo-popup-img").src = item.gambar;
+  document.getElementById("promo-popup-nama").textContent = item.nama;
+  document.getElementById("promo-popup-harga").textContent = item.kategori || "";
+  document.getElementById("promo-popup-detail").textContent = item.keterangan || "Tidak ada detail.";
+}
+const terlarisSlider = document.getElementById('terlaris-container');
+let scrollAmountTerlaris = 0;
+const slideWidthTerlaris = 180;
+let autoScrollTerlaris;
+
+function startAutoScrollTerlaris() {
+  autoScrollTerlaris = setInterval(() => {
+    const maxScroll = terlarisSlider.scrollWidth - terlarisSlider.clientWidth;
+    scrollAmountTerlaris += slideWidthTerlaris;
+    if(scrollAmountTerlaris >= maxScroll) scrollAmountTerlaris = 0;
+    terlarisSlider.scrollTo({ left: scrollAmountTerlaris, behavior: 'smooth' });
+  }, 4000);
+}
+
+function stopAutoScrollTerlaris() { clearInterval(autoScrollTerlaris); }
+
+if(terlarisSlider){
+  startAutoScrollTerlaris();
+  terlarisSlider.addEventListener('mouseenter', stopAutoScrollTerlaris);
+  terlarisSlider.addEventListener('mouseleave', startAutoScrollTerlaris);
+  terlarisSlider.addEventListener('touchstart', stopAutoScrollTerlaris);
+  terlarisSlider.addEventListener('touchend', startAutoScrollTerlaris);
+}
+
+
+// Tutup popup jika klik di luar area konten
+function keluarPopupTerlaris(event) {
+  if (event.target.id === "popupTerlaris") {
+    document.getElementById("popupTerlaris").style.display = "none";
+  }
+}
+
+</script>
+</body>
+</html>
