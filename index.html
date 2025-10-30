@@ -26,9 +26,7 @@
     --white: #ffffff;         /* 🔹 cardview tetap putih terang */
      --bottom-navbar-height: 60px;
   }
-  html {
-    scroll-behavior: smooth;
-  }
+
   body {
     font-family: "Poppins", sans-serif;
     background: var(--bg);
@@ -774,6 +772,8 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 <script>
+  let produkSudahDimuat = false;
+  let scrollPosisiProduk = 0;
   // klik pesan di whatsapp
   document.querySelector('[title="WhatsApp"]').addEventListener('click', () => {
     window.open('https://wa.me/6281936619374', '_blank');
@@ -910,18 +910,34 @@ btnProduk.addEventListener("click", async (e) => {
   e.preventDefault();
   homeSection.style.display = "none";
   produkSection.style.display = "block";
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-  produkContainer.innerHTML = "";
-  currentIndex = 0;
-  await loadProduk();
-  // handleScroll();
+
+  // ✅ Jika produk belum pernah dimuat → ambil data
+  if (!produkSudahDimuat) {
+    produkContainer.innerHTML = "";
+    currentIndex = 0;
+    await loadProduk();
+    produkSudahDimuat = true;
+  }
+
+  // 🟢 Kembalikan posisi scroll terakhir
+  window.scrollTo(0, scrollPosisiProduk);
 });
 
 // Tombol Home → tampilkan kembali banner & terlaris
+// navHome.addEventListener("click", (e) => {
+//   e.preventDefault();
+//   produkSection.style.display = "none";
+//   homeSection.style.display = "block";
+// });
+
 navHome.addEventListener("click", (e) => {
   e.preventDefault();
+  // 🟢 Simpan posisi scroll sebelum pindah halaman
+  scrollPosisiProduk = window.scrollY;
+  
   produkSection.style.display = "none";
   homeSection.style.display = "block";
+  window.scrollTo(0, 0);
 });
 
 // Ambil data produk dari Google Sheet
