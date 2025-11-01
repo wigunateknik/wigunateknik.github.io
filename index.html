@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -115,17 +113,15 @@
     font-size: 14px;
   }
   /* 🔸 Produk Grid */
- .produk-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+.produk-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(48%, 1fr)); /* 🔹 jadi 2 kolom di HP */
   gap: 12px;
-  padding: 16px;
+  /*padding: 16px;*/
   max-width: 1200px;
   margin: auto;
 }
 .produk-card {
-  width: 160px;
   background: #fff;
   border-radius: 10px;
   overflow: hidden;
@@ -226,38 +222,10 @@
   margin-top: 14px;
 }
 
-/*.popup-btn {
-  background: linear-gradient(135deg, #ff8a3d, #ff512f); /* gradasi oranye-merah */
-  color: #fff;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  box-shadow: 0 3px 6px rgba(255, 81, 47, 0.3);
-}*/
-
 .popup-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 5px 10px rgba(255, 81, 47, 0.4);
 }
-
-
-/*.popup-close-btn {
-  background: linear-gradient(135deg, #ff512f, #e74b2c);
-  color: #fff;
-  border: none;
-  padding: 8px 18px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 3px 6px rgba(231, 75, 44, 0.3);
-}*/
 .popup-close-btn:hover {
   background: linear-gradient(135deg, #e74b2c, #d84315);
   transform: translateY(-2px);
@@ -390,6 +358,9 @@
     align-items: center;
     gap: 10px;
     font-size: 22px;
+  }
+  .produk-container {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   }
 }
 .tombol-wrapper {
@@ -686,6 +657,32 @@
   box-shadow: 0 5px 10px rgba(255,81,47,0.4);
 }
 
+/* 🔹 Bungkus produk seperti terlaris */
+.produk-section {
+  max-width: 1200px;
+  margin: 16px auto;
+  padding: 0 16px;
+}
+
+.produk-wrapper {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  padding: 10px 16px 16px 16px;
+}
+
+.produk-section h2.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #000000;
+  background: white;
+  text-align: left;
+  padding: 8px 12px;
+/*  border-bottom-right-radius: 20px;
+  border-top-right-radius: 20px;*/
+  margin: 0 0 12px 0;
+}
+
 
 
 </style>
@@ -728,9 +725,11 @@
   <!-- DATA BARANG -->
 
 </section>
-<section id="produk" style="display:none;">
-  <h2 class="section-title" style="text-align:center;margin-top:10px;">Daftar Produk</h2>
-  <div class="produk-container" id="produkContainer"></div>
+<section id="produk" class="produk-section" style="display:none;">
+  <div class="produk-wrapper">
+    <h2 class="section-title">Daftar Produk</h2>
+    <div class="produk-container" id="produkContainer"></div>
+  </div>
 </section>
 </main>
 <nav class="bottom-navbar">
@@ -755,7 +754,7 @@
 
 <div class="popup" id="popupTerlaris" onclick="keluarPopupTerlaris(event)">
   <div class="popup-content">
-    <img id="terlaris-popup-img" src="">
+    <img id="terlaris-popup-img" src="" loading="lazy">
     <h3 id="terlaris-popup-nama"></h3>
     <p id="terlaris-popup-kategori"></p>
     <p id="terlaris-popup-detail"></p>
@@ -766,7 +765,7 @@
 <!-- Popup Produk -->
 <div class="popup" id="popupProduk" onclick="keluarPopupProduk(event)">
   <div class="popup-content">
-    <img id="popupGambarProduk" src="" alt="">
+    <img id="popupGambarProduk" src="" alt="" loading="lazy">
     <h3 id="popupNamaProduk"></h3>
     <p id="popupKategoriProduk"></p>
     <p id="popupDeskripsiProduk"></p>
@@ -774,51 +773,6 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 <script>
-  let produkData = [];
-let dataSiap = false;
-let dataSedangDimuat = false;
-let currentIndex = 0;
-// let scrollPosisiProduk = 0;
-const BATCH_SIZE = 10;
-let filteredProdukData = []
-  // pencarian 
-  const searchInput = document.getElementById("search");
-
-searchInput.addEventListener("input", function() {
-  const query = this.value.trim().toLowerCase();
-
-  if (query.length > 0) {
-    homeSection.style.display = "none";
-    produkSection.style.display = "block";
-    isSearching = true;
-
-    filteredProdukData = produkData.filter(item => 
-      item.nama.toLowerCase().includes(query) ||
-      item.kategori.toLowerCase().includes(query)
-    );
-
-    currentIndex = 0;
-    produkContainer.innerHTML = "";
-
-    if (filteredProdukData.length === 0) {
-      produkContainer.innerHTML = "<p>🔍 Produk tidak ditemukan.</p>";
-      return;
-    }
-
-    tampilkanProduk(BATCH_SIZE, filteredProdukData);
-  } else {
-    homeSection.style.display = "block";
-    produkSection.style.display = "none";
-    isSearching = false;
-    currentIndex = 0;
-    produkContainer.innerHTML = "";
-    tampilkanProduk(BATCH_SIZE, produkData);
-  }
-});
-
-
-
-
   let produkSudahDimuat = false;
   let scrollPosisiProduk = 0;
   // klik pesan di whatsapp
@@ -838,7 +792,7 @@ searchInput.addEventListener("input", function() {
       slideIndex++;
       if (slideIndex > slides.length) {slideIndex = 1;}
       slides[slideIndex-1].style.display = "block";
-  setTimeout(showSlides, 4000); // ganti banner tiap 4 detik
+  setTimeout(showSlides, 5000); // ganti banner tiap 4 detik
 }
 
 // Data Barang Terlaris (manual)
@@ -942,93 +896,51 @@ document.querySelectorAll('.bottom-navbar .nav-btn').forEach(btn => {
 
 const SHEET_URL_PRODUK = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTgErorbgaQ6H6x1tAhvgSlV6c0gtOp2ggT6DrALyqKpGe55lv1E2OB3luuyU51bx-zpJ8tFd2TNcnl/pub?output=csv";
 
-const homeSection = document.getElementById("home") || document.querySelector(".slideshow-container")?.parentElement;
+const homeSection = document.getElementById("home");
 const produkSection = document.getElementById("produk");
 const produkContainer = document.getElementById("produkContainer");
 const btnProduk = document.getElementById("btnProduk");
 const navHome = document.getElementById("nav-home");
 
-
-
-; // array untuk menyimpan hasil filter
-let isSearching = false; 
-// PRELOAD data produk di latar belakang saat user masih di halaman Home
-(async () => {
-  try {
-    const res = await fetch(SHEET_URL_PRODUK);
-    const csvText = await res.text();
-    const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
-
-    produkData = parsed.data.map(row => ({
-      nama: row.nama_produk?.trim() || "",
-      kategori: row.kategori_produk?.trim() || "",
-      keterangan: row.keterangan_produk?.trim() || "",
-      gambar: row.gambar_produk?.trim() || ""
-    }));
-
-    if (produkData.length > 0) {
-      produkSudahDimuat = true;
-      console.log("✅ Data produk siap di cache:", produkData.length, "item");
-
-      // Render otomatis jika user sedang di section produk
-      if (produkSection.style.display !== "none") {
-        produkContainer.innerHTML = "";
-        currentIndex = 0;
-        tampilkanProduk(BATCH_SIZE);
-      }
-    }
-  } catch (err) {
-    console.error("Gagal preload produk:", err);
-  }
-})();
-
-
+let filteredProduk = []; // hasil pencarian aktif
+let sedangMencari = false;
+let produkData = [];
+let currentIndex = 0;
+const BATCH_SIZE = 8;
 
 // Tombol Produk → tampilkan daftar produk
-btnProduk.addEventListener("click", (e) => {
+btnProduk.addEventListener("click", async (e) => {
   e.preventDefault();
   homeSection.style.display = "none";
   produkSection.style.display = "block";
 
-  // Simpan posisi scroll sebelumnya
-  setTimeout(() => {
-    window.scrollTo({ top: scrollPosisiProduk, behavior: "instant" });
-  }, 100);
-
-  // Jika data sudah dimuat, tampilkan langsung
-  if (produkSudahDimuat) {
-    currentIndex = 0;
+  // ✅ Jika produk belum pernah dimuat → ambil data
+  if (!produkSudahDimuat) {
     produkContainer.innerHTML = "";
-    const dataSource = isSearching ? filteredProdukData : produkData;
-    tampilkanProduk(BATCH_SIZE, dataSource);
-    return;
+    currentIndex = 0;
+    await loadProduk();
+    produkSudahDimuat = true;
   }
 
-  // Jika data belum siap, tampilkan loading sementara
-  produkContainer.innerHTML = "<p>Sedang memuat produk...</p>";
-
-  // Tunggu data preload
-  const cekDataInterval = setInterval(() => {
-    if (produkSudahDimuat) {
-      clearInterval(cekDataInterval);
-      produkContainer.innerHTML = "";
-      currentIndex = 0;
-      const dataSource = isSearching ? filteredProdukData : produkData;
-      tampilkanProduk(BATCH_SIZE, dataSource);
-    }
-  }, 300);
+  // 🟢 Kembalikan posisi scroll terakhir
+  window.scrollTo(0, scrollPosisiProduk);
 });
+
+// Tombol Home → tampilkan kembali banner & terlaris
+// navHome.addEventListener("click", (e) => {
+//   e.preventDefault();
+//   produkSection.style.display = "none";
+//   homeSection.style.display = "block";
+// });
 
 navHome.addEventListener("click", (e) => {
   e.preventDefault();
   // 🟢 Simpan posisi scroll sebelum pindah halaman
-
-  // Simpan posisi scroll saat ini sebelum ke Home
   scrollPosisiProduk = window.scrollY;
-
+  
   produkSection.style.display = "none";
   homeSection.style.display = "block";
-  window.scrollTo({ top: scrollPosisiProduk, behavior: "instant" });
+  window.scrollTo(0, 0);
 });
 
 // Ambil data produk dari Google Sheet
@@ -1038,21 +950,18 @@ async function loadProduk() {
     const csvText = await res.text();
     const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
 
-    produkData = parsed.data.map(row => ({
-  nama: row.nama_produk?.trim() || "",
-  kategori: row.kategori_produk?.trim() || "",
-  keterangan: row.keterangan_produk?.trim() || "",
-  gambar: row.gambar_produk?.trim() || ""
-}));
+    produkData = parsed.data.map(row => [
+      row.nama_produk,
+      row.kategori_produk,
+      row.keterangan_produk,
+      row.gambar_produk
+    ]);
 
     if (produkData.length === 0) {
       produkContainer.innerHTML = "<p>❌ Tidak ada produk di spreadsheet.</p>";
       return;
     }
 
-    produkSudahDimuat = true;
-    produkContainer.innerHTML = "";
-    currentIndex = 0;
     tampilkanProduk(BATCH_SIZE);
   } catch (err) {
     console.error("Gagal memuat data produk:", err);
@@ -1060,29 +969,29 @@ async function loadProduk() {
   }
 }
 
+// 🔍 Event pencarian produk
+document.getElementById("search").addEventListener("input", function() {
+  const keyword = this.value.toLowerCase().trim();
+  if (keyword === "") {
+    sedangMencari = false;
+    filteredProduk = [];
+    produkContainer.innerHTML = "";
+    currentIndex = 0;
+    tampilkanProduk(BATCH_SIZE); // tampilkan semua lagi
+    return;
+  }
 
-// Tampilkan produk ke layar
-function tampilkanProduk(jumlah, dataArray) {
-  const slice = dataArray.slice(currentIndex, currentIndex + jumlah);
-  slice.forEach(item => {
-    const { nama, kategori, keterangan, gambar } = item;
-    if (!nama) return;
-    const card = document.createElement("div");
-    card.className = "produk-card";
-    card.innerHTML = `
-      <img src="${gambar}" alt="${nama}" loading="lazy">
-      <div class="produk-info">
-        <h3>${nama}</h3>
-        <p>${kategori}</p>
-      </div>
-    `;
-    card.addEventListener("click", () =>
-      bukaPopupProduk({ nama, kategori, keterangan, gambar })
-    );
-    produkContainer.appendChild(card);
-  });
-  currentIndex += jumlah;
-}
+  sedangMencari = true;
+  filteredProduk = produkData.filter(([nama, kategori, keterangan]) =>
+    nama.toLowerCase().includes(keyword) ||
+    kategori.toLowerCase().includes(keyword) ||
+    keterangan.toLowerCase().includes(keyword)
+  );
+
+  produkContainer.innerHTML = "";
+  currentIndex = 0;
+  tampilkanProduk(BATCH_SIZE);
+});
 
 
 // 🟢 Di sini kamu taruh fungsi handleScroll
@@ -1090,19 +999,10 @@ function handleScroll() {
   if (produkSection.style.display === "none") return;
 
   const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 150;
-  if (nearBottom) {
-    const dataSource = isSearching ? filteredProdukData : produkData;
-    if (currentIndex < dataSource.length) {
-      tampilkanProduk(BATCH_SIZE, dataSource);
-    }
+  if (nearBottom && currentIndex < produkData.length) {
+    tampilkanProduk(BATCH_SIZE);
   }
 }
-
-// 🟢 Dan event listener-nya taruh SETELAH fungsi ini
-window.addEventListener("scroll", handleScroll);
-
-
-
 
 // Popup Produk
 function bukaPopupProduk(data) {
@@ -1113,13 +1013,139 @@ function bukaPopupProduk(data) {
   document.getElementById("popupProduk").style.display = "flex";
 }
 
-function keluarPopupProduk(event) {
-  if (event.target.id === "popupProduk") {
-    document.getElementById("popupProduk").style.display = "none";
-  }
+document.addEventListener("DOMContentLoaded", async () => {
+  loadProduk().then(() => {
+    produkSudahDimuat = true;
+    console.log("✅ Data produk sudah dimuat di background");
+  }).catch(err => {
+    console.error("Gagal preload produk:", err);
+  });
+});
+
+function debounce(func, delay) {
+  let timeout;
+  return function (...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), delay);
+  };
 }
 
 
+// === 🔍 FITUR PENCARIAN PRODUK ===
+const searchInput = document.getElementById("search");
+
+searchInput.addEventListener("input", debounce(async function () {
+  const keyword = this.value.toLowerCase().trim();
+  // Jika user mengetik sesuatu → tampilkan halaman produk
+  if (keyword.length > 0) {
+    homeSection.style.display = "none";
+    produkSection.style.display = "block";
+
+    // Jika produk belum dimuat sebelumnya → load dulu
+    if (!produkSudahDimuat) {
+      produkContainer.innerHTML = "";
+      currentIndex = 0;
+      await loadProduk();
+      produkSudahDimuat = true;
+    }
+
+    // 🔎 Filter produk berdasarkan nama atau kategori
+    produkIndex = produkData.map(([nama, kategori, ...rest], i) => ({
+      teks: (nama + " " + kategori).toLowerCase(),
+      index: i
+    }));
+    const hasil = produkIndex.filter(p => p.teks.includes(keyword))
+                             .slice(0, 50)
+                             .map(p => produkData[p.index]);
+
+    // 🔄 Tampilkan hasil
+    produkContainer.innerHTML = "";
+    if (hasil.length === 0) {
+      produkContainer.innerHTML = `<p style="text-align:center;">Tidak ada produk ditemukan.</p>`;
+      return;
+    }
+
+    hasil.forEach(([nama, kategori, keterangan, gambar]) => {
+      const card = document.createElement("div");
+      card.className = "produk-card";
+      card.innerHTML = `
+        <img src="${gambar}" alt="${nama}" loading="lazy">
+        <div class="produk-info">
+          <h3>${nama}</h3>
+          <p>${kategori}</p>
+        </div>
+      `;
+      // Klik produk → tampilkan popup
+      card.addEventListener("click", () => {
+        document.getElementById("popupProduk").style.display = "flex";
+        document.getElementById("popupGambarProduk").src = gambar;
+        document.getElementById("popupNamaProduk").textContent = nama;
+        document.getElementById("popupKategoriProduk").textContent = kategori;
+        document.getElementById("popupDeskripsiProduk").textContent = keterangan;
+      });
+      produkContainer.appendChild(card);
+    });
+  }
+}, 100));
+window.addEventListener("scroll", () => {
+  if (produkSection.style.display === "block") {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 50) {
+      const sumberData = sedangMencari ? filteredProduk : produkData;
+      if (currentIndex < sumberData.length) {
+        tampilkanProduk(BATCH_SIZE);
+      }
+    }
+  }
+});
+
+function tampilkanProduk(batchSize) {
+  const data = sedangMencari ? filteredProduk : produkData;
+  const endIndex = Math.min(currentIndex + batchSize, data.length);
+  
+  for (let i = currentIndex; i < endIndex; i++) {
+    const [nama, kategori, keterangan, gambar] = data[i];
+    const card = document.createElement("div");
+    card.className = "produk-card";
+    card.innerHTML = `
+      <img src="${gambar}" alt="${nama}" loading="lazy">
+      <div class="produk-info">
+        <h3>${nama}</h3>
+        <p>${kategori}</p>
+      </div>
+    `;
+    // 🔹 Tambah event klik buka popup
+    card.addEventListener("click", () => bukaPopupProduk({ nama, kategori, keterangan, gambar }));
+    produkContainer.appendChild(card);
+  }
+
+  currentIndex = endIndex;
+}
+
+// ✅ Fungsi untuk buka popup produk
+function bukaPopupProduk(item) {
+  const popup = document.getElementById("popupProduk");
+  document.getElementById("popupGambarProduk").src = item.gambar;
+  document.getElementById("popupNamaProduk").textContent = item.nama;
+  document.getElementById("popupKategoriProduk").textContent = item.kategori || "";
+  // document.getElementById("popupDeskripsiProduk").textContent = item.keterangan || "Tidak ada deskripsi.";
+
+  popup.style.display = "flex";
+  document.body.style.overflow = "hidden"; // nonaktifkan scroll di belakang
+}
+
+// ✅ Tutup popup produk jika klik di luar
+function keluarPopupProduk(event) {
+  if (event.target.id === "popupProduk") {
+    document.getElementById("popupProduk").style.display = "none";
+    document.body.style.overflow = "";
+  }
+}
+
+  // untuk select/ highlith navbar home saat pertama kali dim
+  window.addEventListener("DOMContentLoaded", () => {
+    const navHome = document.getElementById("nav-home");
+    if (navHome) navHome.classList.add("active");
+  });
 </script>
 </body>
 </html>
