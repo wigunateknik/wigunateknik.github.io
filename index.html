@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -686,6 +687,7 @@
 }
 
 
+
 </style>
 <body>
   <header class="navbar">
@@ -772,6 +774,51 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 <script>
+  let produkData = [];
+let dataSiap = false;
+let dataSedangDimuat = false;
+let currentIndex = 0;
+// let scrollPosisiProduk = 0;
+const BATCH_SIZE = 10;
+let filteredProdukData = []
+  // pencarian 
+  const searchInput = document.getElementById("search");
+
+searchInput.addEventListener("input", function() {
+  const query = this.value.trim().toLowerCase();
+
+  if (query.length > 0) {
+    homeSection.style.display = "none";
+    produkSection.style.display = "block";
+    isSearching = true;
+
+    filteredProdukData = produkData.filter(item => 
+      item.nama.toLowerCase().includes(query) ||
+      item.kategori.toLowerCase().includes(query)
+    );
+
+    currentIndex = 0;
+    produkContainer.innerHTML = "";
+
+    if (filteredProdukData.length === 0) {
+      produkContainer.innerHTML = "<p>🔍 Produk tidak ditemukan.</p>";
+      return;
+    }
+
+    tampilkanProduk(BATCH_SIZE, filteredProdukData);
+  } else {
+    homeSection.style.display = "block";
+    produkSection.style.display = "none";
+    isSearching = false;
+    currentIndex = 0;
+    produkContainer.innerHTML = "";
+    tampilkanProduk(BATCH_SIZE, produkData);
+  }
+});
+
+
+
+
   let produkSudahDimuat = false;
   let scrollPosisiProduk = 0;
   // klik pesan di whatsapp
@@ -901,43 +948,87 @@ const produkContainer = document.getElementById("produkContainer");
 const btnProduk = document.getElementById("btnProduk");
 const navHome = document.getElementById("nav-home");
 
-let produkData = [];
-let currentIndex = 0;
-const BATCH_SIZE = 8;
+
+
+; // array untuk menyimpan hasil filter
+let isSearching = false; 
+// PRELOAD data produk di latar belakang saat user masih di halaman Home
+(async () => {
+  try {
+    const res = await fetch(SHEET_URL_PRODUK);
+    const csvText = await res.text();
+    const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
+
+    produkData = parsed.data.map(row => ({
+      nama: row.nama_produk?.trim() || "",
+      kategori: row.kategori_produk?.trim() || "",
+      keterangan: row.keterangan_produk?.trim() || "",
+      gambar: row.gambar_produk?.trim() || ""
+    }));
+
+    if (produkData.length > 0) {
+      produkSudahDimuat = true;
+      console.log("✅ Data produk siap di cache:", produkData.length, "item");
+
+      // Render otomatis jika user sedang di section produk
+      if (produkSection.style.display !== "none") {
+        produkContainer.innerHTML = "";
+        currentIndex = 0;
+        tampilkanProduk(BATCH_SIZE);
+      }
+    }
+  } catch (err) {
+    console.error("Gagal preload produk:", err);
+  }
+})();
+
+
 
 // Tombol Produk → tampilkan daftar produk
-btnProduk.addEventListener("click", async (e) => {
+btnProduk.addEventListener("click", (e) => {
   e.preventDefault();
   homeSection.style.display = "none";
   produkSection.style.display = "block";
 
-  // ✅ Jika produk belum pernah dimuat → ambil data
-  if (!produkSudahDimuat) {
-    produkContainer.innerHTML = "";
+  // Simpan posisi scroll sebelumnya
+  setTimeout(() => {
+    window.scrollTo({ top: scrollPosisiProduk, behavior: "instant" });
+  }, 100);
+
+  // Jika data sudah dimuat, tampilkan langsung
+  if (produkSudahDimuat) {
     currentIndex = 0;
-    await loadProduk();
-    produkSudahDimuat = true;
+    produkContainer.innerHTML = "";
+    const dataSource = isSearching ? filteredProdukData : produkData;
+    tampilkanProduk(BATCH_SIZE, dataSource);
+    return;
   }
 
-  // 🟢 Kembalikan posisi scroll terakhir
-  window.scrollTo(0, scrollPosisiProduk);
-});
+  // Jika data belum siap, tampilkan loading sementara
+  produkContainer.innerHTML = "<p>Sedang memuat produk...</p>";
 
-// Tombol Home → tampilkan kembali banner & terlaris
-// navHome.addEventListener("click", (e) => {
-//   e.preventDefault();
-//   produkSection.style.display = "none";
-//   homeSection.style.display = "block";
-// });
+  // Tunggu data preload
+  const cekDataInterval = setInterval(() => {
+    if (produkSudahDimuat) {
+      clearInterval(cekDataInterval);
+      produkContainer.innerHTML = "";
+      currentIndex = 0;
+      const dataSource = isSearching ? filteredProdukData : produkData;
+      tampilkanProduk(BATCH_SIZE, dataSource);
+    }
+  }, 300);
+});
 
 navHome.addEventListener("click", (e) => {
   e.preventDefault();
   // 🟢 Simpan posisi scroll sebelum pindah halaman
+
+  // Simpan posisi scroll saat ini sebelum ke Home
   scrollPosisiProduk = window.scrollY;
-  
+
   produkSection.style.display = "none";
   homeSection.style.display = "block";
-  window.scrollTo(0, 0);
+  window.scrollTo({ top: scrollPosisiProduk, behavior: "instant" });
 });
 
 // Ambil data produk dari Google Sheet
@@ -947,18 +1038,21 @@ async function loadProduk() {
     const csvText = await res.text();
     const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
 
-    produkData = parsed.data.map(row => [
-      row.nama_produk,
-      row.kategori_produk,
-      row.keterangan_produk,
-      row.gambar_produk
-    ]);
+    produkData = parsed.data.map(row => ({
+  nama: row.nama_produk?.trim() || "",
+  kategori: row.kategori_produk?.trim() || "",
+  keterangan: row.keterangan_produk?.trim() || "",
+  gambar: row.gambar_produk?.trim() || ""
+}));
 
     if (produkData.length === 0) {
       produkContainer.innerHTML = "<p>❌ Tidak ada produk di spreadsheet.</p>";
       return;
     }
 
+    produkSudahDimuat = true;
+    produkContainer.innerHTML = "";
+    currentIndex = 0;
     tampilkanProduk(BATCH_SIZE);
   } catch (err) {
     console.error("Gagal memuat data produk:", err);
@@ -968,9 +1062,10 @@ async function loadProduk() {
 
 
 // Tampilkan produk ke layar
-function tampilkanProduk(jumlah) {
-  const slice = produkData.slice(currentIndex, currentIndex + jumlah);
-  slice.forEach(([nama, kategori, keterangan, gambar]) => {
+function tampilkanProduk(jumlah, dataArray) {
+  const slice = dataArray.slice(currentIndex, currentIndex + jumlah);
+  slice.forEach(item => {
+    const { nama, kategori, keterangan, gambar } = item;
     if (!nama) return;
     const card = document.createElement("div");
     card.className = "produk-card";
@@ -988,13 +1083,18 @@ function tampilkanProduk(jumlah) {
   });
   currentIndex += jumlah;
 }
+
+
 // 🟢 Di sini kamu taruh fungsi handleScroll
 function handleScroll() {
   if (produkSection.style.display === "none") return;
 
   const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 150;
-  if (nearBottom && currentIndex < produkData.length) {
-    tampilkanProduk(BATCH_SIZE);
+  if (nearBottom) {
+    const dataSource = isSearching ? filteredProdukData : produkData;
+    if (currentIndex < dataSource.length) {
+      tampilkanProduk(BATCH_SIZE, dataSource);
+    }
   }
 }
 
