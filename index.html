@@ -676,7 +676,15 @@
   margin: 0 0 12px 0;
 }
 
-
+#popupKategoriProduk a {
+  color: #ff512f;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+#popupKategoriProduk a:hover {
+  color: #e74b2c;
+}
 
 </style>
 <body>
@@ -974,16 +982,16 @@ document.getElementById("search").addEventListener("input", function() {
     return;
   }
 
-  sedangMencari = true;
-  filteredProduk = produkData.filter(([nama, kategori, keterangan]) =>
-    nama.toLowerCase().includes(keyword) ||
-    kategori.toLowerCase().includes(keyword) ||
-    keterangan.toLowerCase().includes(keyword)
-  );
+filteredProduk = produkData.filter(([nama, kategori, keterangan]) =>
+  nama.toLowerCase().includes(keyword) ||
+  kategori.toLowerCase().includes(keyword) ||
+  keterangan.toLowerCase().includes(keyword)
+);
 
-  produkContainer.innerHTML = "";
-  currentIndex = 0;
-  tampilkanProduk(BATCH_SIZE);
+sedangMencari = true;
+currentIndex = 0;
+produkContainer.innerHTML = "";
+tampilkanProduk(BATCH_SIZE); // tampilkan batch pertama dari filteredProduk
 });
 
 
@@ -996,15 +1004,6 @@ function handleScroll() {
     tampilkanProduk(BATCH_SIZE);
   }
 }
-
-// Popup Produk
-// function bukaPopupProduk(data) {
-//   document.getElementById("popupGambarProduk").src = data.gambar;
-//   document.getElementById("popupNamaProduk").textContent = data.nama;
-//   document.getElementById("popupKategoriProduk").textContent = "Kategori: " + data.kategori;
-//   document.getElementById("popupDeskripsiProduk").textContent = data.keterangan;
-//   document.getElementById("popupProduk").style.display = "flex";
-// }
 document.addEventListener("DOMContentLoaded", async () => {
   loadProduk().then(() => {
     produkSudahDimuat = true;
@@ -1028,12 +1027,18 @@ const searchInput = document.getElementById("search");
 
 searchInput.addEventListener("input", debounce(async function () {
   const keyword = this.value.toLowerCase().trim();
+
+  // 🔹 Hapus header kategori jika sedang menampilkan hasil pencarian
+  const header = document.querySelector(".produk-section .section-title");
+  if (keyword.length > 0) {
+    header.textContent = "Daftar Produk"; // reset header
+  }
+
   // Jika user mengetik sesuatu → tampilkan halaman produk
   if (keyword.length > 0) {
     homeSection.style.display = "none";
     produkSection.style.display = "block";
 
-    // Jika produk belum dimuat sebelumnya → load dulu
     if (!produkSudahDimuat) {
       produkContainer.innerHTML = "";
       currentIndex = 0;
@@ -1041,8 +1046,8 @@ searchInput.addEventListener("input", debounce(async function () {
       produkSudahDimuat = true;
     }
 
-    // 🔎 Filter produk berdasarkan nama atau kategori
-    produkIndex = produkData.map(([nama, kategori, ...rest], i) => ({
+    // Filter produk berdasarkan nama atau kategori
+    const produkIndex = produkData.map(([nama, kategori, ...rest], i) => ({
       teks: (nama + " " + kategori).toLowerCase(),
       index: i
     }));
@@ -1050,35 +1055,39 @@ searchInput.addEventListener("input", debounce(async function () {
                              .slice(0, 50)
                              .map(p => produkData[p.index]);
 
-    // 🔄 Tampilkan hasil
     produkContainer.innerHTML = "";
     if (hasil.length === 0) {
       produkContainer.innerHTML = `<p style="text-align:center;">Tidak ada produk ditemukan.</p>`;
       return;
     }
 
-    hasil.forEach(([nama, kategori, keterangan, gambar]) => {
-      const card = document.createElement("div");
-      card.className = "produk-card";
-      card.innerHTML = `
-        <img src="${gambar}" alt="${nama}" loading="lazy">
-        <div class="produk-info">
-          <h3>${nama}</h3>
-          <p>${kategori}</p>
-        </div>
-      `;
-      // Klik produk → tampilkan popup
-      card.addEventListener("click", () => {
-        document.getElementById("popupProduk").style.display = "flex";
-        document.getElementById("popupGambarProduk").src = gambar;
-        document.getElementById("popupNamaProduk").textContent = nama;
-        document.getElementById("popupKategoriProduk").textContent = kategori;
-        document.getElementById("popupDeskripsiProduk").textContent = keterangan;
-      });
-      produkContainer.appendChild(card);
-    });
+    // hasil.forEach(([nama, kategori, keterangan, gambar]) => {
+    //   const card = document.createElement("div");
+    //   card.className = "produk-card";
+    //   card.innerHTML = `
+    //     <img src="${gambar}" alt="${nama}" loading="lazy">
+    //     <div class="produk-info">
+    //       <h3>${nama}</h3>
+    //       <p>${kategori}</p>
+    //     </div>
+    //   `;
+    //   card.addEventListener("click", () => {
+    //     document.getElementById("popupProduk").style.display = "flex";
+    //     document.getElementById("popupGambarProduk").src = gambar;
+    //     document.getElementById("popupNamaProduk").textContent = nama;
+    //     document.getElementById("popupKategoriProduk").textContent = kategori;
+    //     document.getElementById("popupDeskripsiProduk").textContent = keterangan;
+    //   });
+    //   produkContainer.appendChild(card);
+    // });
+
+    // Hanya reset kontainer & render batch pertama
+produkContainer.innerHTML = "";
+currentIndex = 0;
+tampilkanProduk(BATCH_SIZE); // gunak
   }
 }, 100));
+
 window.addEventListener("scroll", () => {
   if (produkSection.style.display !== "block") return;
   const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 50;
@@ -1115,10 +1124,47 @@ function bukaPopupProduk(item) {
   const popup = document.getElementById("popupProduk");
   document.getElementById("popupGambarProduk").src = item.gambar;
   document.getElementById("popupNamaProduk").textContent = item.nama;
-  document.getElementById("popupKategoriProduk").textContent = item.kategori || "";
+
+  // buat kategori jadi link
+  const kategoriElem = document.getElementById("popupKategoriProduk");
+  kategoriElem.innerHTML = `<a href="#" id="kategori-link">${item.kategori || ""}</a>`;
+
+  // klik kategori → filter produk & tutup popup
+  document.getElementById("kategori-link").addEventListener("click", (e) => {
+    e.preventDefault();
+    filterProdukByKategori(item.kategori);
+
+    // tutup popup
+    popup.style.display = "none";
+    document.body.style.overflow = "";
+  });
+
   popup.style.display = "flex";
   document.body.style.overflow = "hidden"; // nonaktifkan scroll di belakang
 }
+
+
+function filterProdukByKategori(kategori) {
+  homeSection.style.display = "none";
+  produkSection.style.display = "block";
+
+  // Filter produk sesuai kategori
+  filteredProduk = produkData.filter(([nama, kat, keterangan, gambar]) => kat === kategori);
+  sedangMencari = true;
+  currentIndex = 0;
+  produkContainer.innerHTML = "";
+  tampilkanProduk(BATCH_SIZE);
+
+  // Update header daftar produk
+  const header = document.querySelector(".produk-section .section-title");
+  header.innerHTML = `Daftar Produk "<span style="color:orange;">${kategori}</span>"`;
+
+  // Kembalikan posisi scroll ke atas
+  window.scrollTo(0, 0);
+}
+
+
+
 
 // ✅ Tutup popup produk jika klik di luar
 function keluarPopupProduk(event) {
