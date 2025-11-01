@@ -113,14 +113,7 @@
     font-size: 14px;
   }
   /* 🔸 Produk Grid */
-.produk-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(48%, 1fr)); /* 🔹 jadi 2 kolom di HP */
-  gap: 12px;
-  /*padding: 16px;*/
-  max-width: 1200px;
-  margin: auto;
-}
+
 .produk-card {
   background: #fff;
   border-radius: 10px;
@@ -440,8 +433,6 @@
   to {opacity: 1;}
 }
 /*akhir slideshow*/
-/* 🔸 Bagian Promo */
-
 
 .terlaris-slider {
   display: flex;
@@ -529,14 +520,16 @@
   font-size: 14px;
   color: #555;
 }
-/*akhir untuk popup modal promo*/
-/*produk list*/
-.produk-grid {
+.produk-container, .produk-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 12px;
-  padding: 10px;
+  max-width: 1200px;
+  margin: auto;
+  padding-bottom: calc(var(--bottom-navbar-height) + 10px);
 }
+
+
 .promo-section,
 .produk-grid {
   padding-bottom: calc(var(--bottom-navbar-height) + 10px);
@@ -792,7 +785,7 @@
       slideIndex++;
       if (slideIndex > slides.length) {slideIndex = 1;}
       slides[slideIndex-1].style.display = "block";
-  setTimeout(showSlides, 5000); // ganti banner tiap 4 detik
+  setTimeout(showSlides, 3000); // ganti banner tiap 4 detik
 }
 
 // Data Barang Terlaris (manual)
@@ -1005,14 +998,13 @@ function handleScroll() {
 }
 
 // Popup Produk
-function bukaPopupProduk(data) {
-  document.getElementById("popupGambarProduk").src = data.gambar;
-  document.getElementById("popupNamaProduk").textContent = data.nama;
-  document.getElementById("popupKategoriProduk").textContent = "Kategori: " + data.kategori;
-  document.getElementById("popupDeskripsiProduk").textContent = data.keterangan;
-  document.getElementById("popupProduk").style.display = "flex";
-}
-
+// function bukaPopupProduk(data) {
+//   document.getElementById("popupGambarProduk").src = data.gambar;
+//   document.getElementById("popupNamaProduk").textContent = data.nama;
+//   document.getElementById("popupKategoriProduk").textContent = "Kategori: " + data.kategori;
+//   document.getElementById("popupDeskripsiProduk").textContent = data.keterangan;
+//   document.getElementById("popupProduk").style.display = "flex";
+// }
 document.addEventListener("DOMContentLoaded", async () => {
   loadProduk().then(() => {
     produkSudahDimuat = true;
@@ -1088,13 +1080,10 @@ searchInput.addEventListener("input", debounce(async function () {
   }
 }, 100));
 window.addEventListener("scroll", () => {
-  if (produkSection.style.display === "block") {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 50) {
-      const sumberData = sedangMencari ? filteredProduk : produkData;
-      if (currentIndex < sumberData.length) {
-        tampilkanProduk(BATCH_SIZE);
-      }
-    }
+  if (produkSection.style.display !== "block") return;
+  const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 50;
+  if (nearBottom && currentIndex < (sedangMencari ? filteredProduk.length : produkData.length)) {
+    tampilkanProduk(BATCH_SIZE);
   }
 });
 
@@ -1127,8 +1116,6 @@ function bukaPopupProduk(item) {
   document.getElementById("popupGambarProduk").src = item.gambar;
   document.getElementById("popupNamaProduk").textContent = item.nama;
   document.getElementById("popupKategoriProduk").textContent = item.kategori || "";
-  // document.getElementById("popupDeskripsiProduk").textContent = item.keterangan || "Tidak ada deskripsi.";
-
   popup.style.display = "flex";
   document.body.style.overflow = "hidden"; // nonaktifkan scroll di belakang
 }
