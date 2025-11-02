@@ -357,7 +357,9 @@
     font-size: 22px;
   }
   .produk-container {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) !important;
+    gap: 10px;
   }
 }
 .tombol-wrapper {
