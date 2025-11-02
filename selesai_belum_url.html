@@ -1,0 +1,1667 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Toko Online Wiguna Teknik - Menyediakan berbagai alat teknik dan kebutuhan industri.">
+  <title>Wiguna Teknik</title>
+  <meta name="keywords" content="alat teknik, toko teknik, Wiguna Teknik, alat industri, perlengkapan bengkel, jual alat teknik online">
+  <meta name="author" content="Wiguna Teknik">
+  <meta property="og:title" content="Wiguna Teknik - Alat Teknik & Service">
+  <meta property="og:description" content="Menyediakan berbagai alat teknik dan kebutuhan industri dengan harga terjangkau.">
+  <meta property="og:image" content="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/logo/logo_toko_wiguna.png">
+  <meta property="og:type" content="website">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/logo/logo_toko_wiguna.png">
+  
+</head>
+<style>
+  :root {
+    --primary: #111;        /* 🔹 warna dasar hitam gelap (navbar, tombol) */
+    --primary-dark: #000;   /* 🔹 warna hover tombol */
+    --bg: #f0f0f0;            /* 🔹 latar belakang halaman abu terang */
+    --text: #222;             /* 🔹 warna teks utama tetap gelap agar kontras */
+    --shadow: rgba(0, 0, 0, 0.1);
+    --white: #ffffff;         /* 🔹 cardview tetap putih terang */
+     /*--bottom-navbar-height: 60px;*/
+  }
+
+  body {
+    font-family: "Poppins", sans-serif;
+    background: var(--bg);
+    margin: 0;
+    color: var(--text);
+    padding-bottom: 65px;
+  }
+
+  .terlaris-section:last-of-type {
+  margin-bottom: 100px; /* beri jarak ekstra agar tidak tertutup */
+}
+  .navbar {
+    background: var(--primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 5px var(--shadow);
+    gap: 10px;
+    flex-wrap: nowrap;
+  }
+  .header-name {
+    font-size: 20px;
+    font-weight: 600;
+    margin-right: 20px;
+    color: white;
+    /*text-align: left; */
+  }
+  /* 🔍 Pencarian */
+  .search-wrapper {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    gap: 8px;
+    max-width: 600px;
+  }
+  .search-bar {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 25px;
+    padding: 5px 12px;
+    flex: 1;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: relative;
+    min-width: 160px;
+  }
+  .search-bar img {
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    left: 12px;
+    opacity: 0.6;
+  }
+  .search-bar input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 6px 10px 6px 36px;
+    border-radius: 25px;
+    font-size: 14px;
+    background: transparent;
+  }
+  .icon-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    color: #fff;
+    /*padding: 50px  50px 10px 10px ;*/
+  }
+  .icon-group span {
+    cursor: pointer;
+  }
+  /* 🔸 Filter kategori */
+  .filter-container {
+    padding: 10px;
+    text-align: center;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+  }
+  .filter-container select {
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+  }
+  /* 🔸 Produk Grid */
+
+.produk-card {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.produk-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+.produk-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+}
+
+.produk-info {
+  padding: 8px;
+  text-align: center;
+}
+
+.produk-info h3 {
+  font-size: 14px;
+  color: #333;
+  margin: 4px 0;
+}
+
+.produk-info p {
+  font-size: 12px;
+  color: #777;
+  margin: 0;
+}
+
+  /* 🔸 Card Produk */
+  .card {
+    background: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 2px 5px var(--shadow);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  }
+  .img-box {
+    width: 100%;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+  }
+  .card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  .card:hover img {
+    transform: scale(1.05);
+  }
+  .card .info {
+    padding: 8px 10px;
+  }
+  .card h3 {
+    font-size: 14px;
+    margin: 5px 0;
+    color: #333;
+  }
+
+  /* 🔸 Popup Detail */
+  .popup {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+  text-align: left;
+  animation: fadeIn 0.3s ease;
+}
+/* Tombol Suka & Lokasi */
+.popup-actions {
+  display: flex;
+  justify-content: center;  /* tombol di tengah */
+  gap: 12px;                /* jarak antar tombol */
+  margin-top: 14px;
+}
+
+.popup-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(255, 81, 47, 0.4);
+}
+.popup-close-btn:hover {
+  background: linear-gradient(135deg, #e74b2c, #d84315);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(231, 75, 44, 0.5);
+}
+
+  @keyframes fadeIn {
+    from {transform: scale(0.9); opacity: 0;}
+    to {transform: scale(1); opacity: 1;}
+  }
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 22px;
+    cursor: pointer;
+  }
+  .popup img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  .popup h3 {
+    font-size: 18px;
+    margin: 6px 0;
+  }
+  .popup p {
+    font-size: 14px;
+    margin: 4px 0;
+    color: #555;
+  }
+  /* Hanya tombol popup custom (Suka, Lokasi, Close) */
+.popup-actions .popup-btn,
+.popup-footer .popup-close-btn {
+  background: linear-gradient(135deg, #ff8a3d, #ff512f);
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(255,81,47,0.3);
+}
+.popup-actions .popup-btn:hover,
+.popup-footer .popup-close-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(255,81,47,0.4);
+}
+  .popup button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    width: 100%;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+  .popup button:hover {
+    background: var(--orange-dark);
+  }
+  /* 🔸 Loading shimmer */
+  .loading-shimmer {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+  }
+  .shimmer {
+    width: 150px;
+    height: 180px;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #eee 25%, #f5f5f5 50%, #eee 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+  @keyframes shimmer {
+    0% {background-position: 200% 0;}
+    100% {background-position: -200% 0;}
+  }
+  /* 🔸 Responsif */
+  @media (max-width: 600px) {
+    .navbar {
+      flex-wrap: nowrap;
+    }
+    .search-wrapper {
+      flex: 1;
+      gap: 6px;
+    }
+    .search-bar {
+      flex: 1;
+      width: 100%;
+    }
+    .icon-group {
+      gap: 8px;
+      font-size: 20px;
+    }
+
+    .header-name {
+      display: none;
+    }
+      .bottom-navbar {
+    display: flex;
+  }
+    .produk-container {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  }
+/* Desktop / laptop */
+@media (min-width: 768px) {
+  .navbar {
+
+    display: flex;
+    justify-content: space-between; /* header kiri, search+icon kanan */
+    align-items: center;
+  }
+
+  .search-wrapper {
+    flex: none;       /* biar ukurannya pas isinya saja */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .search-bar {
+    width: 250px;     /* atur lebar input sesuai kebutuhan */
+    flex: none;
+  }
+
+  .icon-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+  }
+  .produk-container {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+}
+.tombol-wrapper {
+  display: flex;           /* 🔹 aktifkan flexbox */
+  gap: 10px;               /* 🔹 jarak antar tombol */
+  flex-wrap: nowrap;       /* 🔹 cegah turun ke bawah */
+  justify-content: center; /* 🔹 sejajarkan di tengah (opsional) */
+}
+.btn {
+  flex: 1;                 /* 🔹 tombol punya lebar sama (opsional) */
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  background: #111;
+  color: white;
+  cursor: pointer;
+}
+.bottom-navbar {             /* default hidden */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #111;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 0;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
+  z-index: 150;
+}
+
+.bottom-navbar .nav-btn.active {
+  color: #ff512f;
+  font-weight: 600;
+}
+
+.bottom-navbar .nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  font-size: 12px;
+}
+.bottom-navbar .nav-icon {
+  font-size: 20px;
+  margin-bottom: 2px;
+}
+
+/* Slideshow */
+.slideshow-container {
+  position: relative;
+  max-width: 1200px;
+  margin: 0px auto;
+  overflow: hidden;
+}
+.slide {
+  display: none;
+}
+.slide img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+/* efek fade */
+.fade {
+  animation-name: fade;
+  animation-duration: 1s;
+}
+@keyframes fade {
+  from {opacity: 0.4;}
+  to {opacity: 1;}
+}
+/*akhir slideshow*/
+
+.terlaris-slider {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 12px;
+  padding: 10px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.terlaris-slider .card {
+  flex: 0 0 auto;
+  width: 160px;
+  scroll-snap-align: start;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+.terlaris-slider::-webkit-scrollbar {
+  display: none;
+}
+.terlaris-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  min-width: 160px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+  cursor: pointer;
+  /*transition: box-shadow;*/
+}
+.terlaris-card:hover {
+  transform: translateY(-4px);
+}
+.terlaris-slider .card:hover {
+  transform: translateY(-3px);
+}
+.terlaris-card img {
+  width: 100%;
+  height: 130px;       /* tetap sesuai ukuran card */
+  object-fit: cover;   /* gambar isi penuh kotak */
+  object-position: center; /* gambar selalu di tengah */
+  background: #000;    /* bisa ubah ke #fff jika mau */
+  border-bottom: none; /* opsional: biar lebih bersih */
+  display: block;
+  transition: transform 0.3s ease;
+}
+.terlaris-card:hover img {
+  transform: scale(1.05);
+}
+.terlaris-info {
+  padding: 8px;
+  text-align: center;
+  line-height: 1.2; /* 🔹 lebih rapat antar baris */
+}
+.terlaris-name {
+  font-size: 15px;  /* 🔹 lebih besar dari 13px */
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 2px; /* 🔹 jarak bawah kecil */
+}
+/*akhir terlaris*/
+
+.promo-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  min-width: 160px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+  cursor: pointer;
+  /*transition: box-shadow;*/
+}
+.promo-card:hover {
+  transform: translateY(-4px);
+}
+.promo-slider .card:hover {
+  transform: translateY(-3px);
+}
+.promo-card img {
+  width: 100%;
+  height: 130px;       /* tetap sesuai ukuran card */
+  object-fit: cover;   /* gambar isi penuh kotak */
+  object-position: center; /* gambar selalu di tengah */
+  background: #000;    /* bisa ubah ke #fff jika mau */
+  border-bottom: none; /* opsional: biar lebih bersih */
+  display: block;
+  transition: transform 0.3s ease;
+}
+.promo-card:hover img {
+  transform: scale(1.05);
+}
+.promo-info {
+  padding: 8px;
+  text-align: center;
+  line-height: 1.2; /* 🔹 lebih rapat antar baris */
+}
+.promo-name {
+  font-size: 15px;  /* 🔹 lebih besar dari 13px */
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 2px; /* 🔹 jarak bawah kecil */
+}
+
+
+/* 🔸 Popup untuk promo */
+#popupTerlaris .popup-content {
+  max-width: 400px;
+  text-align: center;
+}
+#popupTerlaris img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+#popupTerlaris h3 {
+  font-size: 18px;
+  margin: 6px 0;
+}
+#popupTerlaris p {
+  font-size: 14px;
+  color: #555;
+}
+.produk-container, .produk-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+  max-width: 1200px;
+  margin: auto;
+  padding-bottom: calc(var(--bottom-navbar-height) + 10px);
+}
+
+.promo-section,
+.produk-grid {
+  padding-bottom: calc(var(--bottom-navbar-height) + 10px);
+}
+.produk-grid .card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  overflow: hidden;
+  text-align: center;
+  transition: transform 0.3s;
+}
+.produk-grid .card:hover {
+  transform: translateY(-4px);
+}
+/*akhir produk list*/
+.terlaris-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+  margin-bottom: calc(var(--bottom-navbar-height) + 20px) !important;
+
+}
+/* Terlaris Section mirip Promo */
+.terlaris-section .terlaris-wrapper {
+  max-width: 1200px;
+  margin: 16px auto;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  padding: 10px 16px 4px 16px; /* ruang dalam card */
+}
+
+.terlaris-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.terlaris-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  background: #e74b2c;
+  text-align: center;
+  padding: 8px 12px;
+  border-bottom-right-radius: 20px;
+  border-top-right-radius: 20px;
+  margin: 0;
+}
+
+/* Tombol lihat semua produk */
+#lihat-semua-terlaris {
+  background: linear-gradient(135deg, #ffffff, #ffffff);;
+  color: #000;
+  border: none;
+  padding: 6px 14px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: none;
+  box-shadow: 0 2px 5px rgba(231, 75, 44, 0.3);
+}
+
+/* Efek saat hover */
+#lihat-semua-terlaris:hover {
+  background: linear-gradient(135deg, #e74b2c, #ff6a00);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(231, 75, 44, 0.4);
+}
+/* Untuk promo spesial */
+.promo-section,
+.terlaris-section {
+  max-width: 1200px;          /* lebar sama */
+  margin: 16px auto;          /* tengah di layar */
+  padding: 0 16px;            /* ruang kiri-kanan sama */
+}
+
+/* Bungkus dalam background putih */
+.promo-wrapper,
+.terlaris-wrapper {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  padding: 10px 16px 16px 16px;
+}
+
+/* 🔧 Perbaiki jarak teks dan gambar di Barang Terlaris */
+#terlaris-container .terlaris-info {
+  padding: 10px 10px 10px 10px; /* lebih tipis dari sebelumnya */
+  line-height: 1;           /* jarak antarbaris rapat */
+}
+
+#terlaris-container .terlaris-name {
+  margin-top: 4px;          /* hanya sedikit ruang di atas */
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #333;
+}
+.popup-btn,
+.popup-close-btn {
+  background: linear-gradient(135deg, #ff8a3d, #ff512f);
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(255,81,47,0.3);
+  flex: 1;                   /* tombol punya lebar sama */
+}
+.popup-btn:hover,
+.popup-close-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(255,81,47,0.4);
+}
+
+/* 🔹 Bungkus produk seperti terlaris */
+.produk-section {
+  max-width: 1200px;
+  margin: 16px auto;
+  padding: 0 16px;
+}
+
+.produk-wrapper {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  padding: 10px 16px 16px 16px;
+}
+
+.produk-section h2.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #000000;
+  background: white;
+  text-align: left;
+  padding: 8px 12px;
+/*  border-bottom-right-radius: 20px;
+  border-top-right-radius: 20px;*/
+  margin: 0 0 12px 0;
+}
+
+#popupKategoriProduk a {
+  color: #ff512f;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+#popupKategoriProduk a:hover {
+  color: #e74b2c;
+}
+
+.kategori-section {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 0 16px;
+}
+.kategori-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg, #a3a3a3, #ffffff);
+  color: #000000;
+  font-weight: 600;
+  padding: 10px 16px;
+  border-radius: 8px;
+  margin: 16px 0 8px;
+  cursor: pointer;
+}
+.kategori-header span:first-child {
+  font-size: 16px;
+}
+.kategori-header .produk-count {
+  font-size: 14px;
+  color: #000000;
+  opacity: 0.9;
+}
+
+.kategori-slider {
+  display: flex;
+  overflow-x: auto;
+  gap: 12px;
+  scroll-behavior: smooth;
+  padding-bottom: 10px;
+  scrollbar-width: none;
+}
+
+.kategori-slider::-webkit-scrollbar {
+  display: none;
+}
+
+.kategori-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  flex: 0 0 120px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  padding: 8px;
+}
+
+.kategori-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.kategori-card img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.kategori-card h4 {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+/* Vertikal tampilan toggle */
+.kategori-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px;
+  padding: 10px 0;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 🌙 Overlay Popup */
+.popup-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+/* 💎 Konten Popup */
+.popup-content {
+  position: relative;
+  background: #fff;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  animation: slideUp 0.4s ease;
+}
+
+/* Tombol close */
+.popup-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 50px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  z-index: 10;
+}
+
+/* Foto toko */
+.popup-header img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+/* Isi popup */
+.popup-body {
+  padding: 20px;
+  text-align: center;
+}
+
+.popup-body h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.popup-body .lokasi {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+/* Video */
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+.video-wrapper iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+
+/* Deskripsi */
+.deskripsi {
+  font-size: 1rem;
+  color: #444;
+  margin: 10px 0 20px;
+  line-height: 1.5;
+}
+
+/* Tombol WA */
+.btn-wa {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #25D366;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+.btn-wa:hover {
+  background: #20b858;
+}
+/* 🔵 Tombol Lokasi */
+.btn-lokasi {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #007BFF;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+.btn-lokasi:hover {
+  background: #0066cc;
+}
+.kontak {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Animasi */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideUp {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+</style>
+<body>
+  <header class="navbar">
+    <span class="header-name">Wiguna Teknik</span>
+    <div class="search-wrapper">
+      <div class="search-bar">
+        <img src="https://cdn-icons-png.flaticon.com/512/622/622669.png" alt="Cari">
+        <input type="text" id="search" placeholder="Cari produk..." title="Cari barang dan kategori disini">
+      </div>
+      <div class="icon-group">
+        <span title="WhatsApp" style="font-size: 30px;">💬</span>
+      </div>
+    </div>
+  </header>
+  <main>
+  <section id="home">
+    <div class="slideshow-container">
+      <div class="slide fade">
+        <img src="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/banner/1.png" alt="Banner 1">
+      </div>
+      <div class="slide fade">
+        <img src="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/banner/2.png" alt="Banner 2">
+      </div>
+      <div class="slide fade">
+        <img src="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/banner/3.png" alt="Banner 3">
+      </div>
+    </div>
+<!-- Barang Promo -->
+    <section class="terlaris-section">
+    <div class="terlaris-wrapper">
+      <div class="terlaris-header">
+        <h2>Promo🔥</h2>
+      </div>
+      <div id="promo-container" class="terlaris-slider"></div>
+    </div>
+  </section>
+
+  <!-- Barang Terlaris -->
+  <section class="terlaris-section">
+    <div class="terlaris-wrapper">
+      <div class="terlaris-header">
+        <h2>Produk Terlaris⭐</h2>
+      </div>
+      <div id="terlaris-container" class="terlaris-slider"></div>
+    </div>
+  </section>
+
+  <!-- DATA BARANG -->
+</section>
+<section id="produk" class="produk-section" style="display:none;">
+  <div class="produk-wrapper">
+    <h2 class="section-title">Daftar Produk</h2>
+    <div class="produk-container" id="produkContainer"></div>
+  </div>
+</section>
+<section id="kategori" class="kategori-section" style="display:none;">
+  <div id="kategori-container"></div>
+</section>
+</main>
+<nav class="bottom-navbar">
+  <a href="#home" class="nav-btn" id="nav-home">
+    <span class="nav-icon">🏠</span>
+    <span class="nav-text">Home</span>
+  </a>
+  <a href="#" class="nav-btn" id="btnProduk" title="Cari Produk">
+    <span class="nav-icon">🔍</span>
+    <span class="nav-text">Produk</span>
+  </a>
+  <a href="#" class="nav-btn" id="kategori-btn">
+    <span class="nav-icon">📂</span>
+    <span class="nav-text">Kategori</span>
+  </a>
+
+  <a href="#" class="nav-btn" id="nav-profile">
+    <span class="nav-icon">ℹ️</span>
+    <span class="nav-text">Info Toko</span>
+  </a>
+</nav>
+
+<div class="popup" id="popupTerlaris" onclick="keluarPopupTerlaris(event)">
+  <div class="popup-content">
+    <img id="terlaris-popup-img" src="" loading="lazy">
+    <h3 id="terlaris-popup-nama"></h3>
+    <p id="terlaris-popup-kategori"></p>
+    <p id="terlaris-popup-detail"></p>
+    <div class="popup-actions">
+    </div>
+  </div>
+</div>
+<!-- Popup Produk -->
+<div class="popup" id="popupProduk" onclick="keluarPopupProduk(event)">
+  <div class="popup-content">
+    <img id="popupGambarProduk" src="" alt="" loading="lazy">
+    <h3 id="popupNamaProduk"></h3>
+    <p id="popupKategoriProduk"></p>
+    <p id="popupDeskripsiProduk"></p>
+  </div>
+</div>
+<!-- 🏪 POPUP INFO TOKO -->
+<div id="popupInfoToko" class="popup-overlay">
+  <div class="popup-content">
+    <button class="popup-close" id="closeInfoToko">&times;</button>
+    <div class="popup-header">
+      <img src="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/barang_barang/gambar_toko.jpg" alt="Foto Toko" id="fotoToko">
+    </div>
+    <div class="popup-body">
+      <h2 id="namaToko">Wiguna Teknik</h2>
+      <p class="lokasi"><i class="fas fa-map-marker-alt"></i> <span id="lokasiToko">Jl. Baledan, Selat, Karangasem</span></p>
+      <div class="video-wrapper">
+        <iframe id="videoToko" src="https://www.youtube.com/embed/CJoCiRO7OAw" 
+          title="Video Profil Toko" frameborder="0" allowfullscreen></iframe>
+      </div>
+      <p class="deskripsi" id="deskripsiToko">
+        Toko Wiguna Teknik menyediakan berbagai alat teknik, perbengkelan, dan industri.
+        Produk berkualitas dengan harga bersaing, pelayanan cepat dan terpercaya.
+      </p>
+      <div class="kontak">
+        <a href="https://wa.me/6283117345545" target="_blank" class="btn-wa">
+          <i class="fab fa-whatsapp"></i> Hubungi Kami
+        </a>
+        <a href="https://maps.app.goo.gl/6vzdWa7bhQ4PmPzS6" target="_blank" class="btn-lokasi">
+          <i class="fas fa-map-marker-alt"></i> Lihat Lokasi
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+<script>
+  let produkSudahDimuat = false;
+  let scrollPosisiProduk = 0;
+  let filteredProduk = []; // hasil pencarian aktif
+  let sedangMencari = false;
+  let produkData = [];
+  let currentIndex = 0;
+  let kategoriList = [];      
+  let batchSize = 15;           
+  let currentBatch = 0; 
+  let kategoriSudahDimuat = false;
+  let scrollPosHome = 0;
+  let scrollPosProduk = 0;
+  let scrollPosKategori = 0;
+  let scrollAmountTerlaris = 0;
+  let scrollAmountPromo = 0;
+  let autoScrollTerlaris;
+  let autoScrollPromo;
+  let slideIndex = 0;
+  const BATCH_SIZE = 8;
+  const SHEET_URL_PRODUK = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTgErorbgaQ6H6x1tAhvgSlV6c0gtOp2ggT6DrALyqKpGe55lv1E2OB3luuyU51bx-zpJ8tFd2TNcnl/pub?output=csv";
+  const homeSection = document.getElementById("home");
+  const produkSection = document.getElementById("produk");
+  const kategoriSection = document.getElementById("kategori");
+  const produkContainer = document.getElementById("produkContainer");
+  const btnProduk = document.getElementById("btnProduk");
+  const navHome = document.getElementById("nav-home");
+  const terlarisSlider = document.getElementById('terlaris-container');
+  const promoSlider = document.getElementById('promo-container');
+  const dataBarangTerlaris = [
+  {
+    nama: "Lem Dexton 15g",
+    gambar: "https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/barang_barang/dextone_15g.jpg",
+    kategori: "Alat Tangan",
+    keterangan: "Obeng set lengkap untuk kebutuhan rumah dan industri."
+  },
+  {
+    nama: "DW Bosch",
+    gambar: "https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/barang_barang/600_75.jpg",
+    kategori: "Pisau Grinda",
+    keterangan: "Tang listrik multifungsi dengan grip nyaman."
+  },
+  {
+    nama: "Kunci Inggris",
+    gambar: "https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/522c.jpeg?text=Kunci+Inggris",
+    kategori: "Alat Mekanik",
+    keterangan: "Kunci Inggris ukuran sedang, kuat dan tahan lama."
+  },
+    {
+    nama: "Obeng Set",
+    gambar: "https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/522c.jpeg?text=Obeng+Set",
+    kategori: "Alat Tangan",
+    keterangan: "Obeng set lengkap untuk kebutuhan rumah dan industri."
+  },
+  ];
+  const dataBarangPromo = [
+    {
+      nama: "Grinda Bosch GWS 700",
+      gambar: "https://media.monotaro.id/mid01/full/Perkakas%20Tangan%2C%20Pneumatik%20%26%20Listrik/Perkakas%20Listrik/Perkakas%20Listrik/Mesin%20Gerinda/BOSCH%20Gerinda%20Tangan/BOSCH%20Gerinda%20Tangan%20GWS%20700%201unit/8cS039607300-1.jpg",
+      kategori: "Grinda",
+      keterangan: "Obeng set lengkap untuk kebutuhan rumah dan industri."
+    },
+    {
+      nama: "DW Bosch",
+      gambar: "https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/barang_barang/600_75.jpg",
+      kategori: "Pisau Grinda",
+      keterangan: "Tang listrik multifungsi dengan grip nyaman."
+    },
+    {
+      nama: "Kunci Inggris",
+      gambar: "https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/522c.jpeg?text=Kunci+Inggris",
+      kategori: "Alat Mekanik",
+      keterangan: "Kunci Inggris ukuran sedang, kuat dan tahan lama."
+    },
+      {
+      nama: "Obeng Set",
+      gambar: "https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/522c.jpeg?text=Obeng+Set",
+      kategori: "Alat Tangan",
+      keterangan: "Obeng set lengkap untuk kebutuhan rumah dan industri."
+    },
+  ];
+
+  // klik pesan di whatsapp
+  document.querySelector('[title="WhatsApp"]').addEventListener('click', () => {
+    window.open('https://wa.me/6283117345545', '_blank');
+  });
+
+    showSlides();
+
+  function showSlides() {
+        let slides = document.getElementsByClassName("slide");
+        for (let i = 0; i < slides.length; i++) {
+          slides[i].style.display = "none";
+        }
+        slideIndex++;
+        if (slideIndex > slides.length) {slideIndex = 1;}
+        slides[slideIndex-1].style.display = "block";
+    setTimeout(showSlides, 3000); // ganti banner tiap 4 detik
+  }
+
+// menampilkan cardview terlaris
+const terlarisContainer = document.getElementById("terlaris-container");
+terlarisContainer.innerHTML = dataBarangTerlaris.map((item, i) => `
+  <div class="terlaris-card" data-index="${i}">
+    <img src="${item.gambar}" alt="${item.nama}" loading="lazy">
+    <div class="terlaris-info">
+      <p class="terlaris-name">${item.nama}</p>
+    </div>
+  </div>
+`).join('');
+
+// menampilkan cardview Promo
+const promoContainer = document.getElementById("promo-container");
+promoContainer.innerHTML = dataBarangPromo.map((item, i) => `
+  <div class="promo-card" data-index="${i}">
+    <img src="${item.gambar}" alt="${item.nama}" loading="lazy">
+    <div class="promo-info">
+      <p class="promo-name">${item.nama}</p>
+    </div>
+  </div>
+`).join('');
+
+// untuk membuka popup produk terlaris
+document.querySelectorAll('#terlaris-container .terlaris-card').forEach((card, i) => {
+  card.addEventListener('click', () => bukaPopupTerlaris(dataBarangTerlaris[i]));
+});
+// untuk membuka popup produk promo
+document.querySelectorAll('#promo-container .promo-card').forEach((card, i) => {
+  card.addEventListener('click', () => bukaPopupTerlaris(dataBarangPromo[i]));
+});
+
+function bukaPopupTerlaris(item) {
+  document.getElementById("popupTerlaris").style.display = "flex";
+  document.getElementById("terlaris-popup-img").src = item.gambar;
+  document.getElementById("terlaris-popup-nama").textContent = item.nama;
+  document.getElementById("terlaris-popup-kategori").textContent = item.kategori || "";
+  document.getElementById("terlaris-popup-detail").textContent = item.keterangan || "Tidak ada detail.";
+  document.body.style.overflow = "hidden";
+}
+
+// Tutup popup jika klik di luar area konten
+function keluarPopupTerlaris(event) {
+  if (event.target.id === "popupTerlaris") {
+    document.getElementById("popupTerlaris").style.display = "none";
+    document.body.style.overflow = "";
+  }
+}
+
+// ✅ Tutup popup produk jika klik di luar
+function keluarPopupProduk(event) {
+  if (event.target.id === "popupProduk") {
+    document.getElementById("popupProduk").style.display = "none";
+    document.body.style.overflow = "";
+  }
+}
+
+function jalankanSrollOtomatisTerlaris() {
+  if (!terlarisSlider || terlarisSlider.children.length === 0) return;
+  autoScrollTerlaris = setInterval(() => {
+    const card = terlarisSlider.querySelector('.terlaris-card');
+    if (!card) return;
+    const cardWidth = card.offsetWidth + 12;
+    const maxScroll = terlarisSlider.scrollWidth - terlarisSlider.clientWidth;
+    scrollAmountTerlaris += cardWidth;
+    if (scrollAmountTerlaris >= maxScroll + 50) scrollAmountTerlaris = 0;
+    terlarisSlider.scrollTo({ left: scrollAmountTerlaris, behavior: 'smooth' });
+  }, 4000);
+}
+
+function jalankanSrollOtomatisPromo() {
+  if (!promoSlider || promoSlider.children.length === 0) return;
+  autoScrollPromo = setInterval(() => {
+    const card = promoSlider.querySelector('.promo-card');
+    if (!card) return;
+    const cardWidth = card.offsetWidth + 12;
+    const maxScroll = promoSlider.scrollWidth - promoSlider.clientWidth;
+    scrollAmountPromo += cardWidth;
+    if (scrollAmountPromo >= maxScroll + 50) scrollAmountPromo = 0;
+    promoSlider.scrollTo({ left: scrollAmountPromo, behavior: 'smooth' });
+  }, 4000);
+}
+
+function matikanScrollOtomatisTerlaris() { 
+  clearInterval(autoScrollTerlaris); 
+}
+
+function matikanScrollOtomatisPromo() { 
+  clearInterval(autoScrollPromo); 
+}
+
+if(terlarisSlider){
+  jalankanSrollOtomatisTerlaris();
+  terlarisSlider.addEventListener('mouseenter', matikanScrollOtomatisTerlaris);
+  terlarisSlider.addEventListener('mouseleave', jalankanSrollOtomatisTerlaris);
+  terlarisSlider.addEventListener('touchstart', matikanScrollOtomatisTerlaris);
+  terlarisSlider.addEventListener('touchend', jalankanSrollOtomatisTerlaris);
+}
+
+if(promoSlider){
+  jalankanSrollOtomatisPromo();
+  promoSlider.addEventListener('mouseenter', matikanScrollOtomatisPromo);
+  promoSlider.addEventListener('mouseleave', jalankanSrollOtomatisPromo);
+  promoSlider.addEventListener('touchstart', matikanScrollOtomatisPromo);
+  promoSlider.addEventListener('touchend', jalankanSrollOtomatisPromo);
+}
+
+document.querySelectorAll('.bottom-navbar .nav-btn').forEach(btn => {
+  btn.addEventListener('click', e => {
+    document.querySelectorAll('.bottom-navbar .nav-btn').forEach(b => b.classList.remove('active'));
+    e.currentTarget.classList.add('active');
+  });
+});
+
+// 🏠 Halaman Home
+navHome.addEventListener("click", (e) => {
+  e.preventDefault();
+  // simpan posisi scroll halaman lain sebelum pindah
+  if (produkSection.style.display === "block") scrollPosProduk = window.scrollY;
+  if (kategoriSection.style.display === "block") scrollPosKategori = window.scrollY;
+
+  produkSection.style.display = "none";
+  kategoriSection.style.display = "none";
+  homeSection.style.display = "block";
+
+  window.scrollTo(0, scrollPosHome); // kembalikan posisi scroll Home terakhir
+});
+
+// 🛒 Halaman Produk
+btnProduk.addEventListener("click", async (e) => {
+  e.preventDefault();
+  // simpan posisi scroll halaman lain
+  if (homeSection.style.display === "block") scrollPosHome = window.scrollY;
+  if (kategoriSection.style.display === "block") scrollPosKategori = window.scrollY;
+
+  homeSection.style.display = "none";
+  kategoriSection.style.display = "none";
+  produkSection.style.display = "block";
+
+  if (!produkSudahDimuat) {
+    produkContainer.innerHTML = "";
+    currentIndex = 0;
+    await loadProduk();
+    produkSudahDimuat = true;
+  }
+
+  window.scrollTo(0, scrollPosProduk); // kembalikan posisi terakhir produk
+});
+
+// 🧩 Halaman Kategori
+document.getElementById("kategori-btn").addEventListener("click", () => {
+  if (homeSection.style.display === "block") scrollPosHome = window.scrollY;
+  if (produkSection.style.display === "block") scrollPosProduk = window.scrollY;
+
+  document.querySelectorAll("main > section").forEach(sec => sec.style.display = "none");
+  kategoriSection.style.display = "block";
+
+  document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
+  document.getElementById("kategori-btn").classList.add("active");
+
+  // ✅ hanya tampilkan sekali (tidak di-reset setiap klik)
+  if (!kategoriSudahDimuat) {
+    tampilkanKategori();
+    kategoriSudahDimuat = true;
+  }
+
+  // 🟢 beri sedikit waktu untuk render selesai
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        window.scrollTo(0, scrollPosKategori);
+      });
+    });
+
+});
+
+// Ambil data produk dari Google Sheet
+async function loadProduk() {
+  try {
+    const res = await fetch(SHEET_URL_PRODUK);
+    const csvText = await res.text();
+    const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
+
+    produkData = parsed.data.map(row => [
+      row.nama_produk,
+      row.kategori_produk,
+      row.keterangan_produk,
+      row.gambar_produk
+    ]);
+
+    if (produkData.length === 0) {
+      produkContainer.innerHTML = "<p>❌ Tidak ada produk di spreadsheet.</p>";
+      return;
+    }
+
+    tampilkanProduk(BATCH_SIZE);
+  } catch (err) {
+    console.error("Gagal memuat data produk:", err);
+    produkContainer.innerHTML = "<p>❌ Gagal memuat produk.</p>";
+  }
+}
+
+// 🔍 Event pencarian produk
+document.getElementById("search").addEventListener("input", function() {
+  const keyword = this.value.toLowerCase().trim();
+  if (keyword === "") {
+    sedangMencari = false;
+    filteredProduk = [];
+    produkContainer.innerHTML = "";
+    currentIndex = 0;
+    tampilkanProduk(BATCH_SIZE); // tampilkan semua lagi
+    return;
+  }
+
+filteredProduk = produkData.filter(([nama, kategori, keterangan]) =>
+  nama.toLowerCase().includes(keyword) ||
+  kategori.toLowerCase().includes(keyword) ||
+  keterangan.toLowerCase().includes(keyword)
+);
+
+sedangMencari = true;
+currentIndex = 0;
+produkContainer.innerHTML = "";
+tampilkanProduk(BATCH_SIZE); // tampilkan batch pertama dari filteredProduk
+});
+
+// 🟢 Di sini kamu taruh fungsi handleScroll
+function handleScroll() {
+  if (produkSection.style.display === "none") return;
+
+  const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 150;
+  if (nearBottom && currentIndex < produkData.length) {
+    tampilkanProduk(BATCH_SIZE);
+  }
+}
+document.addEventListener("DOMContentLoaded", async () => {
+  loadProduk().then(() => {
+    produkSudahDimuat = true;
+    console.log("✅ Data produk sudah dimuat di background");
+  }).catch(err => {
+    console.error("Gagal preload produk:", err);
+  });
+});
+
+function debounce(func, delay) {
+  let timeout;
+  return function (...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), delay);
+  };
+}
+
+// === 🔍 FITUR PENCARIAN PRODUK ===
+const searchInput = document.getElementById("search");
+
+searchInput.addEventListener("input", debounce(async function () {
+  const keyword = this.value.toLowerCase().trim();
+
+  // 🔹 Hapus header kategori jika sedang menampilkan hasil pencarian
+  const header = document.querySelector(".produk-section .section-title");
+  if (keyword.length > 0) {
+    header.textContent = "Daftar Produk"; // reset header
+  }
+
+  // Jika user mengetik sesuatu → tampilkan halaman produk
+  if (keyword.length > 0) {
+    homeSection.style.display = "none";
+    produkSection.style.display = "block";
+    kategoriSection.style.display = "none";
+    window.scrollTo(0, 0);
+
+    if (!produkSudahDimuat) {
+      produkContainer.innerHTML = "";
+      currentIndex = 0;
+      await loadProduk();
+      produkSudahDimuat = true;
+    }
+
+    // Filter produk berdasarkan nama atau kategori
+    const produkIndex = produkData.map(([nama, kategori, ...rest], i) => ({
+      teks: (nama + " " + kategori).toLowerCase(),
+      index: i
+    }));
+    const hasil = produkIndex.filter(p => p.teks.includes(keyword))
+                             .slice(0, 50)
+                             .map(p => produkData[p.index]);
+
+    produkContainer.innerHTML = "";
+    if (hasil.length === 0) {
+      produkContainer.innerHTML = `<p style="text-align:center;">Tidak ditemukan !</p>`;
+      return;
+    }
+    // Hanya reset kontainer & render batch pertama
+produkContainer.innerHTML = "";
+currentIndex = 0;
+tampilkanProduk(BATCH_SIZE); // gunak
+  }
+}, 100));
+
+window.addEventListener("scroll", () => {
+  if (produkSection.style.display !== "block") return;
+  const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 50;
+  if (nearBottom && currentIndex < (sedangMencari ? filteredProduk.length : produkData.length)) {
+    tampilkanProduk(BATCH_SIZE);
+  }
+});
+
+function tampilkanProduk(batchSize) {
+  const data = sedangMencari ? filteredProduk : produkData;
+  const endIndex = Math.min(currentIndex + batchSize, data.length);
+  
+  for (let i = currentIndex; i < endIndex; i++) {
+    const [nama, kategori, keterangan, gambar] = data[i];
+    const card = document.createElement("div");
+    card.className = "produk-card";
+    card.innerHTML = `
+      <img src="${gambar}" alt="${nama}" loading="lazy">
+      <div class="produk-info">
+        <h3>${nama}</h3>
+        <p>${kategori}</p>
+      </div>
+    `;
+    // 🔹 Tambah event klik buka popup
+    card.addEventListener("click", () => bukaPopupProduk({ nama, kategori, keterangan, gambar }));
+    produkContainer.appendChild(card);
+  }
+  currentIndex = endIndex;
+}
+
+// ✅ Fungsi untuk buka popup produk
+function bukaPopupProduk(item) {
+  const popup = document.getElementById("popupProduk");
+  document.getElementById("popupGambarProduk").src = item.gambar;
+  document.getElementById("popupNamaProduk").textContent = item.nama;
+
+  // buat kategori jadi link
+  const kategoriElem = document.getElementById("popupKategoriProduk");
+  kategoriElem.innerHTML = `<a href="#" id="kategori-link">${item.kategori || ""}</a>`;
+
+  // klik kategori → filter produk & tutup popup
+  document.getElementById("kategori-link").addEventListener("click", (e) => {
+    e.preventDefault();
+    filterProdukByKategori(item.kategori);
+
+    // tutup popup
+    popup.style.display = "none";
+    document.body.style.overflow = "";
+  });
+
+  popup.style.display = "flex";
+  document.body.style.overflow = "hidden"; // nonaktifkan scroll di belakang
+}
+
+function filterProdukByKategori(kategori) {
+  homeSection.style.display = "none";
+  produkSection.style.display = "block";
+
+  // Filter produk sesuai kategori
+  filteredProduk = produkData.filter(([nama, kat, keterangan, gambar]) => kat === kategori);
+  sedangMencari = true;
+  currentIndex = 0;
+  produkContainer.innerHTML = "";
+  tampilkanProduk(BATCH_SIZE);
+
+  // Update header daftar produk
+  const header = document.querySelector(".produk-section .section-title");
+  header.innerHTML = `Daftar Produk "<span style="color:orange;">${kategori}</span>"`;
+
+  // Kembalikan posisi scroll ke atas
+  window.scrollTo(0, 0);
+}
+
+  // untuk select/ highlith navbar home saat pertama kali dim
+  window.addEventListener("DOMContentLoaded", () => {
+    const navHome = document.getElementById("nav-home");
+    if (navHome) navHome.classList.add("active");
+  });
+
+  function tampilkanKategoriBatch() {
+  const kategoriContainer = document.getElementById("kategori-container");
+  const end = Math.min(currentBatch + batchSize, kategoriList.length);
+
+  for (let i = currentBatch; i < end; i++) {
+    const kat = kategoriList[i].namaKategori;
+    const produkList = kategoriList[i].produk;
+
+    const header = document.createElement("div");
+    header.className = "kategori-header";
+    header.innerHTML = `
+      <span>${kat}</span>
+      <span class="produk-count">(${produkList.length})</span>
+    `;
+
+    const slider = document.createElement("div");
+    slider.className = "kategori-slider";
+    slider.style.display = "none";
+
+    produkList.forEach(p => {
+      const card = document.createElement("div");
+      card.className = "kategori-card";
+      card.innerHTML = `
+        <img src="${p.gambar}" alt="${p.nama}" loading="lazy">
+        <h4>${p.nama}</h4>
+      `;
+      card.addEventListener("click", () => {
+        document.getElementById("popupProduk").style.display = "flex";
+        document.getElementById("popupGambarProduk").src = p.gambar;
+        document.getElementById("popupNamaProduk").textContent = p.nama;
+        document.getElementById("popupKategoriProduk").textContent = kat;
+        document.getElementById("popupDeskripsiProduk").textContent = p.keterangan;
+        document.body.style.overflow = "hidden";
+      });
+      slider.appendChild(card);
+    });
+
+    const wrapper = document.createElement("div");
+    wrapper.appendChild(header);
+    wrapper.appendChild(slider);
+
+    header.addEventListener("click", () => {
+      if (slider.style.display === "none") {
+        slider.style.display = "grid";
+        slider.classList.add("kategori-list");
+      } else {
+        slider.style.display = "none";
+      }
+    });
+
+    kategoriContainer.appendChild(wrapper);
+  }
+
+  currentBatch = end;
+}
+
+function tampilkanKategori() {
+  const kategoriContainer = document.getElementById("kategori-container");
+  kategoriContainer.innerHTML = "";
+
+  const kategoriMap = {};
+  produkData.forEach(([nama, kategori, keterangan, gambar]) => {
+    if (!kategoriMap[kategori]) kategoriMap[kategori] = [];
+    kategoriMap[kategori].push({ nama, gambar, keterangan });
+  });
+
+  // simpan kategori ke array (bukan langsung render)
+  kategoriList = Object.keys(kategoriMap).map(kat => ({
+    namaKategori: kat,
+    produk: kategoriMap[kat]
+  }));
+
+  // tampilkan batch pertama
+  currentBatch = 0;
+  tampilkanKategoriBatch();
+}
+// Infinite scroll kategori
+window.addEventListener("scroll", () => {
+  const kategoriSection = document.getElementById("kategori");
+  if (kategoriSection.style.display !== "block") return; // hanya aktif di halaman kategori
+
+  const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+  if (scrollTop + clientHeight >= scrollHeight - 200) {
+    // jika mendekati bawah halaman, tampilkan batch berikutnya
+    tampilkanKategoriBatch();
+  }
+});
+
+const navProfile = document.getElementById("nav-profile");
+const popupInfoToko = document.getElementById("popupInfoToko");
+const closeInfoToko = document.getElementById("closeInfoToko");
+
+navProfile.addEventListener("click", (e) => {
+  e.preventDefault();
+  popupInfoToko.style.display = "flex";
+  document.body.style.overflow = "hidden"; // cegah scroll di belakang
+});
+
+closeInfoToko.addEventListener("click", () => {
+  popupInfoToko.style.display = "none";
+  document.body.style.overflow = "";
+});
+
+popupInfoToko.addEventListener("click", (e) => {
+  if (e.target === popupInfoToko) {
+    popupInfoToko.style.display = "none";
+    document.body.style.overflow = "";
+  }
+});
+
+
+</script>
+</body>
+</html>
