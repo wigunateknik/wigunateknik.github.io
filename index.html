@@ -23,7 +23,7 @@
     --text: #222;             /* 🔹 warna teks utama tetap gelap agar kontras */
     --shadow: rgba(0, 0, 0, 0.1);
     --white: #ffffff;         /* 🔹 cardview tetap putih terang */
-     --bottom-navbar-height: 60px;
+     /*--bottom-navbar-height: 60px;*/
   }
 
   body {
@@ -31,7 +31,12 @@
     background: var(--bg);
     margin: 0;
     color: var(--text);
+    padding-bottom: 65px;
   }
+
+  .terlaris-section:last-of-type {
+  margin-bottom: 100px; /* beri jarak ekstra agar tidak tertutup */
+}
   .navbar {
     background: var(--primary);
     color: #fff;
@@ -490,18 +495,57 @@
   text-align: center;
   line-height: 1.2; /* 🔹 lebih rapat antar baris */
 }
+.terlaris-name {
+  font-size: 15px;  /* 🔹 lebih besar dari 13px */
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 2px; /* 🔹 jarak bawah kecil */
+}
+/*akhir terlaris*/
+
+.promo-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  min-width: 160px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+  cursor: pointer;
+  /*transition: box-shadow;*/
+}
+.promo-card:hover {
+  transform: translateY(-4px);
+}
+.promo-slider .card:hover {
+  transform: translateY(-3px);
+}
+.promo-card img {
+  width: 100%;
+  height: 130px;       /* tetap sesuai ukuran card */
+  object-fit: cover;   /* gambar isi penuh kotak */
+  object-position: center; /* gambar selalu di tengah */
+  background: #000;    /* bisa ubah ke #fff jika mau */
+  border-bottom: none; /* opsional: biar lebih bersih */
+  display: block;
+  transition: transform 0.3s ease;
+}
+.promo-card:hover img {
+  transform: scale(1.05);
+}
+.promo-info {
+  padding: 8px;
+  text-align: center;
+  line-height: 1.2; /* 🔹 lebih rapat antar baris */
+}
 .promo-name {
   font-size: 15px;  /* 🔹 lebih besar dari 13px */
   font-weight: 600;
   color: #222;
   margin-bottom: 2px; /* 🔹 jarak bawah kecil */
 }
-.promo-price .new {
-  font-size: 20px;   /* 🔹 sedikit diperbesar */
-  font-weight: 700;
-  color: #e53935;
-}
-/*akhir promo*/
+
+
 /* 🔸 Popup untuk promo */
 #popupTerlaris .popup-content {
   max-width: 400px;
@@ -624,7 +668,7 @@
   line-height: 1;           /* jarak antarbaris rapat */
 }
 
-#terlaris-container .promo-name {
+#terlaris-container .terlaris-name {
   margin-top: 4px;          /* hanya sedikit ruang di atas */
   font-size: 13.5px;
   font-weight: 600;
@@ -767,6 +811,119 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* 🌙 Overlay Popup */
+.popup-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+/* 💎 Konten Popup */
+.popup-content {
+  position: relative;
+  background: #fff;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  animation: slideUp 0.4s ease;
+}
+
+/* Tombol close */
+.popup-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 50px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  z-index: 10;
+}
+
+/* Foto toko */
+.popup-header img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+/* Isi popup */
+.popup-body {
+  padding: 20px;
+  text-align: center;
+}
+
+.popup-body h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.popup-body .lokasi {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+/* Video */
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+.video-wrapper iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+
+/* Deskripsi */
+.deskripsi {
+  font-size: 1rem;
+  color: #444;
+  margin: 10px 0 20px;
+  line-height: 1.5;
+}
+
+/* Tombol WA */
+.btn-wa {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #25D366;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+.btn-wa:hover {
+  background: #20b858;
+}
+
+/* Animasi */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideUp {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
 </style>
 <body>
   <header class="navbar">
@@ -794,18 +951,27 @@
         <img src="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/banner/3.png" alt="Banner 3">
       </div>
     </div>
+<!-- Barang Promo -->
+    <section class="terlaris-section">
+    <div class="terlaris-wrapper">
+      <div class="terlaris-header">
+        <h2>Promo🔥</h2>
+      </div>
+      <div id="promo-container" class="terlaris-slider"></div>
+    </div>
+  </section>
 
   <!-- Barang Terlaris -->
   <section class="terlaris-section">
     <div class="terlaris-wrapper">
       <div class="terlaris-header">
-        <h2>Barang Terlaris</h2>
+        <h2>Produk Terlaris⭐</h2>
       </div>
       <div id="terlaris-container" class="terlaris-slider"></div>
     </div>
   </section>
-  <!-- DATA BARANG -->
 
+  <!-- DATA BARANG -->
 </section>
 <section id="produk" class="produk-section" style="display:none;">
   <div class="produk-wrapper">
@@ -856,6 +1022,35 @@
     <p id="popupDeskripsiProduk"></p>
   </div>
 </div>
+<!-- 🏪 POPUP INFO TOKO -->
+<div id="popupInfoToko" class="popup-overlay">
+  <div class="popup-content">
+    <button class="popup-close" id="closeInfoToko">&times;</button>
+
+    <div class="popup-header">
+      <img src="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/barang_barang/gambar_toko.jpg" alt="Foto Toko" id="fotoToko">
+    </div>
+
+    <div class="popup-body">
+      <h2 id="namaToko">Wiguna Teknik</h2>
+      <p class="lokasi"><i class="fas fa-map-marker-alt"></i> <span id="lokasiToko">Jl. Baledan, Selat, Karangasem</span></p>
+      <div class="video-wrapper">
+        <iframe id="videoToko" src="https://www.youtube.com/embed/CJoCiRO7OAw" 
+          title="Video Profil Toko" frameborder="0" allowfullscreen></iframe>
+      </div>
+      <p class="deskripsi" id="deskripsiToko">
+        Toko Wiguna Teknik menyediakan berbagai alat teknik, perbengkelan, dan industri.
+        Produk berkualitas dengan harga bersaing, pelayanan cepat dan terpercaya.
+      </p>
+      <div class="kontak">
+        <a href="https://wa.me/6281234567890" target="_blank" class="btn-wa">
+          <i class="fab fa-whatsapp"></i> Hubungi Kami
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 <script>
   let produkSudahDimuat = false;
@@ -871,36 +1066,22 @@
   let scrollPosHome = 0;
   let scrollPosProduk = 0;
   let scrollPosKategori = 0;
+  let scrollAmountTerlaris = 0;
+  let scrollAmountPromo = 0;
+  let autoScrollTerlaris;
+  let autoScrollPromo;
+  let slideIndex = 0;
   const BATCH_SIZE = 8;
-
+  const SHEET_URL_PRODUK = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTgErorbgaQ6H6x1tAhvgSlV6c0gtOp2ggT6DrALyqKpGe55lv1E2OB3luuyU51bx-zpJ8tFd2TNcnl/pub?output=csv";
   const homeSection = document.getElementById("home");
-const produkSection = document.getElementById("produk");
-const kategoriSection = document.getElementById("kategori");
-const produkContainer = document.getElementById("produkContainer");
-const btnProduk = document.getElementById("btnProduk");
-const navHome = document.getElementById("nav-home");
-
-  // klik pesan di whatsapp
-  document.querySelector('[title="WhatsApp"]').addEventListener('click', () => {
-    window.open('https://wa.me/6281936619374', '_blank');
-  });
-
-    let slideIndex = 0;
-    showSlides();
-
-    function showSlides() {
-      let slides = document.getElementsByClassName("slide");
-      for (let i = 0; i < slides.length; i++) {
-        slides[i].style.display = "none";
-      }
-      slideIndex++;
-      if (slideIndex > slides.length) {slideIndex = 1;}
-      slides[slideIndex-1].style.display = "block";
-  setTimeout(showSlides, 3000); // ganti banner tiap 4 detik
-}
-
-// Data Barang Terlaris (manual)
-const terlarisData = [
+  const produkSection = document.getElementById("produk");
+  const kategoriSection = document.getElementById("kategori");
+  const produkContainer = document.getElementById("produkContainer");
+  const btnProduk = document.getElementById("btnProduk");
+  const navHome = document.getElementById("nav-home");
+  const terlarisSlider = document.getElementById('terlaris-container');
+  const promoSlider = document.getElementById('promo-container');
+  const dataBarangTerlaris = [
   {
     nama: "Lem Dexton 15g",
     gambar: "https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/barang_barang/dextone_15g.jpg",
@@ -925,22 +1106,81 @@ const terlarisData = [
     kategori: "Alat Tangan",
     keterangan: "Obeng set lengkap untuk kebutuhan rumah dan industri."
   },
-  // Tambahkan barang lain sesuai kebutuhan
-];
-const terlarisContainer = document.getElementById("terlaris-container");
+  ];
+  const dataBarangPromo = [
+    {
+      nama: "Grinda Bosch GWS 700",
+      gambar: "https://media.monotaro.id/mid01/full/Perkakas%20Tangan%2C%20Pneumatik%20%26%20Listrik/Perkakas%20Listrik/Perkakas%20Listrik/Mesin%20Gerinda/BOSCH%20Gerinda%20Tangan/BOSCH%20Gerinda%20Tangan%20GWS%20700%201unit/8cS039607300-1.jpg",
+      kategori: "Grinda",
+      keterangan: "Obeng set lengkap untuk kebutuhan rumah dan industri."
+    },
+    {
+      nama: "DW Bosch",
+      gambar: "https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/barang_barang/600_75.jpg",
+      kategori: "Pisau Grinda",
+      keterangan: "Tang listrik multifungsi dengan grip nyaman."
+    },
+    {
+      nama: "Kunci Inggris",
+      gambar: "https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/522c.jpeg?text=Kunci+Inggris",
+      kategori: "Alat Mekanik",
+      keterangan: "Kunci Inggris ukuran sedang, kuat dan tahan lama."
+    },
+      {
+      nama: "Obeng Set",
+      gambar: "https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/522c.jpeg?text=Obeng+Set",
+      kategori: "Alat Tangan",
+      keterangan: "Obeng set lengkap untuk kebutuhan rumah dan industri."
+    },
+  ];
 
-terlarisContainer.innerHTML = terlarisData.map((item, i) => `
+  // klik pesan di whatsapp
+  document.querySelector('[title="WhatsApp"]').addEventListener('click', () => {
+    window.open('https://wa.me/6281936619374', '_blank');
+  });
+
+    showSlides();
+
+  function showSlides() {
+        let slides = document.getElementsByClassName("slide");
+        for (let i = 0; i < slides.length; i++) {
+          slides[i].style.display = "none";
+        }
+        slideIndex++;
+        if (slideIndex > slides.length) {slideIndex = 1;}
+        slides[slideIndex-1].style.display = "block";
+    setTimeout(showSlides, 3000); // ganti banner tiap 4 detik
+  }
+
+// menampilkan cardview terlaris
+const terlarisContainer = document.getElementById("terlaris-container");
+terlarisContainer.innerHTML = dataBarangTerlaris.map((item, i) => `
   <div class="terlaris-card" data-index="${i}">
     <img src="${item.gambar}" alt="${item.nama}" loading="lazy">
     <div class="terlaris-info">
+      <p class="terlaris-name">${item.nama}</p>
+    </div>
+  </div>
+`).join('');
+
+// menampilkan cardview Promo
+const promoContainer = document.getElementById("promo-container");
+promoContainer.innerHTML = dataBarangPromo.map((item, i) => `
+  <div class="promo-card" data-index="${i}">
+    <img src="${item.gambar}" alt="${item.nama}" loading="lazy">
+    <div class="promo-info">
       <p class="promo-name">${item.nama}</p>
     </div>
   </div>
 `).join('');
 
-// Event klik untuk popup, reuse fungsi bukaPopupPromo
+// untuk membuka popup produk terlaris
 document.querySelectorAll('#terlaris-container .terlaris-card').forEach((card, i) => {
-  card.addEventListener('click', () => bukaPopupTerlaris(terlarisData[i]));
+  card.addEventListener('click', () => bukaPopupTerlaris(dataBarangTerlaris[i]));
+});
+// untuk membuka popup produk promo
+document.querySelectorAll('#promo-container .promo-card').forEach((card, i) => {
+  card.addEventListener('click', () => bukaPopupTerlaris(dataBarangPromo[i]));
 });
 
 function bukaPopupTerlaris(item) {
@@ -951,12 +1191,24 @@ function bukaPopupTerlaris(item) {
   document.getElementById("terlaris-popup-detail").textContent = item.keterangan || "Tidak ada detail.";
   document.body.style.overflow = "hidden";
 }
-const terlarisSlider = document.getElementById('terlaris-container');
-let scrollAmountTerlaris = 0;
-// const slideWidthTerlaris = 180;
-let autoScrollTerlaris;
 
-function startAutoScrollTerlaris() {
+// Tutup popup jika klik di luar area konten
+function keluarPopupTerlaris(event) {
+  if (event.target.id === "popupTerlaris") {
+    document.getElementById("popupTerlaris").style.display = "none";
+    document.body.style.overflow = "";
+  }
+}
+
+// ✅ Tutup popup produk jika klik di luar
+function keluarPopupProduk(event) {
+  if (event.target.id === "popupProduk") {
+    document.getElementById("popupProduk").style.display = "none";
+    document.body.style.overflow = "";
+  }
+}
+
+function jalankanSrollOtomatisTerlaris() {
   if (!terlarisSlider || terlarisSlider.children.length === 0) return;
   autoScrollTerlaris = setInterval(() => {
     const card = terlarisSlider.querySelector('.terlaris-card');
@@ -969,22 +1221,41 @@ function startAutoScrollTerlaris() {
   }, 4000);
 }
 
-function stopAutoScrollTerlaris() { clearInterval(autoScrollTerlaris); }
-
-if(terlarisSlider){
-  startAutoScrollTerlaris();
-  terlarisSlider.addEventListener('mouseenter', stopAutoScrollTerlaris);
-  terlarisSlider.addEventListener('mouseleave', startAutoScrollTerlaris);
-  terlarisSlider.addEventListener('touchstart', stopAutoScrollTerlaris);
-  terlarisSlider.addEventListener('touchend', startAutoScrollTerlaris);
+function jalankanSrollOtomatisPromo() {
+  if (!promoSlider || promoSlider.children.length === 0) return;
+  autoScrollPromo = setInterval(() => {
+    const card = promoSlider.querySelector('.promo-card');
+    if (!card) return;
+    const cardWidth = card.offsetWidth + 12;
+    const maxScroll = promoSlider.scrollWidth - promoSlider.clientWidth;
+    scrollAmountPromo += cardWidth;
+    if (scrollAmountPromo >= maxScroll + 50) scrollAmountPromo = 0;
+    promoSlider.scrollTo({ left: scrollAmountPromo, behavior: 'smooth' });
+  }, 4000);
 }
 
-// Tutup popup jika klik di luar area konten
-function keluarPopupTerlaris(event) {
-  if (event.target.id === "popupTerlaris") {
-    document.getElementById("popupTerlaris").style.display = "none";
-    document.body.style.overflow = "";
-  }
+function matikanScrollOtomatisTerlaris() { 
+  clearInterval(autoScrollTerlaris); 
+}
+
+function matikanScrollOtomatisPromo() { 
+  clearInterval(autoScrollPromo); 
+}
+
+if(terlarisSlider){
+  jalankanSrollOtomatisTerlaris();
+  terlarisSlider.addEventListener('mouseenter', matikanScrollOtomatisTerlaris);
+  terlarisSlider.addEventListener('mouseleave', jalankanSrollOtomatisTerlaris);
+  terlarisSlider.addEventListener('touchstart', matikanScrollOtomatisTerlaris);
+  terlarisSlider.addEventListener('touchend', jalankanSrollOtomatisTerlaris);
+}
+
+if(promoSlider){
+  jalankanSrollOtomatisPromo();
+  promoSlider.addEventListener('mouseenter', matikanScrollOtomatisPromo);
+  promoSlider.addEventListener('mouseleave', jalankanSrollOtomatisPromo);
+  promoSlider.addEventListener('touchstart', matikanScrollOtomatisPromo);
+  promoSlider.addEventListener('touchend', jalankanSrollOtomatisPromo);
 }
 
 document.querySelectorAll('.bottom-navbar .nav-btn').forEach(btn => {
@@ -993,10 +1264,6 @@ document.querySelectorAll('.bottom-navbar .nav-btn').forEach(btn => {
     e.currentTarget.classList.add('active');
   });
 });
-
-const SHEET_URL_PRODUK = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTgErorbgaQ6H6x1tAhvgSlV6c0gtOp2ggT6DrALyqKpGe55lv1E2OB3luuyU51bx-zpJ8tFd2TNcnl/pub?output=csv";
-
-
 
 // 🏠 Halaman Home
 navHome.addEventListener("click", (e) => {
@@ -1255,14 +1522,6 @@ function filterProdukByKategori(kategori) {
   window.scrollTo(0, 0);
 }
 
-// ✅ Tutup popup produk jika klik di luar
-function keluarPopupProduk(event) {
-  if (event.target.id === "popupProduk") {
-    document.getElementById("popupProduk").style.display = "none";
-    document.body.style.overflow = "";
-  }
-}
-
   // untuk select/ highlith navbar home saat pertama kali dim
   window.addEventListener("DOMContentLoaded", () => {
     const navHome = document.getElementById("nav-home");
@@ -1356,6 +1615,29 @@ window.addEventListener("scroll", () => {
     tampilkanKategoriBatch();
   }
 });
+
+const navProfile = document.getElementById("nav-profile");
+const popupInfoToko = document.getElementById("popupInfoToko");
+const closeInfoToko = document.getElementById("closeInfoToko");
+
+navProfile.addEventListener("click", (e) => {
+  e.preventDefault();
+  popupInfoToko.style.display = "flex";
+  document.body.style.overflow = "hidden"; // cegah scroll di belakang
+});
+
+closeInfoToko.addEventListener("click", () => {
+  popupInfoToko.style.display = "none";
+  document.body.style.overflow = "";
+});
+
+popupInfoToko.addEventListener("click", (e) => {
+  if (e.target === popupInfoToko) {
+    popupInfoToko.style.display = "none";
+    document.body.style.overflow = "";
+  }
+});
+
 
 </script>
 </body>
