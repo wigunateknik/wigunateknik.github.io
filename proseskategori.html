@@ -319,7 +319,6 @@
     .icon-group {
       gap: 8px;
       font-size: 20px;
-      /*padding: 10px  50px 10px 20px ;*/
     }
 
     .header-name {
@@ -328,10 +327,8 @@
       .bottom-navbar {
     display: flex;
   }
-      .produk-container {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) !important;
-    gap: 10px;
+    .produk-container {
+    grid-template-columns: repeat(2, 1fr) !important;
   }
   }
 /* Desktop / laptop */
@@ -362,9 +359,7 @@
     font-size: 22px;
   }
   .produk-container {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) !important;
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   }
 }
 .tombol-wrapper {
