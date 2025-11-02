@@ -304,7 +304,7 @@
     100% {background-position: -200% 0;}
   }
   /* 🔸 Responsif */
-  @media (max-width: 600px) {
+  @media (max-width: 750px) {
     .navbar {
       flex-wrap: nowrap;
     }
@@ -325,6 +325,9 @@
     .header-name {
       display: none;
     }
+      .bottom-navbar {
+    display: flex;
+  }
   }
 /* Desktop / laptop */
 @media (min-width: 768px) {
@@ -403,12 +406,7 @@
   font-size: 20px;
   margin-bottom: 2px;
 }
-/* Tampilkan bottom navbar di HP saja */
-@media (max-width: 600px) {
-  .bottom-navbar {
-    display: flex;
-  }
-}
+
 /* Slideshow */
 .slideshow-container {
   position: relative;
@@ -865,7 +863,7 @@
   document.querySelector('[title="WhatsApp"]').addEventListener('click', () => {
     window.open('https://wa.me/6281936619374', '_blank');
   });
-  
+
     let slideIndex = 0;
     showSlides();
 
