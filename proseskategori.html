@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -529,7 +530,6 @@
   padding-bottom: calc(var(--bottom-navbar-height) + 10px);
 }
 
-
 .promo-section,
 .produk-grid {
   padding-bottom: calc(var(--bottom-navbar-height) + 10px);
@@ -687,25 +687,38 @@
 }
 
 .kategori-section {
-  padding: 20px;
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 0 16px;
 }
-
 .kategori-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: var(--orange);
-  margin-bottom: 10px;
-  font-size: 1.1rem;
-  font-weight: bold;
+  background: linear-gradient(90deg, #a3a3a3, #ffffff);
+  color: #000000;
+  font-weight: 600;
+  padding: 10px 16px;
+  border-radius: 8px;
+  margin: 16px 0 8px;
+  cursor: pointer;
+}
+.kategori-header span:first-child {
+  font-size: 16px;
+}
+.kategori-header .produk-count {
+  font-size: 14px;
+  color: #000000;
+  opacity: 0.9;
 }
 
 .kategori-slider {
   display: flex;
-  gap: 12px;
   overflow-x: auto;
+  gap: 12px;
   scroll-behavior: smooth;
   padding-bottom: 10px;
+  scrollbar-width: none;
 }
 
 .kategori-slider::-webkit-scrollbar {
@@ -713,42 +726,47 @@
 }
 
 .kategori-card {
-  flex: 0 0 150px;
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  transition: transform 0.3s ease;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  flex: 0 0 120px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  padding: 8px;
 }
 
 .kategori-card:hover {
-  transform: scale(1.05);
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 .kategori-card img {
   width: 100%;
-  border-radius: 12px 12px 0 0;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
 .kategori-card h4 {
-  font-size: 0.9rem;
-  text-align: center;
-  padding: 8px;
+  margin-top: 6px;
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
 }
 
 /* Vertikal tampilan toggle */
 .kategori-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 12px;
-  animation: slideDown 0.4s ease forwards;
+  gap: 16px;
+  padding: 10px 0;
 }
 
 @keyframes slideDown {
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
-
 
 </style>
 <body>
@@ -847,7 +865,6 @@
   document.querySelector('[title="WhatsApp"]').addEventListener('click', () => {
     window.open('https://wa.me/6281936619374', '_blank');
   });
-
   
     let slideIndex = 0;
     showSlides();
@@ -943,7 +960,6 @@ if(terlarisSlider){
   terlarisSlider.addEventListener('touchend', startAutoScrollTerlaris);
 }
 
-
 // Tutup popup jika klik di luar area konten
 function keluarPopupTerlaris(event) {
   if (event.target.id === "popupTerlaris") {
@@ -959,13 +975,11 @@ document.querySelectorAll('.bottom-navbar .nav-btn').forEach(btn => {
   });
 });
 
-  // SCRIPT MENEKAN BUTTON NAVBAR MENAMPILKAN PRODUK
-  // Tombol Produk di navbar
-
 const SHEET_URL_PRODUK = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTgErorbgaQ6H6x1tAhvgSlV6c0gtOp2ggT6DrALyqKpGe55lv1E2OB3luuyU51bx-zpJ8tFd2TNcnl/pub?output=csv";
 
 const homeSection = document.getElementById("home");
 const produkSection = document.getElementById("produk");
+const kategoriSection = document.getElementById("kategori");
 const produkContainer = document.getElementById("produkContainer");
 const btnProduk = document.getElementById("btnProduk");
 const navHome = document.getElementById("nav-home");
@@ -976,11 +990,25 @@ let produkData = [];
 let currentIndex = 0;
 const BATCH_SIZE = 8;
 
-// Tombol Produk → tampilkan daftar produk
+// tampilkan halaman home
+navHome.addEventListener("click", (e) => {
+  e.preventDefault();
+  // 🟢 Simpan posisi scroll sebelum pindah halaman
+  scrollPosisiProduk = window.scrollY;
+  
+  produkSection.style.display = "none";
+  homeSection.style.display = "block";
+  kategoriSection.style.display = "none";
+  window.scrollTo(0, 0);
+});
+
+// Tampilkan halaman produk
 btnProduk.addEventListener("click", async (e) => {
   e.preventDefault();
+  // scrollPosisiProduk = window.scrollY;
   homeSection.style.display = "none";
   produkSection.style.display = "block";
+  kategoriSection.style.display = "none";
 
   // ✅ Jika produk belum pernah dimuat → ambil data
   if (!produkSudahDimuat) {
@@ -994,21 +1022,13 @@ btnProduk.addEventListener("click", async (e) => {
   window.scrollTo(0, scrollPosisiProduk);
 });
 
-// Tombol Home → tampilkan kembali banner & terlaris
-// navHome.addEventListener("click", (e) => {
-//   e.preventDefault();
-//   produkSection.style.display = "none";
-//   homeSection.style.display = "block";
-// });
-
-navHome.addEventListener("click", (e) => {
-  e.preventDefault();
-  // 🟢 Simpan posisi scroll sebelum pindah halaman
-  scrollPosisiProduk = window.scrollY;
-  
-  produkSection.style.display = "none";
-  homeSection.style.display = "block";
-  window.scrollTo(0, 0);
+  // Tampilkan Halaman Kategori
+document.getElementById("kategori-btn").addEventListener("click", () => {
+  document.querySelectorAll("main > section").forEach(sec => sec.style.display = "none");
+  document.getElementById("kategori").style.display = "block";
+  document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
+  document.getElementById("kategori-btn").classList.add("active");
+  tampilkanKategori();
 });
 
 // Ambil data produk dari Google Sheet
@@ -1061,7 +1081,6 @@ produkContainer.innerHTML = "";
 tampilkanProduk(BATCH_SIZE); // tampilkan batch pertama dari filteredProduk
 });
 
-
 // 🟢 Di sini kamu taruh fungsi handleScroll
 function handleScroll() {
   if (produkSection.style.display === "none") return;
@@ -1087,7 +1106,6 @@ function debounce(func, delay) {
     timeout = setTimeout(() => func.apply(this, args), delay);
   };
 }
-
 
 // === 🔍 FITUR PENCARIAN PRODUK ===
 const searchInput = document.getElementById("search");
@@ -1127,27 +1145,6 @@ searchInput.addEventListener("input", debounce(async function () {
       produkContainer.innerHTML = `<p style="text-align:center;">Tidak ada produk ditemukan.</p>`;
       return;
     }
-
-    // hasil.forEach(([nama, kategori, keterangan, gambar]) => {
-    //   const card = document.createElement("div");
-    //   card.className = "produk-card";
-    //   card.innerHTML = `
-    //     <img src="${gambar}" alt="${nama}" loading="lazy">
-    //     <div class="produk-info">
-    //       <h3>${nama}</h3>
-    //       <p>${kategori}</p>
-    //     </div>
-    //   `;
-    //   card.addEventListener("click", () => {
-    //     document.getElementById("popupProduk").style.display = "flex";
-    //     document.getElementById("popupGambarProduk").src = gambar;
-    //     document.getElementById("popupNamaProduk").textContent = nama;
-    //     document.getElementById("popupKategoriProduk").textContent = kategori;
-    //     document.getElementById("popupDeskripsiProduk").textContent = keterangan;
-    //   });
-    //   produkContainer.appendChild(card);
-    // });
-
     // Hanya reset kontainer & render batch pertama
 produkContainer.innerHTML = "";
 currentIndex = 0;
@@ -1182,7 +1179,6 @@ function tampilkanProduk(batchSize) {
     card.addEventListener("click", () => bukaPopupProduk({ nama, kategori, keterangan, gambar }));
     produkContainer.appendChild(card);
   }
-
   currentIndex = endIndex;
 }
 
@@ -1210,7 +1206,6 @@ function bukaPopupProduk(item) {
   document.body.style.overflow = "hidden"; // nonaktifkan scroll di belakang
 }
 
-
 function filterProdukByKategori(kategori) {
   homeSection.style.display = "none";
   produkSection.style.display = "block";
@@ -1230,9 +1225,6 @@ function filterProdukByKategori(kategori) {
   window.scrollTo(0, 0);
 }
 
-
-
-
 // ✅ Tutup popup produk jika klik di luar
 function keluarPopupProduk(event) {
   if (event.target.id === "popupProduk") {
@@ -1246,39 +1238,31 @@ function keluarPopupProduk(event) {
     const navHome = document.getElementById("nav-home");
     if (navHome) navHome.classList.add("active");
   });
-  // === FUNGSI: Tampilkan Halaman Kategori ===
-document.getElementById("kategori-btn").addEventListener("click", () => {
-  document.querySelectorAll("main > section").forEach(sec => sec.style.display = "none");
-  document.getElementById("kategori").style.display = "block";
-  document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
-  document.getElementById("kategori-btn").classList.add("active");
-  tampilkanKategori();
-});
 
 // === FUNGSI: Tampilkan Kategori Otomatis ===
 function tampilkanKategori() {
   const kategoriContainer = document.getElementById("kategori-container");
   kategoriContainer.innerHTML = "";
 
-  // Kelompokkan berdasarkan kategori
   const kategoriMap = {};
   produkData.forEach(([nama, kategori, keterangan, gambar]) => {
     if (!kategoriMap[kategori]) kategoriMap[kategori] = [];
     kategoriMap[kategori].push({ nama, gambar, keterangan });
   });
 
-  // Render per kategori
   Object.keys(kategoriMap).forEach(kat => {
     const produkList = kategoriMap[kat];
+
     const header = document.createElement("div");
     header.className = "kategori-header";
     header.innerHTML = `
       <span>${kat}</span>
-      <span class="produk-count" style="cursor:pointer;">(${produkList.length})</span>
+      <span class="produk-count">(${produkList.length})</span>
     `;
 
     const slider = document.createElement("div");
     slider.className = "kategori-slider";
+    slider.style.display = "none"; // disembunyikan dulu
 
     produkList.forEach(p => {
       const card = document.createElement("div");
@@ -1301,21 +1285,19 @@ function tampilkanKategori() {
     wrapper.appendChild(header);
     wrapper.appendChild(slider);
 
-    // Toggle tampilan horizontal <-> grid
-    header.querySelector(".produk-count").addEventListener("click", () => {
-      if (slider.classList.contains("kategori-slider")) {
-        slider.classList.remove("kategori-slider");
+    // 🟧 klik di header ATAU jumlah produk = tampilkan/sembunyikan produk
+    header.addEventListener("click", () => {
+      if (slider.style.display === "none") {
+        slider.style.display = "grid";
         slider.classList.add("kategori-list");
       } else {
-        slider.classList.remove("kategori-list");
-        slider.classList.add("kategori-slider");
+        slider.style.display = "none";
       }
     });
 
     kategoriContainer.appendChild(wrapper);
   });
 }
-
 </script>
 </body>
 </html>
