@@ -913,6 +913,28 @@
 .btn-wa:hover {
   background: #20b858;
 }
+/* 🔵 Tombol Lokasi */
+.btn-lokasi {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #007BFF;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+.btn-lokasi:hover {
+  background: #0066cc;
+}
+.kontak {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
 
 /* Animasi */
 @keyframes fadeIn {
@@ -1026,11 +1048,9 @@
 <div id="popupInfoToko" class="popup-overlay">
   <div class="popup-content">
     <button class="popup-close" id="closeInfoToko">&times;</button>
-
     <div class="popup-header">
       <img src="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/barang_barang/gambar_toko.jpg" alt="Foto Toko" id="fotoToko">
     </div>
-
     <div class="popup-body">
       <h2 id="namaToko">Wiguna Teknik</h2>
       <p class="lokasi"><i class="fas fa-map-marker-alt"></i> <span id="lokasiToko">Jl. Baledan, Selat, Karangasem</span></p>
@@ -1045,6 +1065,9 @@
       <div class="kontak">
         <a href="https://wa.me/6283117345545" target="_blank" class="btn-wa">
           <i class="fab fa-whatsapp"></i> Hubungi Kami
+        </a>
+        <a href="https://maps.app.goo.gl/6vzdWa7bhQ4PmPzS6" target="_blank" class="btn-lokasi">
+          <i class="fas fa-map-marker-alt"></i> Lihat Lokasi
         </a>
       </div>
     </div>
