@@ -861,6 +861,23 @@
 <script>
   let produkSudahDimuat = false;
   let scrollPosisiProduk = 0;
+  let filteredProduk = []; // hasil pencarian aktif
+  let sedangMencari = false;
+  let produkData = [];
+  let currentIndex = 0;
+  let kategoriSudahDimuat = false;
+  let scrollPosHome = 0;
+  let scrollPosProduk = 0;
+  let scrollPosKategori = 0;
+  const BATCH_SIZE = 8;
+
+  const homeSection = document.getElementById("home");
+const produkSection = document.getElementById("produk");
+const kategoriSection = document.getElementById("kategori");
+const produkContainer = document.getElementById("produkContainer");
+const btnProduk = document.getElementById("btnProduk");
+const navHome = document.getElementById("nav-home");
+
   // klik pesan di whatsapp
   document.querySelector('[title="WhatsApp"]').addEventListener('click', () => {
     window.open('https://wa.me/6281936619374', '_blank');
@@ -977,40 +994,33 @@ document.querySelectorAll('.bottom-navbar .nav-btn').forEach(btn => {
 
 const SHEET_URL_PRODUK = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTgErorbgaQ6H6x1tAhvgSlV6c0gtOp2ggT6DrALyqKpGe55lv1E2OB3luuyU51bx-zpJ8tFd2TNcnl/pub?output=csv";
 
-const homeSection = document.getElementById("home");
-const produkSection = document.getElementById("produk");
-const kategoriSection = document.getElementById("kategori");
-const produkContainer = document.getElementById("produkContainer");
-const btnProduk = document.getElementById("btnProduk");
-const navHome = document.getElementById("nav-home");
 
-let filteredProduk = []; // hasil pencarian aktif
-let sedangMencari = false;
-let produkData = [];
-let currentIndex = 0;
-const BATCH_SIZE = 8;
 
-// tampilkan halaman home
+// 🏠 Halaman Home
 navHome.addEventListener("click", (e) => {
   e.preventDefault();
-  // 🟢 Simpan posisi scroll sebelum pindah halaman
-  scrollPosisiProduk = window.scrollY;
-  
+  // simpan posisi scroll halaman lain sebelum pindah
+  if (produkSection.style.display === "block") scrollPosProduk = window.scrollY;
+  if (kategoriSection.style.display === "block") scrollPosKategori = window.scrollY;
+
   produkSection.style.display = "none";
-  homeSection.style.display = "block";
   kategoriSection.style.display = "none";
-  window.scrollTo(0, 0);
+  homeSection.style.display = "block";
+
+  window.scrollTo(0, scrollPosHome); // kembalikan posisi scroll Home terakhir
 });
 
-// Tampilkan halaman produk
+// 🛒 Halaman Produk
 btnProduk.addEventListener("click", async (e) => {
   e.preventDefault();
-  // scrollPosisiProduk = window.scrollY;
-  homeSection.style.display = "none";
-  produkSection.style.display = "block";
-  kategoriSection.style.display = "none";
+  // simpan posisi scroll halaman lain
+  if (homeSection.style.display === "block") scrollPosHome = window.scrollY;
+  if (kategoriSection.style.display === "block") scrollPosKategori = window.scrollY;
 
-  // ✅ Jika produk belum pernah dimuat → ambil data
+  homeSection.style.display = "none";
+  kategoriSection.style.display = "none";
+  produkSection.style.display = "block";
+
   if (!produkSudahDimuat) {
     produkContainer.innerHTML = "";
     currentIndex = 0;
@@ -1018,18 +1028,37 @@ btnProduk.addEventListener("click", async (e) => {
     produkSudahDimuat = true;
   }
 
-  // 🟢 Kembalikan posisi scroll terakhir
-  window.scrollTo(0, scrollPosisiProduk);
+  window.scrollTo(0, scrollPosProduk); // kembalikan posisi terakhir produk
 });
 
-  // Tampilkan Halaman Kategori
+// 🧩 Halaman Kategori
 document.getElementById("kategori-btn").addEventListener("click", () => {
+  if (homeSection.style.display === "block") scrollPosHome = window.scrollY;
+  if (produkSection.style.display === "block") scrollPosProduk = window.scrollY;
+
   document.querySelectorAll("main > section").forEach(sec => sec.style.display = "none");
-  document.getElementById("kategori").style.display = "block";
+  kategoriSection.style.display = "block";
+
   document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
   document.getElementById("kategori-btn").classList.add("active");
-  tampilkanKategori();
+
+  // ✅ hanya tampilkan sekali (tidak di-reset setiap klik)
+  if (!kategoriSudahDimuat) {
+    tampilkanKategori();
+    kategoriSudahDimuat = true;
+  }
+
+  // 🟢 beri sedikit waktu untuk render selesai
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        window.scrollTo(0, scrollPosKategori);
+      });
+    });
+
 });
+
+
+
 
 // Ambil data produk dari Google Sheet
 async function loadProduk() {
