@@ -1376,28 +1376,73 @@ async function loadProduk() {
 }
 
 // 🔍 Event pencarian produk
-document.getElementById("search").addEventListener("input", function() {
-  const keyword = this.value.toLowerCase().trim();
-  if (keyword === "") {
-    sedangMencari = false;
-    filteredProduk = [];
-    produkContainer.innerHTML = "";
-    currentIndex = 0;
-    tampilkanProduk(BATCH_SIZE); // tampilkan semua lagi
-    return;
+
+// === PENANGANAN PENCARIAN DENGAN URL ===
+document.addEventListener("DOMContentLoaded", async () => {
+  const input = document.getElementById("search");
+  const produkContainer = document.getElementById("produkContainer");
+
+  // ✅ Pastikan data produk sudah dimuat
+  if (!window.produkData || produkData.length === 0) {
+    try {
+      await loadProduk(); // fungsi kamu untuk ambil data dari sheet/JSON
+    } catch (err) {
+      console.error("Gagal memuat produk sebelum pencarian:", err);
+    }
   }
 
-filteredProduk = produkData.filter(([nama, kategori, keterangan]) =>
-  nama.toLowerCase().includes(keyword) ||
-  kategori.toLowerCase().includes(keyword) ||
-  keterangan.toLowerCase().includes(keyword)
-);
+  // Jika ada parameter ?q= di URL → langsung cari
+  const params = new URLSearchParams(window.location.search);
+  const keywordAwal = params.get("q");
+  if (keywordAwal) {
+    input.value = keywordAwal;
 
-sedangMencari = true;
-currentIndex = 0;
-produkContainer.innerHTML = "";
-tampilkanProduk(BATCH_SIZE); // tampilkan batch pertama dari filteredProduk
+    // Pastikan tampilan produk muncul (jika pakai sistem section)
+    if (typeof homeSection !== "undefined") homeSection.style.display = "none";
+    if (typeof produkSection !== "undefined") produkSection.style.display = "block";
+    if (typeof kategoriSection !== "undefined") kategoriSection.style.display = "none";
+
+    jalankanPencarian(keywordAwal);
+  }
+
+  // Saat user mengetik di input pencarian
+  input.addEventListener("input", function() {
+    const keyword = this.value.toLowerCase().trim();
+
+    // Update URL tanpa reload
+    const params = new URLSearchParams(window.location.search);
+    if (keyword) params.set("q", keyword);
+    else params.delete("q");
+    history.replaceState({}, "", "?" + params.toString());
+
+    jalankanPencarian(keyword);
+  });
+
+  function jalankanPencarian(keyword) {
+    produkContainer.innerHTML = "";
+
+    if (!keyword) {
+      sedangMencari = false;
+      filteredProduk = [];
+      currentIndex = 0;
+      tampilkanProduk(BATCH_SIZE); // tampilkan semua produk kembali
+      return;
+    }
+
+    // 🔎 Filter produk dari data utama
+    filteredProduk = produkData.filter(([nama, kategori, keterangan]) =>
+      nama.toLowerCase().includes(keyword) ||
+      kategori.toLowerCase().includes(keyword) ||
+      keterangan.toLowerCase().includes(keyword)
+    );
+
+    sedangMencari = true;
+    currentIndex = 0;
+    tampilkanProduk(BATCH_SIZE);
+  }
 });
+
+
 
 // 🟢 Di sini kamu taruh fungsi handleScroll
 function handleScroll() {
