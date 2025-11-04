@@ -5,51 +5,104 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Toko - Cari Produk</title>
 <style>
-  :root{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial;color:#111}
+  :root {font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; color: #111;}
   body{margin:0;padding:16px;background:#f7f7f8}
-  .header{display:flex;gap:8px;align-items:center;margin-bottom:12px}
-  .search{flex:1}
-  input[type="search"]{
-  padding:12px 14px;border-radius:8px;border:1px solid #ccc;font-size:16px;background:#fff;
-    outline:none;
-  }
+  
+  .search{flex:1; width: 100%;}
+  input[type="search"]{ padding:12px 14px;border-radius:8px;border:1px solid #ccc;font-size:25px;background:#fff; outline:none; height: 60px; font-size: 1.1rem;}
   select{padding:10px;border-radius:8px;border:1px solid #ccc;background:#fff;font-size:16px; width: 100%;}
-  .hint{font-size:13px;color:#666;margin-bottom:8px}
   .loader{font-size:14px;color:#444;margin-bottom:8px;text-align:center}
   .empty{font-size:14px;color:#666;padding:18px 8px;text-align:center}
-
+  .header { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; align-items: stretch; }
   /* Table: touch friendly */
   table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
   th,td{padding:18px 14px;text-align:left;border-bottom:1px solid #eee;font-size:16px}
   tr:last-child td{border-bottom:none}
   tr:hover{background:#f5faff;cursor:pointer}
   @media (hover:none){ tr:active{background:#eef4ff} }
-
   /* modal */
   .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;align-items:center;justify-content:center;padding:16px;z-index:999;}
   .modal{background:#fff;border-radius:12px;padding:16px;max-width:720px;width:100%;max-height:90vh;overflow:auto;box-shadow:0 8px 30px rgba(0,0,0,.2)}
   .detail-row{margin-bottom:8px;font-size:14px;color:#222}
-  .close-btn{display:block;margin-top:12px;padding:10px;border:none;border-radius:8px;background:#007bff;color:#fff;font-size:15px;width:100%}
-
   /* highlight pencarian */
   mark { background-color: #ffeb3b; color: black; font-weight: bold; }
-
-  .header { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; align-items: stretch; }
-  .search { width: 100%; }
   input[type="search"], select { width: 100%; box-sizing: border-box; }
 
   /* Harga bold */
-  .harga { font-weight: bold; font-size: 18px; color: #111; }
+  .harga { font-weight: bold; font-size: 16px; color: #111; }
+  #backToTop {
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 999;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  font-size: 22px;
+  cursor: pointer;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+  transition: opacity 0.3s ease, transform 0.2s ease;
+}
+#backToTop:hover {
+  background-color: #0056b3;
+  transform: scale(1.1);
+}
+/* Warna default (putih) */
+
+/* Warna saat dipilih kategori */
+#category.selected {
+  background-color: #fff9c4; /* kuning lembut */
+}
+.category-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+}
+
+#category {
+  flex: 1;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  transition: background-color 0.3s ease;
+}
+#resetCategory {
+  background: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+#resetCategory:hover {
+  background: #e0e0e0;
+}
+
+
 </style>
 </head>
 <body>
 <div class="header" style="flex-direction: column; gap:8px;">
-  <select id="category"><option value="">Kategori</option></select>
+<div class="category-row">
+  <select id="category">
+    <option value="">Semua Kategori</option>
+  </select>
+  <button id="resetCategory">Reset</button>
+</div>
+
   <div class="search"><input id="q" type="search" placeholder="Cari Barang..." autocomplete="off" /></div>
 </div>
 
-<div id="status" class="loader" style="display:none">Memuat data...</div>
-<div id="empty" class="empty" style="display:none">Tidak ada hasil</div>
+<div id="status" class="loader" style="display:none; font-size: 30px;">Loading....</div>
+<div id="empty" class="empty" style="display:none; font-size: 30px;">Tidak ada hasil</div>
 <div id="results"></div>
 
 <div id="overlay" class="overlay" role="dialog" aria-modal="true">
@@ -57,12 +110,8 @@
     <div id="modal-body"></div>
   </div>
 </div>
-<button id="tap-to-search" style="display:none; position:fixed; right:16px; bottom:18px; z-index:1100;
-  padding:10px 12px; border-radius:10px; border:none; background:#007bff; color:#fff; font-weight:600;">
-  Tap to search
-</button>
-
-<script>
+<button id="backToTop" title="Kembali ke atas">⬆️</button>
+<script defer>
 const SHEET_ID = "1opsWaN0-f-aZEjqTx85jGlw6rBF4rXnGpUdakvW3Ixg";
 const GID = "0";
 const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
@@ -133,9 +182,6 @@ async function loadData(){
     }
     ready = true;
     statusEl.style.display = 'none';
-
-    openKeyboardAfterLoad();
-    qInput.focus();
   }catch(err){
     statusEl.style.display = 'none';
     alert('Gagal memuat data: ' + err.message);
@@ -181,11 +227,23 @@ function renderTable(rows, query, nameKey){
     if(regex) name = name.replace(regex, '<mark>$1</mark>');
     td.innerHTML = name;
     tr.appendChild(td);
+    // Tambahkan kolom harga
+    const hargaKey = findKey(r, ['harga_jual', 'harga', 'price']);
+    const tdHarga = document.createElement('td');
+    tdHarga.innerHTML = `<span class="harga">${formatRupiah(r[hargaKey])}</span>`;
+    tr.appendChild(tdHarga);
+
     tr.addEventListener('click', (e) => { e.stopPropagation(); showModal(r); }, {passive:true});
     tbody.appendChild(tr);
   });
 
   table.appendChild(tbody);
+  const count = rows.length;
+  document.getElementById('empty').style.display = 'none';
+  const info = document.createElement('div');
+  info.textContent = `${count} hasil ditemukan`;
+  info.style.margin = '10px 0';
+  resultsEl.prepend(info);
   resultsEl.appendChild(table);
 }
 
@@ -229,70 +287,39 @@ function kodeHarga(nilai) {
   const map = { '0':'R','1':'W','2':'I','3':'G','4':'U','5':'N','6':'A','7':'M','8':'O','9':'T','.':'.' };
   return String(nilai).split('').map(c => map[c] || c).join('');
 }
-// fungsi util: deteksi platform
-function isIOS() {
-  return /iP(hone|ad|od)/.test(navigator.userAgent);
-}
-function isAndroid() {
-  return /Android/.test(navigator.userAgent);
-}
+// --- Tombol "Kembali ke Atas" ---
+const backToTopBtn = document.getElementById('backToTop');
 
-const tapToSearchBtn = document.getElementById('tap-to-search');
-
-// fungsi mencoba membuka keyboard (beberapa trik)
-function tryOpenKeyboard(inputEl){
-  if(!inputEl) return;
-  try {
-    inputEl.focus({preventScroll:true});
-  } catch(e){
-    try { inputEl.focus(); } catch(e) {}
-  }
-
-  // coba set selection utk memaksa focus visual
-  try {
-    const len = inputEl.value.length;
-    inputEl.setSelectionRange(len, len);
-  } catch(e){}
-
-  // trigger click — beberapa browser merespon
-  try { inputEl.click(); } catch(e){}
-
-  // ulangi beberapa kali singkat untuk meningkatkan peluang
-  [50,200,500].forEach(ms => setTimeout(()=> {
-    try {
-      inputEl.focus();
-      inputEl.setSelectionRange(inputEl.value.length, inputEl.value.length);
-    } catch(e){}
-  }, ms));
-}
-
-// dipanggil setelah loadData() selesai
-function openKeyboardAfterLoad(){
-  const input = document.getElementById('q');
-
-  // coba otomatis di semua platform (best-effort)
-  tryOpenKeyboard(input);
-
-  // jika iOS, tampilkan tombol "Tap to search" sebagai fallback
-  if(isIOS()){
-    tapToSearchBtn.style.display = '';
-    tapToSearchBtn.addEventListener('click', function onTap(){
-      tapToSearchBtn.style.display = 'none';
-      // fokuskan input — ini dipicu oleh aksi pengguna, keyboard akan muncul
-      input.focus();
-      try {
-        input.setSelectionRange(input.value.length, input.value.length);
-      } catch(e){}
-      tapToSearchBtn.removeEventListener('click', onTap);
-    }, {passive:true});
+// Tampilkan tombol saat scroll lebih dari 400px
+window.addEventListener('scroll', () => {
+  if (document.body.scrollTop > 400 || document.documentElement.scrollTop > 400) {
+    backToTopBtn.style.display = "block";
   } else {
-    // di Android/desktop, sembunyikan tombol jika tidak perlu
-    tapToSearchBtn.style.display = 'none';
+    backToTopBtn.style.display = "none";
   }
-}
+});
 
+// Saat tombol diklik, scroll halus ke atas
+backToTopBtn.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+// --- Ubah warna select saat kategori dipilih ---
+catSelect.addEventListener('change', () => {
+  if (catSelect.value) {
+    catSelect.classList.add('selected');  // jadi kuning
+  } else {
+    catSelect.classList.remove('selected'); // balik ke putih
+  }
 
-
+  // Tetap jalankan fungsi pencarian (kalau sudah ada)
+  searchAndRender && searchAndRender();
+});
+const resetBtn = document.getElementById('resetCategory');
+resetBtn.addEventListener('click', () => {
+  catSelect.value = "";
+  catSelect.classList.remove('selected');
+  searchAndRender();
+});
 loadData();
 </script>
 </body>
