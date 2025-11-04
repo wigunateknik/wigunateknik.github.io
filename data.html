@@ -32,29 +32,14 @@
   .close-btn{display:block;margin-top:12px;padding:10px;border:none;border-radius:8px;background:#007bff;color:#fff;font-size:15px;width:100%}
 
   /* highlight pencarian */
-  mark {
-    background-color: #ffeb3b;
-    color: black;
-    font-weight: bold;
-  }
+  mark { background-color: #ffeb3b; color: black; font-weight: bold; }
 
-  .header {
-  display: flex;
-  flex-direction: column; /* stack vertikal */
-  gap: 8px;
-  margin-bottom: 12px;
-  align-items: stretch; /* pastikan anak full lebar */
-}
+  .header { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; align-items: stretch; }
+  .search { width: 100%; }
+  input[type="search"], select { width: 100%; box-sizing: border-box; }
 
-.search {
-  width: 100%; /* pastikan input penuh */
-}
-
-input[type="search"], select {
-  width: 100%; /* input & select full lebar */
-  box-sizing: border-box; /* pastikan padding tidak membuat overflow */
-}
-
+  /* Harga bold */
+  .harga { font-weight: bold; font-size: 18px; color: #111; }
 </style>
 </head>
 <body>
@@ -63,16 +48,19 @@ input[type="search"], select {
   <div class="search"><input id="q" type="search" placeholder="Cari Barang..." autocomplete="off" /></div>
 </div>
 
-  <!-- <div class="hint">Ketik nama barang untuk mencari. Data dimuat otomatis dari Spreadsheet (background).</div> -->
-  <div id="status" class="loader" style="display:none">Memuat data...</div>
-  <div id="empty" class="empty" style="display:none">Tidak ada hasil</div>
-  <div id="results"></div>
+<div id="status" class="loader" style="display:none">Memuat data...</div>
+<div id="empty" class="empty" style="display:none">Tidak ada hasil</div>
+<div id="results"></div>
 
-  <div id="overlay" class="overlay" role="dialog" aria-modal="true">
-    <div class="modal" id="modal">
-      <div id="modal-body"></div>
-    </div>
+<div id="overlay" class="overlay" role="dialog" aria-modal="true">
+  <div class="modal" id="modal">
+    <div id="modal-body"></div>
   </div>
+</div>
+<button id="tap-to-search" style="display:none; position:fixed; right:16px; bottom:18px; z-index:1100;
+  padding:10px 12px; border-radius:10px; border:none; background:#007bff; color:#fff; font-weight:600;">
+  Tap to search
+</button>
 
 <script>
 const SHEET_ID = "1opsWaN0-f-aZEjqTx85jGlw6rBF4rXnGpUdakvW3Ixg";
@@ -93,9 +81,7 @@ let debounceTimer;
 const DEBOUNCE_MS = 300;
 const MAX_RESULTS = 200;
 
-function normalizeHeader(h){
-  return String(h||'').trim().toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
-}
+function normalizeHeader(h){ return String(h||'').trim().toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,''); }
 
 function parseCSVtoRows(text){
   const rows = [];
@@ -103,10 +89,8 @@ function parseCSVtoRows(text){
   while(i < text.length){
     const ch = text[i];
     if(inQuotes){
-      if(ch === '"'){
-        if(text[i+1] === '"'){ cur += '"'; i+=2; continue; }
-        inQuotes = false; i++; continue;
-      } else { cur += ch; i++; continue; }
+      if(ch === '"'){ if(text[i+1] === '"'){ cur += '"'; i+=2; continue; } inQuotes = false; i++; continue; }
+      else { cur += ch; i++; continue; }
     } else {
       if(ch === '"'){ inQuotes = true; i++; continue; }
       if(ch === ','){ col.push(cur); cur=''; i++; continue; }
@@ -125,14 +109,11 @@ function parseCSV(text){
   if(!rows.length) return [];
   const headerRaw = rows[0];
   const headers = headerRaw.map(normalizeHeader);
-  const objs = rows.slice(1).map(r => {
+  return rows.slice(1).map(r => {
     const obj = {};
-    for(let i=0;i<headers.length;i++){
-      obj[headers[i]] = r[i] !== undefined ? r[i] : '';
-    }
+    for(let i=0;i<headers.length;i++) obj[headers[i]] = r[i] !== undefined ? r[i] : '';
     return obj;
   });
-  return objs;
 }
 
 async function loadData(){
@@ -152,17 +133,18 @@ async function loadData(){
     }
     ready = true;
     statusEl.style.display = 'none';
+
+    openKeyboardAfterLoad();
+    qInput.focus();
   }catch(err){
     statusEl.style.display = 'none';
     alert('Gagal memuat data: ' + err.message);
   }
 }
 
-function findKey(obj, candidates){
-  const keys = Object.keys(obj||{});
-  for(const c of candidates) if(keys.includes(c)) return c;
-  return keys[0] || '';
-}
+function findKey(obj, candidates){ const keys = Object.keys(obj||{}); for(const c of candidates) if(keys.includes(c)) return c; return keys[0] || ''; }
+
+function formatRupiah(angka){ if(!angka) return ''; return String(angka).replace(/\B(?=(\d{3})+(?!\d))/g, "."); }
 
 function searchAndRender(){
   if(!ready) return;
@@ -190,7 +172,6 @@ function renderTable(rows, query, nameKey){
 
   const table = document.createElement('table');
   const tbody = document.createElement('tbody');
-
   const regex = query ? new RegExp(`(${query})`, 'gi') : null;
 
   rows.slice(0, MAX_RESULTS).forEach(r => {
@@ -210,18 +191,31 @@ function renderTable(rows, query, nameKey){
 
 function showModal(item){
   modalBody.innerHTML = '';
-  Object.keys(item).forEach(k => {
-    const v = item[k];
-    if(v === undefined || v === null || String(v).trim() === '') return;
-    const div = document.createElement('div');
-    div.className = 'detail-row';
-    const label = k.replace(/_/g,' ');
-    div.innerHTML = `<small style="color:#666;">${label}</small><div>${escapeHtml(v)}</div>`;
-    modalBody.appendChild(div);
-  });
+Object.keys(item).forEach(k => {
+  let v = item[k];
+  if(v === undefined || v === null || String(v).trim() === '') return;
+
+  // Harga jual tetap format Rp
+  if(/harga|price|jual/i.test(k)){
+    v = `<span class="harga">${formatRupiah(v)}</span>`;
+  }
+
+  // Harga beli diubah menjadi kode
+  if(/harga_beli|beli/i.test(k)){
+    v = `<span class="harga">${kodeHarga(v)}</span>`;
+  }
+
+  const div = document.createElement('div');
+  div.className = 'detail-row';
+  const label = k.replace(/_/g,' ');
+  div.innerHTML = `<small style="color:#666;">${label}</small><div>${v}</div>`;
+  modalBody.appendChild(div);
+});
+
   overlay.style.display = 'flex';
   document.getElementById('modal').scrollTop = 0;
 }
+
 function closeModal(){ overlay.style.display = 'none'; }
 overlay.addEventListener('click', (e)=> { if(e.target === overlay) closeModal(); });
 
@@ -229,6 +223,75 @@ function escapeHtml(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;',
 
 qInput.addEventListener('input', ()=>{ clearTimeout(debounceTimer); debounceTimer = setTimeout(searchAndRender, DEBOUNCE_MS);});
 catSelect.addEventListener('change', ()=>{ clearTimeout(debounceTimer); debounceTimer = setTimeout(searchAndRender, 0);});
+
+function kodeHarga(nilai) {
+  if (!nilai) return '';
+  const map = { '0':'R','1':'W','2':'I','3':'G','4':'U','5':'N','6':'A','7':'M','8':'O','9':'T','.':'.' };
+  return String(nilai).split('').map(c => map[c] || c).join('');
+}
+// fungsi util: deteksi platform
+function isIOS() {
+  return /iP(hone|ad|od)/.test(navigator.userAgent);
+}
+function isAndroid() {
+  return /Android/.test(navigator.userAgent);
+}
+
+const tapToSearchBtn = document.getElementById('tap-to-search');
+
+// fungsi mencoba membuka keyboard (beberapa trik)
+function tryOpenKeyboard(inputEl){
+  if(!inputEl) return;
+  try {
+    inputEl.focus({preventScroll:true});
+  } catch(e){
+    try { inputEl.focus(); } catch(e) {}
+  }
+
+  // coba set selection utk memaksa focus visual
+  try {
+    const len = inputEl.value.length;
+    inputEl.setSelectionRange(len, len);
+  } catch(e){}
+
+  // trigger click — beberapa browser merespon
+  try { inputEl.click(); } catch(e){}
+
+  // ulangi beberapa kali singkat untuk meningkatkan peluang
+  [50,200,500].forEach(ms => setTimeout(()=> {
+    try {
+      inputEl.focus();
+      inputEl.setSelectionRange(inputEl.value.length, inputEl.value.length);
+    } catch(e){}
+  }, ms));
+}
+
+// dipanggil setelah loadData() selesai
+function openKeyboardAfterLoad(){
+  const input = document.getElementById('q');
+
+  // coba otomatis di semua platform (best-effort)
+  tryOpenKeyboard(input);
+
+  // jika iOS, tampilkan tombol "Tap to search" sebagai fallback
+  if(isIOS()){
+    tapToSearchBtn.style.display = '';
+    tapToSearchBtn.addEventListener('click', function onTap(){
+      tapToSearchBtn.style.display = 'none';
+      // fokuskan input — ini dipicu oleh aksi pengguna, keyboard akan muncul
+      input.focus();
+      try {
+        input.setSelectionRange(input.value.length, input.value.length);
+      } catch(e){}
+      tapToSearchBtn.removeEventListener('click', onTap);
+    }, {passive:true});
+  } else {
+    // di Android/desktop, sembunyikan tombol jika tidak perlu
+    tapToSearchBtn.style.display = 'none';
+  }
+}
+
+
 
 loadData();
 </script>
