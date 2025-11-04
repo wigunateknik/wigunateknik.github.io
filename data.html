@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Toko - Cari Produk</title>
+<style>
+  :root{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial;color:#111}
+  body{margin:0;padding:16px;background:#f7f7f8}
+  .header{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+  .search{flex:1}
+  input[type="search"]{
+  padding:12px 14px;border-radius:8px;border:1px solid #ccc;font-size:16px;background:#fff;
+    outline:none;
+  }
+  select{padding:10px;border-radius:8px;border:1px solid #ccc;background:#fff;font-size:16px; width: 100%;}
+  .hint{font-size:13px;color:#666;margin-bottom:8px}
+  .loader{font-size:14px;color:#444;margin-bottom:8px;text-align:center}
+  .empty{font-size:14px;color:#666;padding:18px 8px;text-align:center}
+
+  /* Table: touch friendly */
+  table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+  th,td{padding:18px 14px;text-align:left;border-bottom:1px solid #eee;font-size:16px}
+  tr:last-child td{border-bottom:none}
+  tr:hover{background:#f5faff;cursor:pointer}
+  @media (hover:none){ tr:active{background:#eef4ff} }
+
+  /* modal */
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;align-items:center;justify-content:center;padding:16px;z-index:999;}
+  .modal{background:#fff;border-radius:12px;padding:16px;max-width:720px;width:100%;max-height:90vh;overflow:auto;box-shadow:0 8px 30px rgba(0,0,0,.2)}
+  .detail-row{margin-bottom:8px;font-size:14px;color:#222}
+  .close-btn{display:block;margin-top:12px;padding:10px;border:none;border-radius:8px;background:#007bff;color:#fff;font-size:15px;width:100%}
+
+  /* highlight pencarian */
+  mark {
+    background-color: #ffeb3b;
+    color: black;
+    font-weight: bold;
+  }
+
+  .header {
+  display: flex;
+  flex-direction: column; /* stack vertikal */
+  gap: 8px;
+  margin-bottom: 12px;
+  align-items: stretch; /* pastikan anak full lebar */
+}
+
+.search {
+  width: 100%; /* pastikan input penuh */
+}
+
+input[type="search"], select {
+  width: 100%; /* input & select full lebar */
+  box-sizing: border-box; /* pastikan padding tidak membuat overflow */
+}
+
+</style>
+</head>
+<body>
+<div class="header" style="flex-direction: column; gap:8px;">
+  <select id="category"><option value="">Kategori</option></select>
+  <div class="search"><input id="q" type="search" placeholder="Cari Barang..." autocomplete="off" /></div>
+</div>
+
+  <!-- <div class="hint">Ketik nama barang untuk mencari. Data dimuat otomatis dari Spreadsheet (background).</div> -->
+  <div id="status" class="loader" style="display:none">Memuat data...</div>
+  <div id="empty" class="empty" style="display:none">Tidak ada hasil</div>
+  <div id="results"></div>
+
+  <div id="overlay" class="overlay" role="dialog" aria-modal="true">
+    <div class="modal" id="modal">
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+<script>
+const SHEET_ID = "1opsWaN0-f-aZEjqTx85jGlw6rBF4rXnGpUdakvW3Ixg";
+const GID = "0";
+const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+
+const qInput = document.getElementById('q');
+const catSelect = document.getElementById('category');
+const resultsEl = document.getElementById('results');
+const statusEl = document.getElementById('status');
+const emptyEl = document.getElementById('empty');
+const overlay = document.getElementById('overlay');
+const modalBody = document.getElementById('modal-body');
+
+let data = [];
+let ready = false;
+let debounceTimer;
+const DEBOUNCE_MS = 300;
+const MAX_RESULTS = 200;
+
+function normalizeHeader(h){
+  return String(h||'').trim().toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
+}
+
+function parseCSVtoRows(text){
+  const rows = [];
+  let cur = '', i = 0, col = [], inQuotes = false;
+  while(i < text.length){
+    const ch = text[i];
+    if(inQuotes){
+      if(ch === '"'){
+        if(text[i+1] === '"'){ cur += '"'; i+=2; continue; }
+        inQuotes = false; i++; continue;
+      } else { cur += ch; i++; continue; }
+    } else {
+      if(ch === '"'){ inQuotes = true; i++; continue; }
+      if(ch === ','){ col.push(cur); cur=''; i++; continue; }
+      if(ch === '\r'){ i++; continue; }
+      if(ch === '\n'){ col.push(cur); rows.push(col); col=[]; cur=''; i++; continue; }
+      cur += ch; i++;
+    }
+  }
+  if(cur !== '' || inQuotes) col.push(cur);
+  if(col.length) rows.push(col);
+  return rows;
+}
+
+function parseCSV(text){
+  const rows = parseCSVtoRows(text).filter(r => r.length && r.some(c => String(c||'').trim() !== ''));
+  if(!rows.length) return [];
+  const headerRaw = rows[0];
+  const headers = headerRaw.map(normalizeHeader);
+  const objs = rows.slice(1).map(r => {
+    const obj = {};
+    for(let i=0;i<headers.length;i++){
+      obj[headers[i]] = r[i] !== undefined ? r[i] : '';
+    }
+    return obj;
+  });
+  return objs;
+}
+
+async function loadData(){
+  statusEl.style.display = '';
+  try{
+    const res = await fetch(CSV_URL, {cache: 'no-store'});
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const txt = await res.text();
+    data = parseCSV(txt);
+    const catKey = Object.keys(data[0]).find(k => /kategori|category|kat/.test(k)) || null;
+    if(catKey){
+      const s = new Set(data.map(d => (d[catKey]||'').trim()).filter(Boolean));
+      Array.from(s).sort().forEach(c => {
+        const o = document.createElement('option'); o.value = c; o.textContent = c;
+        catSelect.appendChild(o);
+      });
+    }
+    ready = true;
+    statusEl.style.display = 'none';
+  }catch(err){
+    statusEl.style.display = 'none';
+    alert('Gagal memuat data: ' + err.message);
+  }
+}
+
+function findKey(obj, candidates){
+  const keys = Object.keys(obj||{});
+  for(const c of candidates) if(keys.includes(c)) return c;
+  return keys[0] || '';
+}
+
+function searchAndRender(){
+  if(!ready) return;
+  const q = (qInput.value||'').trim().toLowerCase();
+  const cat = (catSelect.value||'').trim();
+  if(!q && !cat){ resultsEl.innerHTML = ''; emptyEl.style.display='none'; return; }
+
+  const sample = data[0] || {};
+  const nameKey = findKey(sample, ['nama_barang','nama','name','produk','product','title']);
+  const catKey  = findKey(sample, ['kategori','category','kat']);
+
+  const filtered = data.filter(row => {
+    const matchesName = !q || (row[nameKey]||'').toLowerCase().includes(q);
+    const matchesCat = !cat || (row[catKey]||'').toLowerCase() === cat.toLowerCase();
+    return matchesName && matchesCat;
+  });
+
+  renderTable(filtered, q, nameKey);
+}
+
+function renderTable(rows, query, nameKey){
+  resultsEl.innerHTML = '';
+  if(!rows || rows.length === 0){ emptyEl.style.display = ''; return; }
+  emptyEl.style.display = 'none';
+
+  const table = document.createElement('table');
+  const tbody = document.createElement('tbody');
+
+  const regex = query ? new RegExp(`(${query})`, 'gi') : null;
+
+  rows.slice(0, MAX_RESULTS).forEach(r => {
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+    let name = r[nameKey] || '(tanpa nama)';
+    if(regex) name = name.replace(regex, '<mark>$1</mark>');
+    td.innerHTML = name;
+    tr.appendChild(td);
+    tr.addEventListener('click', (e) => { e.stopPropagation(); showModal(r); }, {passive:true});
+    tbody.appendChild(tr);
+  });
+
+  table.appendChild(tbody);
+  resultsEl.appendChild(table);
+}
+
+function showModal(item){
+  modalBody.innerHTML = '';
+  Object.keys(item).forEach(k => {
+    const v = item[k];
+    if(v === undefined || v === null || String(v).trim() === '') return;
+    const div = document.createElement('div');
+    div.className = 'detail-row';
+    const label = k.replace(/_/g,' ');
+    div.innerHTML = `<small style="color:#666;">${label}</small><div>${escapeHtml(v)}</div>`;
+    modalBody.appendChild(div);
+  });
+  overlay.style.display = 'flex';
+  document.getElementById('modal').scrollTop = 0;
+}
+function closeModal(){ overlay.style.display = 'none'; }
+overlay.addEventListener('click', (e)=> { if(e.target === overlay) closeModal(); });
+
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+qInput.addEventListener('input', ()=>{ clearTimeout(debounceTimer); debounceTimer = setTimeout(searchAndRender, DEBOUNCE_MS);});
+catSelect.addEventListener('change', ()=>{ clearTimeout(debounceTimer); debounceTimer = setTimeout(searchAndRender, 0);});
+
+loadData();
+</script>
+</body>
+</html>
