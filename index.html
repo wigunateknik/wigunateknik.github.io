@@ -11,8 +11,10 @@
   <meta property="og:description" content="Menyediakan berbagai alat teknik dan kebutuhan industri dengan harga terjangkau.">
   <meta property="og:image" content="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/logo/logo_toko_wiguna.png">
   <meta property="og:type" content="website">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="icon" href="https://raw.githubusercontent.com/wigunateknik/wigunateknik.github.io/refs/heads/main/img/logo/logo_toko_wiguna.png">
+  <link rel="dns-prefetch" href="https://docs.google.com">
+  <link rel="preconnect" href="https://docs.google.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   
 </head>
 <style>
@@ -332,8 +334,8 @@
     display: flex;
   }
     .produk-container {
-    grid-template-columns: repeat(2, 1fr) !important;
-  }
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
   }
 /* Desktop / laptop */
 @media (min-width: 768px) {
@@ -362,10 +364,17 @@
     gap: 10px;
     font-size: 22px;
   }
-  .produk-container {
+/*  .produk-container {
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  }
+  }*/
+  .produk-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
 }
+}
+
+
 .tombol-wrapper {
   display: flex;           /* 🔹 aktifkan flexbox */
   gap: 10px;               /* 🔹 jarak antar tombol */
@@ -874,7 +883,7 @@
 }
 
 /* Video */
-.video-wrapper {
+/*.video-wrapper {
   position: relative;
   width: 100%;
   padding-bottom: 56.25%;
@@ -887,7 +896,7 @@
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-}
+}*/
 
 /* Deskripsi */
 .deskripsi {
@@ -946,6 +955,30 @@
   to { transform: translateY(0); opacity: 1; }
 }
 
+#popupProduk img,
+#popupTerlaris img {
+  width: 100%;
+  height: 350px;       /* tinggi tetap */
+  object-fit: contain; /* tampil penuh tanpa crop */
+  background: white; /* latar belakang abu saat ada ruang kosong */
+  border-radius: 10px;
+}
+
+.produk-card, .promo-card, .terlaris-card, .kategori-card {
+  -webkit-tap-highlight-color: transparent; /* 🔹 hilangkan flash abu-abu Android */
+}
+
+.popup-content,
+.popup,
+.popup-overlay {
+  animation: none !important;
+  transition: none !important;
+}
+@media (min-width: 601px) and (max-width: 1300px) {
+  body .produk-container {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
 </style>
 <body>
   <header class="navbar">
@@ -1054,10 +1087,6 @@
     <div class="popup-body">
       <h2 id="namaToko">Wiguna Teknik</h2>
       <p class="lokasi"><i class="fas fa-map-marker-alt"></i> <span id="lokasiToko">Jl. Baledan, Selat, Karangasem</span></p>
-      <div class="video-wrapper">
-        <iframe id="videoToko" src="https://www.youtube.com/embed/CJoCiRO7OAw" 
-          title="Video Profil Toko" frameborder="0" allowfullscreen></iframe>
-      </div>
       <p class="deskripsi" id="deskripsiToko">
         Toko Wiguna Teknik menyediakan berbagai alat teknik, perbengkelan, dan industri.
         Produk berkualitas dengan harga bersaing, pelayanan cepat dan terpercaya.
@@ -1351,6 +1380,11 @@ document.getElementById("kategori-btn").addEventListener("click", () => {
 
 // Ambil data produk dari Google Sheet
 async function loadProduk() {
+    if (produkData.length > 0) {
+    console.log("📦 Data produk sudah ada, tidak fetch ulang");
+    tampilkanProduk(BATCH_SIZE);
+    return;
+  }
   try {
     const res = await fetch(SHEET_URL_PRODUK);
     const csvText = await res.text();
@@ -1453,14 +1487,7 @@ function handleScroll() {
     tampilkanProduk(BATCH_SIZE);
   }
 }
-document.addEventListener("DOMContentLoaded", async () => {
-  loadProduk().then(() => {
-    produkSudahDimuat = true;
-    console.log("✅ Data produk sudah dimuat di background");
-  }).catch(err => {
-    console.error("Gagal preload produk:", err);
-  });
-});
+
 
 function debounce(func, delay) {
   let timeout;
