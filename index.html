@@ -1800,18 +1800,12 @@ if ("serviceWorker" in navigator) {
     .then(() => console.log("✅ Service Worker terdaftar!"))
     .catch(err => console.error("SW gagal:", err));
 }
-
-  window.OneSignal = window.OneSignal || [];
-  OneSignal.push(function() {
-    OneSignal.init({
-      appId: "61980947-f413-4722-85b1-5f3092cc8881", // <--- isi App ID dari dashboard OneSignal
-      safari_web_id: null,
-      notifyButton: {
-        enable: true, // tampilkan tombol "aktifkan notifikasi"
-      },
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "61980947-f413-4722-85b1-5f3092cc8881",
     });
   });
-
 </script>
 </body>
 </html>
