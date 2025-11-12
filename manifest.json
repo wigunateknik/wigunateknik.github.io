@@ -1,0 +1,23 @@
+{
+  "name": "Wiguna Teknik",
+  "short_name": "Wiguna",
+  "description": "Toko Wiguna Teknik menyediakan berbagai alat teknik dan kebutuhan industri dengan harga terjangkau.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111111",
+  "theme_color": "#111111",
+  "orientation": "portrait",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "img/logo/logo_toko_wiguna.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "img/logo/logo_toko_wiguna.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
