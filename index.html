@@ -1115,7 +1115,6 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js" async></script>
-<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
 <script defer>
   document.addEventListener("DOMContentLoaded", () => {
   requestIdleCallback(() => {
@@ -1800,15 +1799,21 @@ if ("serviceWorker" in navigator) {
     .then(() => console.log("✅ Service Worker terdaftar!"))
     .catch(err => console.error("SW gagal:", err));
 }
- window.OneSignal = window.OneSignal || [];
+
+</script>
+  <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
+<script>
+  window.OneSignal = window.OneSignal || [];
   OneSignal.push(function() {
     OneSignal.init({
-      appId: "61980947-f413-4722-85b1-5f3092cc8881", 
+      appId: "GANTI_DENGAN_APPID_KAMU",
       notifyButton: {
         enable: true,
       },
+      allowLocalhostAsSecureOrigin: true
     });
   });
 </script>
+
 </body>
 </html>
